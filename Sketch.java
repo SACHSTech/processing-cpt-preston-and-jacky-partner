@@ -21,7 +21,7 @@ public class Sketch extends PApplet {
   public void settings() {
 
 	  // put your size call here
-    size(1200, 752);
+    size(1200, 720);
 
   }
 
