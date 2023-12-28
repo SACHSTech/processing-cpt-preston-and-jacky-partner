@@ -21,7 +21,7 @@ public class Sketch extends PApplet {
   public void settings() {
 
 	  // put your size call here
-    size(800, 800);
+    size(1200, 752);
 
   }
 
@@ -103,8 +103,8 @@ public class Sketch extends PApplet {
 
     if (keyCode == UP) {
 
-        blnUpArrow = false;
-
+      blnUpArrow = false;
+      
     } if (keyCode == DOWN) {
 
       blnDownArrow = false;

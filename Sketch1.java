@@ -4,7 +4,7 @@ public class Sketch1 extends PApplet {
 	
 
   public void settings() {
-    size(800, 800);
+    size(1200, 752);
   }
 
   public void setup() {
