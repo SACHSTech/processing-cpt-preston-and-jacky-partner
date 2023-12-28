@@ -8,8 +8,10 @@ public class Sketch1 extends PApplet {
 
   int intNumLevels = 1;
 
-  float fltCollisionColor;
-  
+  float fltPlayerX, fltPlayerY = 500; 
+
+  boolean blnW, blnA, blnD = false;
+
   public void settings() {
     
     size(1200, 672);
@@ -32,12 +34,101 @@ public class Sketch1 extends PApplet {
 
   
   public void draw() {
-    image(imgLevelCollision[0], 0, 0);
-    fltCollisionColor = get(mouseX,mouseY);
-    System.out.print(fltCollisionColor);
-	  image(imgLevel[0], 0, 0);
+    background(0,100,255);
+    drawLevelCollision();
+    playerCollision();
+    playerMovement();
+    drawLevel();
+    updatePlayer();
+    //fltCollisionColor == -1.6777216E7 this is black
+  }
 
+  public void drawLevelCollision() {
+    image(imgLevelCollision[0], 0, 0);
+  }
+  public void drawLevel() {
+    image(imgLevel[0], 0, 0);
   }
   
-  // define other methods down here.
+  public void playerCollision() {
+    
+  }
+
+  public void playerMovement() {
+
+    if (blnW == true) {
+
+      fltPlayerY -= 10;
+
+    } 
+    
+    if (blnA == true) {
+
+      fltPlayerX -= 10;
+
+    }
+    
+    if (blnD == true) {
+
+      fltPlayerX += 10;
+
+    }
+
+    if (get((int)(fltPlayerX), (int)(fltPlayerY + 32)) == -1.6777216E7 || get((int)(fltPlayerX + 16), (int)(fltPlayerY + 32)) == -1.6777216E7) {
+      
+    } else {
+      fltPlayerY ++;
+    }
+
+  }
+
+  public void keyPressed() {
+
+    if (key == 'w' || key == 'W') {
+
+      blnW = true;
+
+    } 
+    
+    if (key == 'a' || key == 'A') {
+
+      blnA = true;
+
+    }
+    
+    if (key == 'd' || key == 'D') {
+
+      blnD = true;
+
+    }
+
+  }
+
+  public void keyReleased() {
+
+    if (key == 'w' || key == 'W') {
+
+      blnW = false;
+
+    } 
+    
+    if (key == 'a' || key == 'A') {
+
+      blnA = false;
+
+    }
+    
+    if (key == 'd' || key == 'D') {
+
+      blnD = false;
+
+    }
+
+  }
+
+  public void updatePlayer() {
+    noStroke();
+    fill(255);
+    rect(fltPlayerX, fltPlayerY, 16 ,32);
+  }
 }
