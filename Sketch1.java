@@ -8,7 +8,8 @@ public class Sketch1 extends PApplet {
 
   int intNumLevels = 1;
 
-  float fltPlayerX, fltPlayerY = 500; 
+  float fltPlayerX = 500, fltPlayerY = 500; 
+  float fltPlayerVelX, fltPlayerVelY;
 
   boolean blnW, blnA, blnD = false;
 
@@ -51,14 +52,22 @@ public class Sketch1 extends PApplet {
   }
   
   public void playerCollision() {
+
+    if (get((int)(fltPlayerX), (int)(fltPlayerY + 32)) == -1.6777216E7 || get((int)(fltPlayerX + 16), (int)(fltPlayerY + 32)) == -1.6777216E7) {
+      fltPlayerVelY = 0;
+    } else {
+      fltPlayerVelY --;
+    }
     
   }
 
   public void playerMovement() {
 
+    fltPlayerY -= fltPlayerVelY;
+
     if (blnW == true) {
 
-      fltPlayerY -= 10;
+      fltPlayerY -= 12;
 
     } 
     
@@ -72,12 +81,6 @@ public class Sketch1 extends PApplet {
 
       fltPlayerX += 10;
 
-    }
-
-    if (get((int)(fltPlayerX), (int)(fltPlayerY + 32)) == -1.6777216E7 || get((int)(fltPlayerX + 16), (int)(fltPlayerY + 32)) == -1.6777216E7) {
-      
-    } else {
-      fltPlayerY ++;
     }
 
   }
