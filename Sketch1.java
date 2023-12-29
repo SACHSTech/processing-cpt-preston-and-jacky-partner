@@ -9,7 +9,7 @@ public class Sketch1 extends PApplet {
   int intNumLevels = 1;
 
   float fltPlayerX = 500, fltPlayerY = 500; 
-  float fltPlayerVelX, fltPlayerVelY;
+  float fltPlayerGravity;
 
   boolean blnW, blnA, blnD = false;
 
@@ -37,8 +37,7 @@ public class Sketch1 extends PApplet {
   public void draw() {
     background(0,100,255);
     drawLevelCollision();
-    playerCollision();
-    playerMovement();
+    playerMovementAndCollision();
     drawLevel();
     updatePlayer();
     //fltCollisionColor == -1.6777216E7 this is black
@@ -50,38 +49,39 @@ public class Sketch1 extends PApplet {
   public void drawLevel() {
     image(imgLevel[0], 0, 0);
   }
-  
-  public void playerCollision() {
 
-    if (get((int)(fltPlayerX), (int)(fltPlayerY + 32)) == -1.6777216E7 || get((int)(fltPlayerX + 16), (int)(fltPlayerY + 32)) == -1.6777216E7) {
-      fltPlayerVelY = 0;
-    } else {
-      fltPlayerVelY --;
-    }
-    
-  }
-
-  public void playerMovement() {
-
-    fltPlayerY -= fltPlayerVelY;
+  public void playerMovementAndCollision() {
 
     if (blnW == true) {
 
-      fltPlayerY -= 12;
+      fltPlayerY -= 16;
 
     } 
-    
-    if (blnA == true) {
 
-      fltPlayerX -= 10;
+    if (get((int)(fltPlayerX), (int)(fltPlayerY + 32)) == -1.6777216E7 || get((int)(fltPlayerX + 16), (int)(fltPlayerY + 32)) == -1.6777216E7) {
+      
+      fltPlayerGravity = 0;
+      fltPlayerY -= 1;
+
+    } else {
+
+      fltPlayerGravity --;
 
     }
     
-    if (blnD == true) {
+    if (blnA == true && fltPlayerX - 16 > 0) {
 
-      fltPlayerX += 10;
+      fltPlayerX -= 8;
 
     }
+    
+    if (blnD == true && fltPlayerX + 10 < width) {
+
+      fltPlayerX += 8;
+
+    }
+
+    fltPlayerY -= fltPlayerGravity;
 
   }
 
@@ -130,8 +130,10 @@ public class Sketch1 extends PApplet {
   }
 
   public void updatePlayer() {
+
     noStroke();
     fill(255);
     rect(fltPlayerX, fltPlayerY, 16 ,32);
+
   }
 }
