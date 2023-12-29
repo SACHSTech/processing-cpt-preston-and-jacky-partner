@@ -55,7 +55,7 @@ public class Sketch1 extends PApplet {
     if (blnW == true) {
 
       fltPlayerY -= 16;
-
+      
     } 
 
     if (get((int)(fltPlayerX), (int)(fltPlayerY + 32)) == -1.6777216E7 || get((int)(fltPlayerX + 16), (int)(fltPlayerY + 32)) == -1.6777216E7) {
@@ -63,18 +63,15 @@ public class Sketch1 extends PApplet {
       fltPlayerGravity = 0;
       fltPlayerY -= 1;
 
-
     } else {
 
-      if (fltPlayerGravity <= -5) {
+      fltPlayerGravity -= 1;
+      
+      if (fltPlayerGravity <= -25) {
 
-        fltPlayerGravity = -5;
+        fltPlayerGravity = -25;
 
-      } else {
-
-        fltPlayerGravity --;
-
-      }
+      } 
 
     }
     
