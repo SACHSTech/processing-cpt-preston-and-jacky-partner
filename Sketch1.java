@@ -63,9 +63,18 @@ public class Sketch1 extends PApplet {
       fltPlayerGravity = 0;
       fltPlayerY -= 1;
 
+
     } else {
 
-      fltPlayerGravity --;
+      if (fltPlayerGravity <= -5) {
+
+        fltPlayerGravity = -5;
+
+      } else {
+
+        fltPlayerGravity --;
+
+      }
 
     }
     
@@ -113,7 +122,7 @@ public class Sketch1 extends PApplet {
 
       blnW = false;
 
-    } 
+    }
     
     if (key == 'a' || key == 'A') {
 
@@ -134,6 +143,6 @@ public class Sketch1 extends PApplet {
     noStroke();
     fill(255);
     rect(fltPlayerX, fltPlayerY, 16 ,32);
-
+    
   }
 }
