@@ -1,7 +1,7 @@
 import processing.core.PApplet;
 import processing.core.PImage;
 
-public class Sketch1 extends PApplet {
+public class platformer extends PApplet {
 
   PImage[] imgLevel;
   PImage[] imgLevelCollision;
@@ -25,11 +25,11 @@ public class Sketch1 extends PApplet {
     imgLevelCollision = new PImage[intNumLevels];
 
     for (int i = 0; i < intNumLevels; i++) {
-      imgLevel[i] = loadImage("levels/level" + i + ".png"); 
+      imgLevel[i] = loadImage("platformer/levels/level" + i + ".png"); 
     }
 
     for (int i = 0; i < intNumLevels; i++) {
-      imgLevelCollision[i] = loadImage("levels/collision/levelCollision" + i + ".png"); 
+      imgLevelCollision[i] = loadImage("platformer/levels/collision/levelCollision" + i + ".png"); 
     }
   }
 

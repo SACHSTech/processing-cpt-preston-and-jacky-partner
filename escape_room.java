@@ -1,14 +1,17 @@
 import processing.core.PApplet;
+import processing.core.PImage;
 
-public class Sketch2 extends PApplet {
+public class escape_room extends PApplet {
 	
+  PImage[] imgLevel;
+
+  int intNumLevels = 1;
 	
   /**
    * Called once at the beginning of execution, put your size all in this method
    */
   public void settings() {
-	// put your size call here
-    size(400, 400);
+    size(672, 672);
   }
 
   /** 
@@ -16,21 +19,18 @@ public class Sketch2 extends PApplet {
    * values here i.e background, stroke, fill etc.
    */
   public void setup() {
-    background(210, 255, 173);
+    imgLevel = new PImage[intNumLevels];
+
+    for (int i = 0; i < intNumLevels; i++) {
+      imgLevel[i] = loadImage("escape_room/levels/level" + i + ".png"); 
+    }
   }
 
   /**
    * Called repeatedly, anything drawn to the screen goes here
    */
   public void draw() {
-	  
-	// sample code, delete this stuff
-    stroke(128);
-    line(150, 25, 270, 350);  
-
-    stroke(255);
-    line(50, 125, 70, 50);  
+    image(imgLevel[0], 0, 0);
   }
-  
   // define other methods down here.
 }
