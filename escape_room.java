@@ -4,9 +4,12 @@ import processing.core.PImage;
 public class escape_room extends PApplet {
 	
   PImage[] imgLevel;
+  PImage[] imgPlayerMovement;
 
   int intNumLevels = 1;
 	
+  boolean blnUp, blnDown, blnLeft, blnRight = false;
+
   /**
    * Called once at the beginning of execution, put your size all in this method
    */
@@ -32,5 +35,50 @@ public class escape_room extends PApplet {
   public void draw() {
     image(imgLevel[0], 0, 0);
   }
-  // define other methods down here.
+  
+  public void KeyPressed() {
+
+    if (keyPressed) {
+      if (key == 'a' || key =='A') {
+
+        blnLeft = true;
+
+      } if (key == 'd' || key =='D') {
+        
+        blnRight = true;
+
+      } if (key == 'w' || key =='W') {
+        
+        blnUp = true;
+
+      } if (key == 's' || key =='S') {
+        
+        blnDown = true;
+
+      }
+    }
+  }
+
+  public void keyReleased() {
+
+     if (key == 'a' || key =='A') {
+
+        blnLeft = false;
+
+      } if (key == 'd' || key =='D') {
+        
+        blnRight = false;
+
+      } if (key == 'w' || key =='W') {
+        
+        blnUp = false;
+
+      } if (key == 's' || key =='S') {
+        
+        blnDown = false;
+
+      }
+  }
+
+
 }
