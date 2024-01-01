@@ -4,11 +4,15 @@ import processing.core.PImage;
 public class escape_room extends PApplet {
 	
   PImage[] imgLevel;
-  PImage[] imgPlayerMovement;
+  PImage[] imgPlyaerLeft;
+  PImage[] imgPlyaerRight;
+  PImage[] imgPlyaerUp;
+  PImage[] imgPlayerDown;
 
   int intNumLevels = 1;
+  int intNumFrames = 5;
 	
-  boolean blnUp, blnDown, blnLeft, blnRight = false;
+  boolean blnUp, blnDown, blnLeft, blnRight, blnMouseClicked = false;
 
   /**
    * Called once at the beginning of execution, put your size all in this method
@@ -33,12 +37,68 @@ public class escape_room extends PApplet {
    * Called repeatedly, anything drawn to the screen goes here
    */
   public void draw() {
+
+    // checks if the mouse button has been pressed
+    if (mousePressed) {
+
+      blnMouseClicked = true;
+
+    } else {
+
+      blnMouseClicked = false;
+      
+    }
+
     image(imgLevel[0], 0, 0);
+
+    //draws the animation for moving left
+    if (blnLeft == true) {
+
+      for (int i = 0; i < intNumFrames; i++) {
+        
+        //imgPlyaerLeft = loadImage(" " + i + ".png");
+
+      }
+    } 
+    
+    //draws the animation for moving right
+    if (blnRight == true) {
+
+      for (int i = 0; i < intNumFrames; i++) {
+        
+        //imgPlyaerRight = loadImage(" " + i + ".png");
+
+      }
+    } 
+    
+    //draws the animation for moving up
+    if (blnUp == true) {
+        
+      for (int i = 0; i < intNumFrames; i++) {
+        
+        //imgPlyaerUp = loadImage(" " + i + ".png");
+
+      }
+    } 
+    
+    //draws the animation for moving down
+    if (blnDown == true) {
+
+      for (int i = 0; i < intNumFrames; i++) {
+        
+        //imgPlyaerDown = loadImage(" " + i + ".png");
+
+      }
+    }
   }
   
+  /**
+   * detects which keys are pressed and then sets certain boolean values to true
+   */
   public void KeyPressed() {
 
     if (keyPressed) {
+      
       if (key == 'a' || key =='A') {
 
         blnLeft = true;
@@ -59,26 +119,27 @@ public class escape_room extends PApplet {
     }
   }
 
+  /**
+   * detects which keys are released and then sets the corresponding boolean value to false 
+   */
   public void keyReleased() {
 
-     if (key == 'a' || key =='A') {
+    if (key == 'a' || key =='A') {
 
-        blnLeft = false;
+      blnLeft = false;
 
-      } if (key == 'd' || key =='D') {
-        
-        blnRight = false;
+    } if (key == 'd' || key =='D') {
+      
+      blnRight = false;
 
-      } if (key == 'w' || key =='W') {
-        
-        blnUp = false;
+    } if (key == 'w' || key =='W') {
+      
+      blnUp = false;
 
-      } if (key == 's' || key =='S') {
-        
-        blnDown = false;
+    } if (key == 's' || key =='S') {
+      
+      blnDown = false;
 
-      }
+    }
   }
-
-
 }
