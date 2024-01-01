@@ -4,13 +4,16 @@ import processing.core.PImage;
 public class escape_room extends PApplet {
 	
   PImage[] imgLevel;
-  PImage[] imgPlyaerLeft;
-  PImage[] imgPlyaerRight;
-  PImage[] imgPlyaerUp;
+  PImage[] imgPlayerLeft;
+  PImage[] imgPlayerRight;
+  PImage[] imgPlayerUp;
   PImage[] imgPlayerDown;
 
   int intNumLevels = 1;
   int intNumFrames = 5;
+
+  int intPlayerX = 0;
+  int intPlayerY = 0;
 	
   boolean blnUp, blnDown, blnLeft, blnRight, blnMouseClicked = false;
 
@@ -18,7 +21,9 @@ public class escape_room extends PApplet {
    * Called once at the beginning of execution, put your size all in this method
    */
   public void settings() {
+    
     size(672, 672);
+
   }
 
   /** 
@@ -26,10 +31,63 @@ public class escape_room extends PApplet {
    * values here i.e background, stroke, fill etc.
    */
   public void setup() {
+
+    // setting up image variable for levels
     imgLevel = new PImage[intNumLevels];
 
+    // setting up image variables for down movement animation
+    imgPlayerDown = new PImage[intNumFrames];
+
+    // setting up image variable for left movement animation
+    imgPlayerLeft = new PImage[intNumFrames];
+
+    // setting up image variable for right movement animation 
+    imgPlayerRight = new PImage[intNumFrames];
+
+    // setting up image variable for up movement animation 
+    imgPlayerUp = new PImage[intNumFrames];
+
+    
     for (int i = 0; i < intNumLevels; i++) {
+
       imgLevel[i] = loadImage("escape_room/levels/level" + i + ".png"); 
+
+    }
+
+    if (blnLeft == true) {
+
+      for (int i = 0; i < intNumFrames; i++) {
+        
+        imgPlayerLeft[i] = loadImage("" + i + ".png");
+
+      }
+    } 
+    
+    if (blnRight == true) {
+
+      for (int i = 0; i < intNumFrames; i++) {
+        
+        imgPlayerRight[i] = loadImage("" + i + ".png");
+
+      }
+    } 
+    
+    if (blnUp == true) {
+        
+      for (int i = 0; i < intNumFrames; i++) {
+        
+        imgPlayerUp[i] = loadImage("" + i + ".png");
+
+      }
+    } 
+    
+    if (blnDown == true) {
+
+      for (int i = 0; i < intNumFrames; i++) {
+        
+        imgPlayerDown[i] = loadImage("" + i + ".png");
+
+      }
     }
   }
 
@@ -49,47 +107,37 @@ public class escape_room extends PApplet {
       
     }
 
+    // prints out the correct room depending on the level the player is on 
     image(imgLevel[0], 0, 0);
 
-    //draws the animation for moving left
+     //draws the animation for moving left
     if (blnLeft == true) {
 
-      for (int i = 0; i < intNumFrames; i++) {
-        
-        //imgPlyaerLeft = loadImage(" " + i + ".png");
-
-      }
+      image(imgPlayerLeft[0],intPlayerX,intPlayerY);
+      
     } 
     
     //draws the animation for moving right
     if (blnRight == true) {
 
-      for (int i = 0; i < intNumFrames; i++) {
-        
-        //imgPlyaerRight = loadImage(" " + i + ".png");
-
-      }
+      image(imgPlayerRight[0],intPlayerX,intPlayerY);
+      
     } 
     
     //draws the animation for moving up
     if (blnUp == true) {
         
-      for (int i = 0; i < intNumFrames; i++) {
-        
-        //imgPlyaerUp = loadImage(" " + i + ".png");
-
-      }
+      image(imgPlayerUp[0],intPlayerX,intPlayerY);
+      
     } 
     
     //draws the animation for moving down
     if (blnDown == true) {
 
-      for (int i = 0; i < intNumFrames; i++) {
-        
-        //imgPlyaerDown = loadImage(" " + i + ".png");
-
-      }
+      image(imgPlayerDown[0],intPlayerX,intPlayerY);
+      
     }
+   
   }
   
   /**
@@ -98,7 +146,7 @@ public class escape_room extends PApplet {
   public void KeyPressed() {
 
     if (keyPressed) {
-      
+
       if (key == 'a' || key =='A') {
 
         blnLeft = true;
