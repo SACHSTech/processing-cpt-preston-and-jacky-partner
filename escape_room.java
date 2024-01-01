@@ -3,18 +3,33 @@ import processing.core.PImage;
 
 public class escape_room extends PApplet {
 	
+  // level image variable 
   PImage[] imgLevel;
+
+  // player image movement variables 
   PImage[] imgPlayerLeft;
   PImage[] imgPlayerRight;
   PImage[] imgPlayerUp;
   PImage[] imgPlayerDown;
 
+  // if combat is being used 
+  PImage[] imgPlayerLeftAttack;
+  PImage[] imgPlayerRightAttack;
+  PImage[] imgPlayerUpAttack;
+  PImage[] imgPlayerDownAttack;
+  
+  // number of levels
   int intNumLevels = 1;
-  int intNumFrames = 5;
 
+  // number of frames for each player animation 
+  int intNumFrames = 5;
+  int intNumAttackFrames = 5;
+
+  // player position 
   int intPlayerX = 0;
   int intPlayerY = 0;
 	
+  // movement booleans 
   boolean blnUp, blnDown, blnLeft, blnRight, blnMouseClicked = false;
 
   /**
@@ -47,7 +62,6 @@ public class escape_room extends PApplet {
     // setting up image variable for up movement animation 
     imgPlayerUp = new PImage[intNumFrames];
 
-    
     for (int i = 0; i < intNumLevels; i++) {
 
       imgLevel[i] = loadImage("escape_room/levels/level" + i + ".png"); 
