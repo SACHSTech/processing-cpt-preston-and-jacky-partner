@@ -5,6 +5,7 @@ public class escape_room extends PApplet {
 	
   // level image variable 
   PImage[] imgLevel;
+  PImage[] imgLevelCollision;
 
   // player image movement variables 
   PImage[] imgPlayerLeft;
@@ -22,15 +23,15 @@ public class escape_room extends PApplet {
   int intNumLevels = 1;
 
   // number of frames for each player animation 
-  int intNumFrames = 5;
-  int intNumAttackFrames = 5;
+  int intNumFrames = 4;
+  int intNumAttackFrames = 4;
 
   // player position 
   int intPlayerX = 0;
   int intPlayerY = 0;
 	
   // movement booleans 
-  boolean blnUp, blnDown, blnLeft, blnRight, blnMouseClicked = false;
+  boolean blnUp, blnDown, blnLeft, blnRight;
 
   /**
    * Called once at the beginning of execution, put your size all in this method
@@ -50,6 +51,9 @@ public class escape_room extends PApplet {
     // setting up image variable for levels
     imgLevel = new PImage[intNumLevels];
 
+    // setting up image variable for level collisions
+    imgLevelCollision = new PImage[intNumLevels];
+
     // setting up image variables for down movement animation
     imgPlayerDown = new PImage[intNumFrames];
 
@@ -65,6 +69,12 @@ public class escape_room extends PApplet {
     for (int i = 0; i < intNumLevels; i++) {
 
       imgLevel[i] = loadImage("escape_room/levels/level" + i + ".png"); 
+
+    }
+
+    for (int i = 0; i < intNumLevels; i++) {
+
+      imgLevel[i] = loadImage("escape_room/levels/collisions/level" + i + ".png"); 
 
     }
 
@@ -109,17 +119,6 @@ public class escape_room extends PApplet {
    * Called repeatedly, anything drawn to the screen goes here
    */
   public void draw() {
-
-    // checks if the mouse button has been pressed
-    if (mousePressed) {
-
-      blnMouseClicked = true;
-
-    } else {
-
-      blnMouseClicked = false;
-      
-    }
 
     // prints out the correct room depending on the level the player is on 
     image(imgLevel[0], 0, 0);
