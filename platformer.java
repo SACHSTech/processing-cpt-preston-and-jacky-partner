@@ -72,7 +72,6 @@ public class platformer extends PApplet {
         fltPlayerGravity = -25;
 
       } 
-
     }
     
     if (blnA == true && fltPlayerX - 16 > 0) {
