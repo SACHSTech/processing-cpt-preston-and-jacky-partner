@@ -39,7 +39,8 @@ public class platformer extends PApplet {
     drawLevelCollision();
     playerMovementAndCollision();
     drawLevel();
-    updatePlayer();
+    updatePlayer(); 
+    
     //fltCollisionColor == -1.6777216E7 this is black
   }
 
@@ -72,7 +73,6 @@ public class platformer extends PApplet {
         fltPlayerGravity = -25;
 
       } 
-
     }
     
     if (blnA == true && fltPlayerX - 16 > 0) {
