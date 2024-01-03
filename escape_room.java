@@ -122,7 +122,7 @@ public class escape_room extends PApplet {
   public void draw() {
 
     DrawCollisionMaps();
-    PlayerInteractoins();
+    PlayerInteractions();
     DrawMaps();
     HotbarInteractions();
     PlayerUpdate();
@@ -153,7 +153,7 @@ public class escape_room extends PApplet {
   /**
    * Used to detect player interactions and respond accordingly 
    */
-  public void PlayerInteractoins() {
+  public void PlayerInteractions() {
 
     // mob detection 
     if (get(intPlayerX, intPlayerY) == -6.5536e4) {
