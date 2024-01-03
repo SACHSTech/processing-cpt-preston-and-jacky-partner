@@ -74,7 +74,7 @@ public class escape_room extends PApplet {
 
     for (int i = 0; i < intNumLevels; i++) {
 
-      imgLevel[i] = loadImage("escape_room/levels/collisions/level" + i + ".png"); 
+      imgLevelCollision[i] = loadImage("escape_room/levels/collisions/level" + i + ".png"); 
 
     }
 
