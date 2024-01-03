@@ -92,26 +92,26 @@ public class escape_room extends PApplet {
 
     for (int i = 0; i < intNumFrames; i++) {
       
-      //imgPlayerLeft[i] = loadImage("" + i + ".png");
+      //imgPlayerLeft[i] = loadImage("escape_room/player/playerLeft" + i + ".png");
 
     }
   
   
     for (int i = 0; i < intNumFrames; i++) {
       
-      //imgPlayerRight[i] = loadImage("" + i + ".png");
+      //imgPlayerRight[i] = loadImage("escape_room/player/playerRight" + i + ".png");
 
     }
       
     for (int i = 0; i < intNumFrames; i++) {
       
-      //imgPlayerUp[i] = loadImage("" + i + ".png");
+      //imgPlayerUp[i] = loadImage("escape_room/player/playerUp" + i + ".png");
 
     }
   
     for (int i = 0; i < intNumFrames; i++) {
       
-      //imgPlayerDown[i] = loadImage("" + i + ".png");
+      imgPlayerDown[i] = loadImage("escape_room/player/playerDown" + i + ".png");
 
     }
   }
