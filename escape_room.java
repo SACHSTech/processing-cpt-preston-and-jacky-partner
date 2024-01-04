@@ -92,20 +92,20 @@ public class escape_room extends PApplet {
 
     for (int i = 0; i < intNumFrames; i++) {
       
-      //imgPlayerLeft[i] = loadImage("escape_room/player/playerLeft" + i + ".png");
+      imgPlayerLeft[i] = loadImage("escape_room/player/playerLeft" + i + ".png");
 
     }
   
   
     for (int i = 0; i < intNumFrames; i++) {
       
-      //imgPlayerRight[i] = loadImage("escape_room/player/playerRight" + i + ".png");
+      imgPlayerRight[i] = loadImage("escape_room/player/playerRight" + i + ".png");
 
     }
       
     for (int i = 0; i < intNumFrames; i++) {
       
-      //imgPlayerUp[i] = loadImage("escape_room/player/playerUp" + i + ".png");
+      imgPlayerUp[i] = loadImage("escape_room/player/playerUp" + i + ".png");
 
     }
   
@@ -126,7 +126,6 @@ public class escape_room extends PApplet {
     DrawMaps();
     HotbarInteractions();
     PlayerUpdate();
-
   }
 
   /**
