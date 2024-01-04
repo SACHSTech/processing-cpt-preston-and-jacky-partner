@@ -121,27 +121,18 @@ public class escape_room extends PApplet {
    */
   public void draw() {
 
-    DrawCollisionMaps();
-    PlayerInteractions();
-    DrawMaps();
-    HotbarInteractions();
-    PlayerUpdate();
-  }
-
-  /**
-   * draws the needed maps for the level that the player is on 
-   */
-  public void DrawMaps() {
-
-    // prints out the correct room depending on the level the player is on 
-    image(imgLevel[0],0,0);
-
+    drawCollisionMaps();
+    playerInteractions();
+    playerMovement();
+    drawMaps();
+    hotbarInteractions();
+    playerUpdate();
   }
 
   /**
    * draws the needed collision map to match with the player map
    */
-  public void DrawCollisionMaps() {
+  public void drawCollisionMaps() {
 
     // draws the collision maps 
     image(imgLevelCollision[0],0,0);
@@ -152,7 +143,7 @@ public class escape_room extends PApplet {
   /**
    * Used to detect player interactions and respond accordingly 
    */
-  public void PlayerInteractions() {
+  public void playerInteractions() {
 
     // mob detection 
     if (get(intPlayerX, intPlayerY) == -6.5536e4) {
@@ -191,12 +182,11 @@ public class escape_room extends PApplet {
   /**
    * updates how the player looks and at the correct location 
    */
-  public void PlayerUpdate() {
+  public void playerMovement() {
     
     //draws the animation for moving left
     if (blnLeft == true) {
 
-      image(imgPlayerLeft[0], intPlayerX, intPlayerY);
       intPlayerX -= 5;
       
     } 
@@ -204,7 +194,6 @@ public class escape_room extends PApplet {
     //draws the animation for moving right
     if (blnRight == true) {
 
-      image(imgPlayerRight[0], intPlayerX, intPlayerY);
       intPlayerX += 5;
       
     } 
@@ -212,7 +201,6 @@ public class escape_room extends PApplet {
     //draws the animation for moving up
     if (blnUp == true) {
         
-      image(imgPlayerUp[0], intPlayerX, intPlayerY);
       intPlayerY += 5;
       
     } 
@@ -220,16 +208,25 @@ public class escape_room extends PApplet {
     //draws the animation for moving down
     if (blnDown == true) {
 
-      image(imgPlayerDown[0], intPlayerX, intPlayerY);
       intPlayerY -= 5;
       
     }
   }
 
   /**
+   * draws the needed maps for the level that the player is on 
+   */
+  public void drawMaps() {
+
+    // prints out the correct room depending on the level the player is on 
+    image(imgLevel[0],0,0);
+
+  }
+
+  /**
   * hotbar interactions 
   */
-  public void HotbarInteractions() {
+  public void hotbarInteractions() {
 
     for (int i = 0; i < intHotbarSpace; i++) {
 
@@ -287,32 +284,39 @@ public class escape_room extends PApplet {
 
   }
 
+  public void playerUpdate() {
+    image(imgPlayerLeft[0], intPlayerX, intPlayerY);
+  }
+
   /**
    * detects which keys are pressed and then sets certain boolean values to true
    */
   public void KeyPressed() {
+    if (key == 'a' || key =='A') {
 
-    if (keyPressed) {
+      blnLeft = true;
 
-      if (key == 'a' || key =='A') {
-
-        blnLeft = true;
-
-      } if (key == 'd' || key =='D') {
+    } 
+    
+    if (key == 'd' || key =='D') {
         
-        blnRight = true;
+      blnRight = true;
 
-      } if (key == 'w' || key =='W') {
+    } 
+    
+    if (key == 'w' || key =='W') {
         
-        blnUp = true;
+      blnUp = true;
 
-      } if (key == 's' || key =='S') {
+    } 
+    
+    if (key == 's' || key =='S') {
         
-        blnDown = true;
+      blnDown = true;
 
-      }
     }
   }
+
 
   /**
    * detects which keys are released and then sets the corresponding boolean value to false 
