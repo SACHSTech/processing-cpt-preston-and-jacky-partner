@@ -58,8 +58,6 @@ public class escape_room extends PApplet {
    */
   public void setup() {
 
-    frameRate(60);
-
     // setting up image variable for levels
     imgLevel = new PImage[intNumLevels];
 
@@ -242,7 +240,33 @@ public class escape_room extends PApplet {
   }
 
   public void playerUpdate() {
-    image(imgPlayerLeft[0], intPlayerX, intPlayerY);
+
+    int intCount = 0;
+
+    if (blnLeft == true) {
+      
+      image(imgPlayerLeft[intCount], intPlayerX, intPlayerY);
+
+      if (frameCount % 60 == 0) {
+      intCount ++; 
+      }
+
+      if (intCount > 3) {
+        intCount = 0;
+      }
+
+    } else if (blnRight == true) {
+      
+    } else if (blnUp == true) {
+      
+    } else if (blnDown == true) {
+      
+    } else {
+
+      image(imgPlayerDown[0], intPlayerX, intPlayerY);
+
+    }
+
   }
 
   /**
