@@ -122,8 +122,7 @@ public class escape_room extends PApplet {
   public void draw() {
 
     drawCollisionMaps();
-    playerInteractions();
-    playerMovement();
+    playerMovementAndCollisions();
     drawMaps();
     hotbarInteractions();
     playerUpdate();
@@ -141,84 +140,42 @@ public class escape_room extends PApplet {
   }
 
   /**
-   * Used to detect player interactions and respond accordingly 
+   * movement for the player and checks for collisions
    */
-  public void playerInteractions() {
-
-    // mob detection 
-    if (get(intPlayerX, intPlayerY) == -6.5536e4) {
-
-      // damage limiter when mobs damage player 
-      if (frameCount % 60 == 0) {
-
-        intHealth = intHealth - 10;
-
-      }
-    }
-
-    // checks below the character to make sure they are in bounds at all times
-    if ((get(intPlayerX, intPlayerY + 32) == -1.6777216E7 && blnDown == true) || (get(intPlayerX + 16, intPlayerY + 32) == -1.6777216E7 && blnDown == true)) {
-
-      intPlayerY = height;
-
-    // checks above the character to make sure they are in bounds at all times
-    } if ((get(intPlayerX, intPlayerY - 32) == -1.6777216E7 && blnUp == true) || (get(intPlayerX + 16, intPlayerY - 32) == -1.6777216E7 && blnUp == true)) {
-
-      intPlayerY = 16;
+  public void playerMovementAndCollisions() {
     
-    // checks to the right of the character to make sure they are in bounds at all times
-    } if ((get(intPlayerX + 32, intPlayerY) == -1.6777216E7 && blnRight == true) || (get(intPlayerX + 32, intPlayerY + 16) == -1.6777216E7 && blnRight == true)) {
+    if (blnLeft == true && (get(intPlayerX - 8, intPlayerY + 36) != -1.6777216E7)) {
 
-      intPlayerX = width;
-
-    // checks to the left of the character to make sure they are in bounds at all times 
-    } if ((get(intPlayerX - 32, intPlayerY) == -1.6777216E7 && blnLeft == true) || (get(intPlayerX - 32, intPlayerY + 16) == -1.6777216E7 && blnLeft == true)) {
-      
-      intPlayerX = 16;
-
-    }
-  }
-
-  /**
-   * updates how the player looks and at the correct location 
-   */
-  public void playerMovement() {
-    
-    //draws the animation for moving left
-    if (blnLeft == true) {
-
-      intPlayerX -= 5;
+      intPlayerX -= 8;
       
     } 
     
-    //draws the animation for moving right
-    if (blnRight == true) {
+    if (blnRight == true && (get(intPlayerX + 36, intPlayerY + 36) != -1.6777216E7)) {
 
-      intPlayerX += 5;
+      intPlayerX += 8;
       
     } 
     
-    //draws the animation for moving up
-    if (blnUp == true) {
+    if (blnUp == true && (get(intPlayerX, intPlayerY + 28) != -1.6777216E7 && get(intPlayerX + 28, intPlayerY + 28) != -1.6777216E7)) {
         
-      intPlayerY += 5;
+      intPlayerY -= 8;
       
     } 
     
-    //draws the animation for moving down
-    if (blnDown == true) {
+    
+    if (blnDown == true && (get(intPlayerX, intPlayerY + 44) != -1.6777216E7 && get(intPlayerX + 28, intPlayerY + 44) != -1.6777216E7)) {
 
-      intPlayerY -= 5;
+      intPlayerY += 8;
       
     }
   }
 
   /**
-   * draws the needed maps for the level that the player is on 
+   * draws the nescessary maps for the level that the player is on 
    */
   public void drawMaps() {
 
-    // prints out the correct room depending on the level the player is on 
+    // draws out the correct room depending on the level the player is on 
     image(imgLevel[0],0,0);
 
   }
@@ -233,7 +190,7 @@ public class escape_room extends PApplet {
       // detects if the item that you are standing on top of is yellow
       if (get(intPlayerX,intPlayerY) == -256) {
 
-        // finds an empty slow in your inventory and replaces it with the item 
+        // finds an empty slot in your inventory and replaces it with the item 
         if (strHotbar[i] == "") {
 
           strHotbar[i] = "RedPot";
@@ -291,7 +248,7 @@ public class escape_room extends PApplet {
   /**
    * detects which keys are pressed and then sets certain boolean values to true
    */
-  public void KeyPressed() {
+  public void keyPressed() {
     if (key == 'a' || key =='A') {
 
       blnLeft = true;
