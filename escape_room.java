@@ -20,6 +20,9 @@ public class escape_room extends PApplet {
   PImage[] imgPlayerUpAttack;
   PImage[] imgPlayerDownAttack;
 
+  // player direction
+  String strDirection = "Down";
+
   // hotbar array
   String[] strHotbar = {"pot1","","pot3","pot4"};
 
@@ -34,7 +37,7 @@ public class escape_room extends PApplet {
 
   // number of frames for each player animation 
   int intNumFrames = 4;
-  int intNumAttackFrames = 4;
+  int intMoveFrames = 0;
 
   // player position 
   int intPlayerX = 300;
@@ -241,38 +244,58 @@ public class escape_room extends PApplet {
 
   public void playerUpdate() {
 
-    int intCount = 0;
+    if (blnUp == true) {
 
-    if (blnLeft == true) {
-      
-      image(imgPlayerLeft[intCount], intPlayerX, intPlayerY);
+      image(imgPlayerUp[intMoveFrames], intPlayerX, intPlayerY);
+      strDirection = "Up";
 
-      if (frameCount % 60 == 0) {
-      intCount ++; 
-      }
+    } else if (blnDown == true) {
 
-      if (intCount > 3) {
-        intCount = 0;
-      }
+      image(imgPlayerDown[intMoveFrames], intPlayerX, intPlayerY);
+      strDirection = "Down";
+
+    } else if (blnLeft == true) {
+
+      image(imgPlayerLeft[intMoveFrames], intPlayerX, intPlayerY);
+      strDirection = "Left";
 
     } else if (blnRight == true) {
-      
-    } else if (blnUp == true) {
-      
-    } else if (blnDown == true) {
-      
-    } else {
 
-      image(imgPlayerDown[0], intPlayerX, intPlayerY);
+      image(imgPlayerRight[intMoveFrames], intPlayerX, intPlayerY);
+      strDirection = "Right";
 
     }
 
-  }
+    intMoveFrames = (intMoveFrames + 1) % intNumFrames;
+    
+    if (blnMoving() == false) {
+        if (strDirection.equals("Up")) {
+
+          image(imgPlayerUp[0], intPlayerX, intPlayerY);
+
+        } else if (strDirection.equals("Down")) {
+
+          image(imgPlayerDown[0], intPlayerX, intPlayerY);
+      
+        } else if (strDirection.equals("Left")) {
+
+          image(imgPlayerLeft[0], intPlayerX, intPlayerY);
+
+        } else if (strDirection.equals("Right")) {
+
+          image(imgPlayerRight[0], intPlayerX, intPlayerY);
+
+        }
+      }
+    }
 
   /**
    * detects which keys are pressed and then sets certain boolean values to true
    */
   public void keyPressed() {
+
+    intMoveFrames = 0;
+
     if (key == 'a' || key =='A') {
 
       blnLeft = true;
@@ -321,5 +344,9 @@ public class escape_room extends PApplet {
       blnDown = false;
 
     }
+  }
+
+  public boolean blnMoving() {
+    return blnUp || blnDown || blnLeft || blnRight;
   }
 }
