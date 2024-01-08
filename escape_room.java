@@ -128,6 +128,7 @@ public class escape_room extends PApplet {
 
     drawCollisionMaps();
     playerMovementAndCollisions();
+    PlayerInteractions();
     drawMaps();
     hotbarInteractions();
     playerUpdate();
