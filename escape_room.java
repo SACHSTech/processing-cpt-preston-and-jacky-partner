@@ -1,5 +1,6 @@
 import processing.core.PApplet;
 import processing.core.PImage;
+import java.util.Random;
 import java.util.Scanner;
 
 public class escape_room extends PApplet {
@@ -30,7 +31,10 @@ public class escape_room extends PApplet {
   int intHotbarSpace = 4;
 
   // number of levels
-  int intNumLevels = 4;
+  int intNumLevels = 10;
+
+  // current level
+  int intLevel = 0;
 
   // health
   int intHealth = 100;
@@ -127,6 +131,7 @@ public class escape_room extends PApplet {
     drawMaps();
     hotbarInteractions();
     playerUpdate();
+
   }
 
   /**
@@ -135,8 +140,7 @@ public class escape_room extends PApplet {
   public void drawCollisionMaps() {
 
     // draws the collision maps 
-    image(imgLevelCollision[0],0,0);
-
+    image(imgLevelCollision[intLevel],0,0);
 
   }
 
@@ -145,30 +149,88 @@ public class escape_room extends PApplet {
    */
   public void playerMovementAndCollisions() {
     
-    if (blnLeft == true && (get(intPlayerX - 8, intPlayerY + 36) != -1.6777216E7)) {
+    // left player collision detection
+    if (blnLeft == true && (get(intPlayerX - 8, intPlayerY + 36) != -1.6777216E7 && get(intPlayerX - 8, intPlayerY + 36) != -16776961)) {
 
       intPlayerX -= 8;
       
     } 
     
-    if (blnRight == true && (get(intPlayerX + 36, intPlayerY + 36) != -1.6777216E7)) {
+    // right player collision detection 
+    if (blnRight == true && (get(intPlayerX + 36, intPlayerY + 36) != -1.6777216E7 && get(intPlayerX + 36, intPlayerY + 36) != -16776961)) {
 
       intPlayerX += 8;
       
     } 
     
-    if (blnUp == true && (get(intPlayerX, intPlayerY + 28) != -1.6777216E7 && get(intPlayerX + 28, intPlayerY + 28) != -1.6777216E7)) {
+    // up player collision detection
+    if (blnUp == true && (get(intPlayerX, intPlayerY + 28) != -1.6777216E7 && get(intPlayerX + 28, intPlayerY + 28) != -1.6777216E7 && get(intPlayerX, intPlayerY + 28) != -16776961 && get(intPlayerX + 28, intPlayerY + 28) != -16776961)) {
         
       intPlayerY -= 8;
       
     } 
     
-    
-    if (blnDown == true && (get(intPlayerX, intPlayerY + 44) != -1.6777216E7 && get(intPlayerX + 28, intPlayerY + 44) != -1.6777216E7)) {
+    // down player collision detection 
+    if (blnDown == true && (get(intPlayerX, intPlayerY + 44) != -1.6777216E7 && get(intPlayerX + 28, intPlayerY + 44) != -1.6777216E7 && get(intPlayerX, intPlayerY + 44) != -16776961 && get(intPlayerX + 28, intPlayerY + 44) != -16776961)) {
 
       intPlayerY += 8;
       
     }
+
+    
+    if (intPlayerX <= 16) {
+
+      intLevel += 1;
+      intPlayerX = 640;
+      intPlayerY = 400;
+      
+    } else if (intPlayerX > 660 && intLevel != 2) {
+
+      intLevel -= 1;
+      intPlayerX = 20;
+      intPlayerY = 400;
+
+    } 
+
+    // prevents player from going back into the tutorial level 
+    if (intLevel == 2 && intPlayerX < 620) {
+
+      intLevel += 1;
+
+    }
+
+  }
+
+  /**
+   * player interactions with objects 
+   */
+  public void PlayerInteractions() {
+
+    if (key == 'e' || key == 'E') {
+
+      if (intLevel == 2) {
+
+        if (intPlayerY > height / 2) {
+
+          // desk pop up 
+          // image();
+
+        } else {
+
+          // safe pop up 
+          // image();
+
+        }
+      } else if (intLevel == 5) {
+
+      } else if (intLevel == 7) {
+
+      } else if (intLevel == 9) {
+
+      }
+
+    }
+
   }
 
   /**
@@ -177,7 +239,7 @@ public class escape_room extends PApplet {
   public void drawMaps() {
 
     // draws out the correct room depending on the level the player is on 
-    image(imgLevel[0],0,0);
+    image(imgLevel[intLevel],0,0);
 
   }
 
@@ -239,7 +301,6 @@ public class escape_room extends PApplet {
 
       }
     }
-
   }
 
   public void playerUpdate() {
@@ -269,6 +330,7 @@ public class escape_room extends PApplet {
     intMoveFrames = (intMoveFrames + 1) % intNumFrames;
     
     if (blnMoving() == false) {
+
         if (strDirection.equals("Up")) {
 
           image(imgPlayerUp[0], intPlayerX, intPlayerY);
