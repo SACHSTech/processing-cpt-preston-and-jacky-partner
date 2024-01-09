@@ -25,7 +25,11 @@ public class escape_room extends PApplet {
   String strDirection = "Down";
 
   // game starting boolean
-  boolean blnGameStarting = false;
+  boolean blnGameStarting = true;
+
+  
+  // game O2 meter
+  int intOxygenMeter;
 
   // number of levels
   int intNumLevels = 10;
@@ -61,6 +65,8 @@ public class escape_room extends PApplet {
    * values here i.e background, stroke, fill etc.
    */
   public void setup() {
+
+    intOxygenMeter = 100;
 
     // setting up image variable for levels
     imgLevel = new PImage[intNumLevels];
@@ -127,16 +133,17 @@ public class escape_room extends PApplet {
    */
   public void draw() {
 
-    if (blnGameStarting == true) {
+    if (blnGameStarting == true && intOxygenMeter > 0) {
       
-      drawCollisionMaps();
-      playerMovementAndCollisions();
-      playerInteractions();
-      drawMaps();
-      playerUpdate();
+      //drawCollisionMaps();
+      //playerMovementAndCollisions();
+      //playerInteractions();
+      //drawMaps();
+      OxygenMeter();
+      //playerUpdate();
 
     } else {
-      
+
     }
 
   }
@@ -149,6 +156,26 @@ public class escape_room extends PApplet {
     // draws the collision maps 
     image(imgLevelCollision[intLevel],0,0);
 
+  }
+
+  /**
+   * draws the oxygen meter
+   */
+  public void OxygenMeter() {
+
+    fill(173, 216, 230);
+    noStroke();
+    rect(640,540,20, intOxygenMeter);
+    stroke(0,0,0);
+    noFill();
+    rect(640,540,20,100);
+  
+    // slowly ticks away at the oxygen meter 
+    if (frameCount % 60 == 0) {
+
+      intOxygenMeter -= 1;
+
+    }
   }
 
   /**
