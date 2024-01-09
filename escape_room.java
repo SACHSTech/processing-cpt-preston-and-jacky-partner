@@ -387,8 +387,6 @@ public class escape_room extends PApplet {
         
         }
 
-        
-
       } else if (intLevel == 8) {
 
       } else if (intLevel == 10) {
@@ -444,23 +442,23 @@ public class escape_room extends PApplet {
     
     if (blnMoving() == false) {
 
-        if (strDirection.equals("Up")) {
+      if (strDirection.equals("Up")) {
 
-          image(imgPlayerUp[0], intPlayerX, intPlayerY);
+        image(imgPlayerUp[0], intPlayerX, intPlayerY);
 
-        } else if (strDirection.equals("Down")) {
+      } else if (strDirection.equals("Down")) {
 
-          image(imgPlayerDown[0], intPlayerX, intPlayerY);
-      
-        } else if (strDirection.equals("Left")) {
+        image(imgPlayerDown[0], intPlayerX, intPlayerY);
+    
+      } else if (strDirection.equals("Left")) {
 
-          image(imgPlayerLeft[0], intPlayerX, intPlayerY);
+        image(imgPlayerLeft[0], intPlayerX, intPlayerY);
 
-        } else if (strDirection.equals("Right")) {
+      } else if (strDirection.equals("Right")) {
 
-          image(imgPlayerRight[0], intPlayerX, intPlayerY);
+        image(imgPlayerRight[0], intPlayerX, intPlayerY);
 
-        }
+      }
       }
     }
 
