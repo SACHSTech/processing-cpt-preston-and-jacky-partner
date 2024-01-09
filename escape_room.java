@@ -27,7 +27,9 @@ public class escape_room extends PApplet {
   // game starting boolean
   boolean blnGameStarting = true;
 
-  
+  // next level boolean
+  boolean blnNextLevel = false;
+
   // game O2 meter
   int intOxygenMeter;
   int intTotalOxygen;
@@ -157,6 +159,14 @@ public class escape_room extends PApplet {
     // draws the collision maps 
     image(imgLevelCollision[intLevel],0,0);
 
+    // prevents the player from leaving the map
+    if (intLevel == 3 && blnNextLevel == false) {
+
+      fill(0);
+      rect(0,0,8,height);
+
+    }
+
   }
 
   /**
@@ -212,11 +222,17 @@ public class escape_room extends PApplet {
       
     }
 
+    if (intLevel == 1 || intLevel == 0) {
+
+      blnNextLevel = true;
+
+    }
     
-    if (intPlayerX <= 16) {
+    if (intPlayerX <= 16 && blnNextLevel == true) {
 
       intLevel += 1;
       intPlayerX = 664;
+      blnNextLevel = false;
       
     } else if (intPlayerX > 664) {
 
@@ -264,6 +280,40 @@ public class escape_room extends PApplet {
         }
       } else if (intLevel == 5) {
 
+        /*if () {
+
+
+
+        } else if { 
+
+        } else if { 
+          
+        } else if { 
+          
+        } else if { 
+          
+        } else if { 
+          
+        } else if { 
+          
+        } else if { 
+          
+        } else if { 
+          
+        } else if { 
+          
+        } else if { 
+          
+        } else if { 
+          
+        } else if { 
+          
+        } else if { 
+          
+        }
+
+        */
+
       } else if (intLevel == 7) {
 
       } else if (intLevel == 9) {
@@ -289,21 +339,25 @@ public class escape_room extends PApplet {
     if (blnUp == true) {
 
       image(imgPlayerUp[intMoveFrames], intPlayerX, intPlayerY);
+
       strDirection = "Up";
 
     } else if (blnDown == true) {
 
       image(imgPlayerDown[intMoveFrames], intPlayerX, intPlayerY);
+
       strDirection = "Down";
 
     } else if (blnLeft == true) {
 
       image(imgPlayerLeft[intMoveFrames], intPlayerX, intPlayerY);
+
       strDirection = "Left";
 
     } else if (blnRight == true) {
 
       image(imgPlayerRight[intMoveFrames], intPlayerX, intPlayerY);
+
       strDirection = "Right";
 
     }
