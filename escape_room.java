@@ -34,11 +34,16 @@ public class escape_room extends PApplet {
   int intOxygenMeter;
   int intTotalOxygen;
 
+  boolean blntouchingyellow = false;
+
   // number of levels
   int intNumLevels = 10;
 
   // current level
-  int intLevel = 0;
+  int intLevel = 6;
+
+  // password for level 2
+  String strPassword = "";
 
   // health
   int intHealth = 100;
@@ -52,7 +57,7 @@ public class escape_room extends PApplet {
   int intPlayerY = 300;
 	
   // movement booleans 
-  boolean blnUp, blnDown, blnLeft, blnRight;
+  boolean blnUp, blnDown, blnLeft, blnRight, blnInteract;
 
   /**
    * Called once at the beginning of execution, put your size all in this method
@@ -137,14 +142,14 @@ public class escape_room extends PApplet {
   public void draw() {
 
     if (blnGameStarting == true && intOxygenMeter > 0) {
-      
+     
       drawCollisionMaps();
       playerMovementAndCollisions();
       playerInteractions();
-      drawMaps();
-      OxygenMeter();
+      //drawMaps();
+      //OxygenMeter();
       playerUpdate();
-
+      System.out.println(strPassword);
     } else {
 
     }
@@ -255,7 +260,7 @@ public class escape_room extends PApplet {
    */
   public void playerInteractions() {
 
-    if (key == 'e' || key == 'E') {
+    if (blnInteract == true) {
 
       if (intLevel == 2) {
 
@@ -278,41 +283,99 @@ public class escape_room extends PApplet {
           }
 
         }
-      } else if (intLevel == 5) {
+      } else if (intLevel == 6) {
 
-        /*if () {
+        if (intPlayerY <= 261) {
 
+          if (intPlayerX <= 115 && (get(intPlayerX + 30, intPlayerY + 56) == -3584 || get(intPlayerX,intPlayerY + 56) == -3584)) {
+            
+            strPassword += 'a';
+            delay(300);
 
+          } else if (intPlayerX > 115 && intPlayerX < 237 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
 
-        } else if { 
+            strPassword += 'd';
+            delay(300);
 
-        } else if { 
+          } else if (intPlayerX > 237 && intPlayerX < 350 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) { 
           
-        } else if { 
+            strPassword += "r";
+            delay(300);
+
+          } else if (intPlayerX > 350 && intPlayerX < 503 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
+
+            strPassword += 'g';
+            delay(300);
+
+          } else if (intPlayerX > 503 && intPlayerX < 614 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
+
+            strPassword += 'j';
+            delay(300);
+
+          }
+
+        } else if (intPlayerY > 261 && intPlayerY <= 375) {
+
+          if (intPlayerX < 115 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
+
+            strPassword += 'b';
+            delay(300);
+
+          } else if (intPlayerX > 115 && intPlayerX < 237 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
+
+            strPassword += 'e';
+            delay(300);
+
+          } else if (intPlayerX > 237 && intPlayerX < 380 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) { 
           
-        } else if { 
+            strPassword = "";
+            delay(300);
+
+          } else if (intPlayerX > 237 && intPlayerX < 503 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
+
+            strPassword += 'h';
+            delay(300);
+
+          } else if (intPlayerX > 503 && intPlayerX < 614 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
+
+            strPassword += 'k';
+            delay(300);
+
+          }
+
+        } else if (intPlayerY > 375 && intPlayerY < 490) {
+
+          if (intPlayerX < 115 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
+
+            strPassword += 'c';
+            delay(300);
+
+          } else if (intPlayerX > 115 && intPlayerX < 237 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
+
+            strPassword += 'f';
+            delay(300);
+
+          } else if (intPlayerX > 237 && intPlayerX < 350 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) { 
           
-        } else if { 
-          
-        } else if { 
-          
-        } else if { 
-          
-        } else if { 
-          
-        } else if { 
-          
-        } else if { 
-          
-        } else if { 
-          
-        } else if { 
-          
-        } else if { 
+            strPassword += "o";
+            delay(300);
+
+          } else if (intPlayerX > 237 && intPlayerX < 503 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
+
+            strPassword += 'i';
+            delay(300);
+
+          } else if (intPlayerX > 503 && intPlayerX < 614 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
+
+            strPassword += 'l';
+            delay(300);
+
+          }
+
           
         }
 
-        */
+        
 
       } else if (intLevel == 7) {
 
@@ -320,7 +383,7 @@ public class escape_room extends PApplet {
 
       }
 
-    }
+    } 
 
   }
 
@@ -415,6 +478,12 @@ public class escape_room extends PApplet {
         
       blnDown = true;
 
+    } 
+
+    if (key == 'e' || key == 'E') {
+
+      blnInteract = true;
+
     }
   }
 
@@ -439,6 +508,10 @@ public class escape_room extends PApplet {
     } if (key == 's' || key =='S') {
       
       blnDown = false;
+
+    } if (key == 'e' || key == 'E') {
+
+      blnInteract = false;
 
     }
   }
