@@ -164,7 +164,6 @@ public class escape_room extends PApplet {
    */
   public void OxygenMeter() {
 
-
     fill(173, 216, 230);
     noStroke();
     rect(640,640,20, -intOxygenMeter);
@@ -175,7 +174,7 @@ public class escape_room extends PApplet {
     // slowly ticks away at the oxygen meter 
     if (frameCount % 60 == 0) {
 
-      intOxygenMeter -= 20;
+      intOxygenMeter -= 1;
 
     }
   }
@@ -246,13 +245,21 @@ public class escape_room extends PApplet {
 
         if (intPlayerY > height / 2) {
 
+          if (get(intPlayerX, intPlayerY - 8) == -16776961) {
+
           // desk pop up 
           // image();
 
+          }
+
         } else {
+
+          if (get(intPlayerX, intPlayerY + 64) == -16776961 || get(intPlayerX - 8, intPlayerY) == -16776961 || get(intPlayerX, intPlayerY - 8) == -16776961 ) {
 
           // safe pop up 
           // image();
+
+          }
 
         }
       } else if (intLevel == 5) {
