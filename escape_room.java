@@ -25,7 +25,14 @@ public class escape_room extends PApplet {
   String strDirection = "Down";
 
   // game starting boolean
-  boolean blnGameStarting = false;
+  boolean blnGameStarting = true;
+
+  // next level boolean
+  boolean blnNextLevel = false;
+
+  // game O2 meter
+  int intOxygenMeter;
+  int intTotalOxygen;
 
   // number of levels
   int intNumLevels = 10;
@@ -61,6 +68,8 @@ public class escape_room extends PApplet {
    * values here i.e background, stroke, fill etc.
    */
   public void setup() {
+
+    intOxygenMeter = 100;
 
     // setting up image variable for levels
     imgLevel = new PImage[intNumLevels];
@@ -127,16 +136,17 @@ public class escape_room extends PApplet {
    */
   public void draw() {
 
-    if (blnGameStarting == true) {
+    if (blnGameStarting == true && intOxygenMeter > 0) {
       
       drawCollisionMaps();
       playerMovementAndCollisions();
       playerInteractions();
       drawMaps();
+      OxygenMeter();
       playerUpdate();
 
     } else {
-      
+
     }
 
   }
@@ -149,6 +159,34 @@ public class escape_room extends PApplet {
     // draws the collision maps 
     image(imgLevelCollision[intLevel],0,0);
 
+    // prevents the player from leaving the map
+    if (intLevel == 3 && blnNextLevel == false) {
+
+      fill(0);
+      rect(0,0,8,height);
+
+    }
+
+  }
+
+  /**
+   * draws the oxygen meter
+   */
+  public void OxygenMeter() {
+
+    fill(173, 216, 230);
+    noStroke();
+    rect(640,640,20, -intOxygenMeter);
+    stroke(0,0,0);
+    noFill();
+    rect(640,540,20,100);
+  
+    // slowly ticks away at the oxygen meter 
+    if (frameCount % 60 == 0) {
+
+      intOxygenMeter -= 1;
+
+    }
   }
 
   /**
@@ -183,12 +221,18 @@ public class escape_room extends PApplet {
       intPlayerY += 8;
       
     }
-  
+
+    if (intLevel == 1 || intLevel == 0) {
+
+      blnNextLevel = true;
+
+    }
     
-    if (intPlayerX <= 16) {
+    if (intPlayerX <= 16 && blnNextLevel == true) {
 
       intLevel += 1;
       intPlayerX = 664;
+      blnNextLevel = false;
       
     } else if (intPlayerX > 664) {
 
@@ -217,16 +261,58 @@ public class escape_room extends PApplet {
 
         if (intPlayerY > height / 2) {
 
+          if (get(intPlayerX, intPlayerY - 8) == -16776961) {
+
           // desk pop up 
           // image();
 
+          }
+
         } else {
+
+          if (get(intPlayerX, intPlayerY + 64) == -16776961 || get(intPlayerX - 8, intPlayerY) == -16776961 || get(intPlayerX, intPlayerY - 8) == -16776961 ) {
 
           // safe pop up 
           // image();
 
+          }
+
         }
       } else if (intLevel == 5) {
+
+        /*if () {
+
+
+
+        } else if { 
+
+        } else if { 
+          
+        } else if { 
+          
+        } else if { 
+          
+        } else if { 
+          
+        } else if { 
+          
+        } else if { 
+          
+        } else if { 
+          
+        } else if { 
+          
+        } else if { 
+          
+        } else if { 
+          
+        } else if { 
+          
+        } else if { 
+          
+        }
+
+        */
 
       } else if (intLevel == 7) {
 
@@ -253,21 +339,25 @@ public class escape_room extends PApplet {
     if (blnUp == true) {
 
       image(imgPlayerUp[intMoveFrames], intPlayerX, intPlayerY);
+
       strDirection = "Up";
 
     } else if (blnDown == true) {
 
       image(imgPlayerDown[intMoveFrames], intPlayerX, intPlayerY);
+
       strDirection = "Down";
 
     } else if (blnLeft == true) {
 
       image(imgPlayerLeft[intMoveFrames], intPlayerX, intPlayerY);
+
       strDirection = "Left";
 
     } else if (blnRight == true) {
 
       image(imgPlayerRight[intMoveFrames], intPlayerX, intPlayerY);
+
       strDirection = "Right";
 
     }
