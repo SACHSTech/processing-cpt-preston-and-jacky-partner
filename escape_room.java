@@ -98,6 +98,7 @@ public class escape_room extends PApplet {
     for (int i = 0; i < intNumFrames; i++) {
       
       imgPlayerLeft[i] = loadImage("escape_room/player/playerLeft" + i + ".png");
+      imgPlayerLeft[i].resize(42,54);
 
     }
   
@@ -105,18 +106,21 @@ public class escape_room extends PApplet {
     for (int i = 0; i < intNumFrames; i++) {
       
       imgPlayerRight[i] = loadImage("escape_room/player/playerRight" + i + ".png");
+      imgPlayerRight[i].resize(42,54);
 
     }
       
     for (int i = 0; i < intNumFrames; i++) {
       
       imgPlayerUp[i] = loadImage("escape_room/player/playerUp" + i + ".png");
+      imgPlayerUp[i].resize(42,54);
 
     }
   
     for (int i = 0; i < intNumFrames; i++) {
       
       imgPlayerDown[i] = loadImage("escape_room/player/playerDown" + i + ".png");
+      imgPlayerDown[i].resize(42,54);
 
     }
   }
@@ -128,7 +132,7 @@ public class escape_room extends PApplet {
 
     drawCollisionMaps();
     playerMovementAndCollisions();
-    PlayerInteractions();
+    playerInteractions();
     drawMaps();
     hotbarInteractions();
     playerUpdate();
@@ -151,14 +155,14 @@ public class escape_room extends PApplet {
   public void playerMovementAndCollisions() {
     
     // left player collision detection
-    if (blnLeft == true && (get(intPlayerX - 8, intPlayerY + 36) != -1.6777216E7 && get(intPlayerX - 8, intPlayerY + 36) != -16776961)) {
+    if (blnLeft == true && (get(intPlayerX - 8, intPlayerY + 54) != -1.6777216E7 && get(intPlayerX - 8, intPlayerY + 54) != -16776961)) {
 
       intPlayerX -= 8;
       
     } 
     
     // right player collision detection 
-    if (blnRight == true && (get(intPlayerX + 36, intPlayerY + 36) != -1.6777216E7 && get(intPlayerX + 36, intPlayerY + 36) != -16776961)) {
+    if (blnRight == true && (get(intPlayerX + 50, intPlayerY + 54) != -1.6777216E7 && get(intPlayerX + 50, intPlayerY + 54) != -16776961)) {
 
       intPlayerX += 8;
       
@@ -172,7 +176,7 @@ public class escape_room extends PApplet {
     } 
     
     // down player collision detection 
-    if (blnDown == true && (get(intPlayerX, intPlayerY + 44) != -1.6777216E7 && get(intPlayerX + 28, intPlayerY + 44) != -1.6777216E7 && get(intPlayerX, intPlayerY + 44) != -16776961 && get(intPlayerX + 28, intPlayerY + 44) != -16776961)) {
+    if (blnDown == true && (get(intPlayerX, intPlayerY + 62) != -1.6777216E7 && get(intPlayerX + 28, intPlayerY + 62) != -1.6777216E7 && get(intPlayerX, intPlayerY + 62) != -16776961 && get(intPlayerX + 28, intPlayerY + 44) != -16776961)) {
 
       intPlayerY += 8;
       
@@ -182,19 +186,17 @@ public class escape_room extends PApplet {
     if (intPlayerX <= 16) {
 
       intLevel += 1;
-      intPlayerX = 640;
-      intPlayerY = 400;
+      intPlayerX = 664;
       
-    } else if (intPlayerX > 660 && intLevel != 2) {
+    } else if (intPlayerX > 664 && intLevel != 2) {
 
       intLevel -= 1;
       intPlayerX = 20;
-      intPlayerY = 400;
 
     } 
 
     // prevents player from going back into the tutorial level 
-    if (intLevel == 2 && intPlayerX < 620) {
+    if (intLevel == 2 && intPlayerX < 656) {
 
       intLevel += 1;
 
@@ -205,7 +207,7 @@ public class escape_room extends PApplet {
   /**
    * player interactions with objects 
    */
-  public void PlayerInteractions() {
+  public void playerInteractions() {
 
     if (key == 'e' || key == 'E') {
 
