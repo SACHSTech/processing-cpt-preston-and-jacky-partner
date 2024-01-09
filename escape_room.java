@@ -25,13 +25,13 @@ public class escape_room extends PApplet {
   String strDirection = "Down";
 
   // game starting boolean
-  boolean blnGameStarting = false;
+  boolean blnGameStarting = true;
 
   // game ending boolean 
   boolean blnGameEnding = false;
 
   // next level boolean
-  boolean blnNextLevel = true;
+  boolean blnNextLevel = false;
 
   // game O2 meter
   int intOxygenMeter;
@@ -43,7 +43,7 @@ public class escape_room extends PApplet {
   int intNumLevels = 10;
 
   // current level
-  int intLevel = 0;
+  int intLevel = 5;
 
   // password for level 2
   String strPassword = "";
@@ -186,7 +186,7 @@ public class escape_room extends PApplet {
       fill(0);
       rect(0,0,8,height);
 
-    } else if (intLevel == 6 && blnNextLevel == false) {
+    } else if (intLevel == 5 && blnNextLevel == false) {
 
       fill(0);
       rect(0,0,width,8);
