@@ -24,6 +24,9 @@ public class escape_room extends PApplet {
   // player direction
   String strDirection = "Down";
 
+  // game starting boolean
+  boolean blnGameStarting = false;
+
   // number of levels
   int intNumLevels = 10;
 
@@ -124,11 +127,17 @@ public class escape_room extends PApplet {
    */
   public void draw() {
 
-    drawCollisionMaps();
-    playerMovementAndCollisions();
-    playerInteractions();
-    drawMaps();
-    playerUpdate();
+    if (blnGameStarting == true) {
+      
+      drawCollisionMaps();
+      playerMovementAndCollisions();
+      playerInteractions();
+      drawMaps();
+      playerUpdate();
+
+    } else {
+      
+    }
 
   }
 
