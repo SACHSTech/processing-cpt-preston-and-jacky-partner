@@ -27,6 +27,9 @@ public class escape_room extends PApplet {
   // game starting boolean
   boolean blnGameStarting = true;
 
+  // game ending boolean 
+  boolean blnGameEnding = false;
+
   // next level boolean
   boolean blnNextLevel = false;
 
@@ -146,13 +149,24 @@ public class escape_room extends PApplet {
       drawCollisionMaps();
       playerMovementAndCollisions();
       playerInteractions();
-      //drawMaps();
-      //OxygenMeter();
+      drawMaps();
+      OxygenMeter();
       playerUpdate();
       NextLevel();
-      System.out.println(strPassword);
-      System.out.println(blnNextLevel);
+
+    
+    } else if (blnGameEnding == true) {
+
+      background(0);
+      fill(255);
+      text("ggs",width / 2,height / 2);
+
+    // to draw the end screen once the player has died 
     } else {
+
+      background(0);
+      fill(255);
+      text("good try, maybe next time",width / 2,height / 2);
 
     }
 
@@ -166,7 +180,7 @@ public class escape_room extends PApplet {
     // draws the collision maps 
     image(imgLevelCollision[intLevel],0,0);
 
-    // prevents the player from leaving the map
+    // draws and invisible barrier for the player so they can not leave the level before finishing it properly 
     if (intLevel == 3 && blnNextLevel == false) {
 
       fill(0);
@@ -233,33 +247,6 @@ public class escape_room extends PApplet {
       intPlayerY += 8;
       
     }
-
-    if (intLevel == 1 || intLevel == 0) {
-
-      blnNextLevel = true;
-
-    }
-    
-    if (intPlayerX <= 16 && blnNextLevel == true) {
-
-      intLevel += 1;
-      intPlayerX = 664;
-      blnNextLevel = false;
-      
-    } else if (intPlayerX > 664) {
-
-      intLevel -= 1;
-      intPlayerX = 16;
-
-    } 
-
-    // prevents player from going back into the tutorial level 
-    if (intLevel == 2 && intPlayerX < 600) {
-
-      intLevel += 1;
-
-    }
-
   }
 
   /**
@@ -290,6 +277,7 @@ public class escape_room extends PApplet {
           }
 
         }
+
       } else if (intLevel == 6) {
 
         // uses position and colour detection to determine the key that the player is standing on top of. It will then print out the specific key onto the screen 
@@ -401,9 +389,9 @@ public class escape_room extends PApplet {
 
         
 
-      } else if (intLevel == 7) {
+      } else if (intLevel == 8) {
 
-      } else if (intLevel == 9) {
+      } else if (intLevel == 10) {
 
       }
 
@@ -421,6 +409,9 @@ public class escape_room extends PApplet {
 
   }
 
+  /**
+   * updates the player model depending on the direction that the player is moving 
+   */
   public void playerUpdate() {
 
     if (blnUp == true) {
@@ -478,7 +469,14 @@ public class escape_room extends PApplet {
    */
   public void NextLevel() {
 
-    if (intLevel == 4) {
+    // checks to see if the level has been completed or not 
+    if (intLevel == 1 || intLevel == 0) {
+
+      // during the tutorial level, the player will always be able to go through the doors, however, once they entre the first room, they are no logner allowed to go back 
+      blnNextLevel = true;
+
+    
+    } else if (intLevel == 4) {
 
     } else if (intLevel == 6) {
 
@@ -487,6 +485,35 @@ public class escape_room extends PApplet {
         blnNextLevel = true;
 
       }
+    }
+
+    // checks to see if the player is proceeding to the next level and if they are able to, if they are it will change the map and change their location as well
+    if (intLevel == 2 && intPlayerX < 600) {
+
+      intLevel += 1;
+
+    } else if (intPlayerX <= 16 && blnNextLevel == true) {
+
+      intLevel += 1;
+      intPlayerX = 664;
+      blnNextLevel = false;
+      
+    } else if (intPlayerX > 664) {
+
+      intLevel -= 1;
+      intPlayerX = 16;
+
+    } else if (intPlayerY <= 16 && blnNextLevel == true) {
+
+      intLevel += 1;
+      intPlayerY = 664;
+      blnNextLevel = false;
+
+    } else if (intPlayerY > 664) {
+
+      intLevel -= 1;
+      intPlayerY = 16;
+
     }
 
   }
