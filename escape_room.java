@@ -30,6 +30,7 @@ public class escape_room extends PApplet {
   
   // game O2 meter
   int intOxygenMeter;
+  int intTotalOxygen;
 
   // number of levels
   int intNumLevels = 10;
@@ -135,12 +136,12 @@ public class escape_room extends PApplet {
 
     if (blnGameStarting == true && intOxygenMeter > 0) {
       
-      //drawCollisionMaps();
-      //playerMovementAndCollisions();
-      //playerInteractions();
-      //drawMaps();
+      drawCollisionMaps();
+      playerMovementAndCollisions();
+      playerInteractions();
+      drawMaps();
       OxygenMeter();
-      //playerUpdate();
+      playerUpdate();
 
     } else {
 
@@ -163,9 +164,10 @@ public class escape_room extends PApplet {
    */
   public void OxygenMeter() {
 
+
     fill(173, 216, 230);
     noStroke();
-    rect(640,540,20, intOxygenMeter);
+    rect(640,640,20, -intOxygenMeter);
     stroke(0,0,0);
     noFill();
     rect(640,540,20,100);
@@ -173,7 +175,7 @@ public class escape_room extends PApplet {
     // slowly ticks away at the oxygen meter 
     if (frameCount % 60 == 0) {
 
-      intOxygenMeter -= 1;
+      intOxygenMeter -= 20;
 
     }
   }
