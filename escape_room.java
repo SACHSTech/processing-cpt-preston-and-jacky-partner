@@ -149,7 +149,9 @@ public class escape_room extends PApplet {
       //drawMaps();
       //OxygenMeter();
       playerUpdate();
+      NextLevel();
       System.out.println(strPassword);
+      System.out.println(blnNextLevel);
     } else {
 
     }
@@ -169,6 +171,11 @@ public class escape_room extends PApplet {
 
       fill(0);
       rect(0,0,8,height);
+
+    } else if (intLevel == 6 && blnNextLevel == false) {
+
+      fill(0);
+      rect(0,0,width,8);
 
     }
 
@@ -285,28 +292,34 @@ public class escape_room extends PApplet {
         }
       } else if (intLevel == 6) {
 
+        // uses position and colour detection to determine the key that the player is standing on top of. It will then print out the specific key onto the screen 
         if (intPlayerY <= 261) {
 
+          // coordinates for the letter A
           if (intPlayerX <= 115 && (get(intPlayerX + 30, intPlayerY + 56) == -3584 || get(intPlayerX,intPlayerY + 56) == -3584)) {
             
             strPassword += 'a';
             delay(300);
 
+          // coordinates for the letter D
           } else if (intPlayerX > 115 && intPlayerX < 237 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
 
             strPassword += 'd';
             delay(300);
-
+            
+          // coordinates for the letter R
           } else if (intPlayerX > 237 && intPlayerX < 350 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) { 
           
             strPassword += "r";
             delay(300);
 
+          // coordinates for the letter G
           } else if (intPlayerX > 350 && intPlayerX < 503 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
 
             strPassword += 'g';
             delay(300);
 
+          // coordinates for the letter J
           } else if (intPlayerX > 503 && intPlayerX < 614 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
 
             strPassword += 'j';
@@ -316,26 +329,31 @@ public class escape_room extends PApplet {
 
         } else if (intPlayerY > 261 && intPlayerY <= 375) {
 
+          // coordinates for the letter B
           if (intPlayerX < 115 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
 
             strPassword += 'b';
             delay(300);
 
+          // coordinates for the letter E
           } else if (intPlayerX > 115 && intPlayerX < 237 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
 
             strPassword += 'e';
             delay(300);
 
+          // coordinates for deletion key
           } else if (intPlayerX > 237 && intPlayerX < 380 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) { 
           
             strPassword = "";
             delay(300);
 
+          // coordinates for the letter H
           } else if (intPlayerX > 237 && intPlayerX < 503 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
 
             strPassword += 'h';
             delay(300);
 
+          // coordinates for the letter K
           } else if (intPlayerX > 503 && intPlayerX < 614 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
 
             strPassword += 'k';
@@ -345,34 +363,40 @@ public class escape_room extends PApplet {
 
         } else if (intPlayerY > 375 && intPlayerY < 490) {
 
+          
+          // coordinates for the letter C
           if (intPlayerX < 115 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
 
             strPassword += 'c';
             delay(300);
 
+          // coordinates for the letter F
           } else if (intPlayerX > 115 && intPlayerX < 237 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
 
             strPassword += 'f';
             delay(300);
 
+          // coordinates for the letter O
           } else if (intPlayerX > 237 && intPlayerX < 350 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) { 
           
             strPassword += "o";
             delay(300);
 
+            
+          // coordinates for the letter I
           } else if (intPlayerX > 237 && intPlayerX < 503 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
 
             strPassword += 'i';
             delay(300);
 
+          // coordinates for the letter L
           } else if (intPlayerX > 503 && intPlayerX < 614 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
 
             strPassword += 'l';
             delay(300);
 
           }
-
-          
+        
         }
 
         
@@ -448,6 +472,24 @@ public class escape_room extends PApplet {
         }
       }
     }
+
+  /**
+   * determiens if the level has been properly completed and then allows the player to move onto the next one 
+   */
+  public void NextLevel() {
+
+    if (intLevel == 4) {
+
+    } else if (intLevel == 6) {
+
+      if (strPassword.equals("fabroa") == true) {
+
+        blnNextLevel = true;
+
+      }
+    }
+
+  }
 
   /**
    * detects which keys are pressed and then sets certain boolean values to true
