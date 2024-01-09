@@ -25,13 +25,13 @@ public class escape_room extends PApplet {
   String strDirection = "Down";
 
   // game starting boolean
-  boolean blnGameStarting = true;
+  boolean blnGameStarting = false;
 
   // game ending boolean 
   boolean blnGameEnding = false;
 
   // next level boolean
-  boolean blnNextLevel = false;
+  boolean blnNextLevel = true;
 
   // game O2 meter
   int intOxygenMeter;
@@ -43,7 +43,7 @@ public class escape_room extends PApplet {
   int intNumLevels = 10;
 
   // current level
-  int intLevel = 6;
+  int intLevel = 0;
 
   // password for level 2
   String strPassword = "";
@@ -278,7 +278,7 @@ public class escape_room extends PApplet {
 
         }
 
-      } else if (intLevel == 6) {
+      } else if (intLevel == 5) {
 
         // uses position and colour detection to determine the key that the player is standing on top of. It will then print out the specific key onto the screen 
         if (intPlayerY <= 261) {
@@ -387,9 +387,9 @@ public class escape_room extends PApplet {
         
         }
 
-      } else if (intLevel == 8) {
+      } else if (intLevel == 7) {
 
-      } else if (intLevel == 10) {
+      } else if (intLevel == 9) {
 
       }
 
@@ -476,7 +476,7 @@ public class escape_room extends PApplet {
     
     } else if (intLevel == 4) {
 
-    } else if (intLevel == 6) {
+    } else if (intLevel == 5) {
 
       if (strPassword.equals("fabroa") == true) {
 
