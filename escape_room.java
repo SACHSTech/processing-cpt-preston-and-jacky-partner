@@ -191,12 +191,12 @@ public class escape_room extends PApplet {
     } else if (intPlayerX > 664 && intLevel != 2) {
 
       intLevel -= 1;
-      intPlayerX = 20;
+      intPlayerX = 16;
 
     } 
 
     // prevents player from going back into the tutorial level 
-    if (intLevel == 2 && intPlayerX < 656) {
+    if (intLevel == 2 && intPlayerX < 600) {
 
       intLevel += 1;
 
