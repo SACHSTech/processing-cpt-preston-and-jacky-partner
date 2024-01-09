@@ -24,12 +24,6 @@ public class escape_room extends PApplet {
   // player direction
   String strDirection = "Down";
 
-  // hotbar array
-  String[] strHotbar = {"pot1","","pot3","pot4"};
-
-  // max hotbar space
-  int intHotbarSpace = 4;
-
   // number of levels
   int intNumLevels = 10;
 
@@ -134,7 +128,6 @@ public class escape_room extends PApplet {
     playerMovementAndCollisions();
     playerInteractions();
     drawMaps();
-    hotbarInteractions();
     playerUpdate();
 
   }
@@ -244,66 +237,6 @@ public class escape_room extends PApplet {
     // draws out the correct room depending on the level the player is on 
     image(imgLevel[intLevel],0,0);
 
-  }
-
-  /**
-  * hotbar interactions 
-  */
-  public void hotbarInteractions() {
-
-    for (int i = 0; i < intHotbarSpace; i++) {
-
-      // detects if the item that you are standing on top of is yellow
-      if (get(intPlayerX,intPlayerY) == -256) {
-
-        // finds an empty slot in your inventory and replaces it with the item 
-        if (strHotbar[i] == "") {
-
-          strHotbar[i] = "RedPot";
-
-        }
-      }
-    }
-
-    // allows you to drop things from you inventory 
-    if (key == '1') {
-
-      if (key == 'q' || key == 'Q') {
-
-        strHotbar[0] = "";
-
-      }
-    }
-
-    // allows you to drop things from you inventory 
-    if (key == '2') {
-
-      if (key == 'q' || key == 'Q') {
-
-        strHotbar[1] = "";
-
-      }
-    }
-
-    // allows you to drop things from you inventory 
-    if (key == '3') {
-
-      if (key == 'q' || key == 'Q') {
-
-        strHotbar[2] = "";
-
-      }
-    }
-
-    // allows you to drop things from you inventory 
-    if (key == '4') {
-
-      if (key == 'q' || key == 'Q') {
-
-        strHotbar[3] = "";
-
-      }
-    }
   }
 
   public void playerUpdate() {
