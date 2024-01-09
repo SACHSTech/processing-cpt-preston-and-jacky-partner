@@ -27,9 +27,6 @@ public class escape_room extends PApplet {
   // hotbar array
   String[] strHotbar = {"pot1","","pot3","pot4"};
 
-  // determines if the player has gone into the first level
-  boolean blnStartedLevel = false;
-
   // max hotbar space
   int intHotbarSpace = 4;
 
@@ -191,7 +188,7 @@ public class escape_room extends PApplet {
       intLevel += 1;
       intPlayerX = 664;
       
-    } else if (intPlayerX > 664 && blnStartedLevel == false) {
+    } else if (intPlayerX > 664) {
 
       intLevel -= 1;
       intPlayerX = 16;
@@ -201,7 +198,6 @@ public class escape_room extends PApplet {
     // prevents player from going back into the tutorial level 
     if (intLevel == 2 && intPlayerX < 600) {
 
-      blnStartedLevel = true;
       intLevel += 1;
 
     }
