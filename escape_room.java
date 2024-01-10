@@ -15,6 +15,9 @@ public class escape_room extends PApplet {
   PImage[] imgPlayerUp;
   PImage[] imgPlayerDown;
 
+  // paper on desk popup
+  PImage[] imgPage;
+
   // player direction
   String strDirection = "Down";
 
@@ -92,6 +95,8 @@ public class escape_room extends PApplet {
     // setting up image variable for up movement animation 
     imgPlayerUp = new PImage[intNumFrames];
 
+    imgPage = new PImage[2];
+
     for (int i = 0; i < intNumLevels; i++) {
 
       imgLevel[i] = loadImage("escape_room/levels/level" + i + ".png"); 
@@ -132,6 +137,10 @@ public class escape_room extends PApplet {
       imgPlayerDown[i].resize(42,54);
 
     }
+
+    imgPage[0] = loadImage("escape_room/levels/page" + 0 + ".png");
+    imgPage[1] = loadImage("escape_room/levels/page" + 1 + ".png");
+
   }
 
   /**
