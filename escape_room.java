@@ -478,9 +478,18 @@ public class escape_room extends PApplet {
 
     } else if (intLevel == 5) {
 
+      // displays what the user has tyed onto the floor 
+      fill(0)
+;     textSize(40);
+      text(strPassword, (width / 2) - 20, height - 50);
+
       if (strPassword.equals("fabroa") == true) {
 
         blnNextLevel = true;
+
+      } else {
+
+        blnNextLevel = false;
 
       }
     }
