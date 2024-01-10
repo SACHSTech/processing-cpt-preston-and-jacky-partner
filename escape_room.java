@@ -526,17 +526,37 @@ public class escape_room extends PApplet {
       intLevel += 1;
       intPlayerY = 664;
 
-    } 
+    } else if (intPlayerX >= 664 && intLevel == 7 && blnNextLevel[3] == true) {
+
+      intLevel += 1;
+      intPlayerX = 16;
+
+    } else if (intPlayerY >= 664 && intLevel == 9 && blnNextLevel[4] == true) {
+
+      intLevel += 1;
+      intPlayerY = 16;
+
+    }
 
     // allows players to walk to previously completed levels and walk back to new ones too using hallways 
-    if (intLevel == 4 && intPlayerX < 16) {
+     if ((intLevel == 1 || intLevel == 0) && intPlayerX > 664) {
+
+      intLevel -= 1;
+      intPlayerX = 16;
+
+    } else if (intLevel == 4 && intPlayerX < 16) {
 
       intLevel += 1;
       intPlayerX = 664;
 
-    } else if ((intLevel == 1 || intLevel == 0) && intPlayerX > 664) {
+    } else if (intLevel == 6 && intPlayerY > 664) {
+      
+      intLevel += 1;
+      intPlayerY = 16;
 
-      intLevel -= 1;
+    } else if (intLevel == 8 && intPlayerX > 664) {
+
+      intLevel += 1;
       intPlayerX = 16;
 
     } else if (intPlayerY > 664) {
