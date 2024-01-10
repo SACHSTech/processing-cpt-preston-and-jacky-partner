@@ -15,12 +15,6 @@ public class escape_room extends PApplet {
   PImage[] imgPlayerUp;
   PImage[] imgPlayerDown;
 
-  // if combat is being used 
-  PImage[] imgPlayerLeftAttack;
-  PImage[] imgPlayerRightAttack;
-  PImage[] imgPlayerUpAttack;
-  PImage[] imgPlayerDownAttack;
-
   // player direction
   String strDirection = "Down";
 
@@ -39,8 +33,6 @@ public class escape_room extends PApplet {
   // game O2 meter
   int intOxygenMeter;
   int intTotalOxygen;
-
-  boolean blntouchingyellow = false;
 
   // number of levels
   int intNumLevels = 10;
