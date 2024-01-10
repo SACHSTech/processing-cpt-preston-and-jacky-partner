@@ -282,8 +282,8 @@ public class escape_room extends PApplet {
 
           if (get(intPlayerX, intPlayerY - 8) == -16776961) {
 
-          // desk pop up 
-          // image();
+          
+          //image();
 
           }
 
