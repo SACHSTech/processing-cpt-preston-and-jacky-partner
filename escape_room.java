@@ -18,6 +18,13 @@ public class escape_room extends PApplet {
   // paper on desk popup
   PImage[] imgPage;
 
+  // boolean to detect if the player has interacted with the page on the desk 
+  boolean blnPage;
+
+
+  // page number
+  int intPageNumber = 0;
+
   // player direction
   String strDirection = "Down";
 
@@ -41,7 +48,7 @@ public class escape_room extends PApplet {
   int intNumLevels = 10;
 
   // current level
-  int intLevel = 0;
+  int intLevel = 3;
 
   // password for level 2
   String strPassword = "";
@@ -58,7 +65,7 @@ public class escape_room extends PApplet {
   int intPlayerY = 300;
 	
   // movement booleans 
-  boolean blnUp, blnDown, blnLeft, blnRight, blnInteract;
+  boolean blnUp, blnDown, blnLeft, blnRight, blnInteract, blnLeftArrow, blnRightArrow;
 
   /**
    * Called once at the beginning of execution, put your size all in this method
@@ -158,7 +165,7 @@ public class escape_room extends PApplet {
       OxygenMeter();
       playerUpdate();
       NextLevel();
-    
+
     } else if (blnGameEnding == true) {
 
       background(0);
@@ -276,14 +283,23 @@ public class escape_room extends PApplet {
 
     if (blnInteract == true) {
 
-      if (intLevel == 2) {
+      if (intLevel == 3) {
 
-        if (intPlayerY > height / 2) {
+        if (intPlayerY < height / 2) {
 
-          if (get(intPlayerX, intPlayerY - 8) == -16776961) {
+          if (get(intPlayerX, intPlayerY - 8) == -16776961 || get(intPlayerX + 64, intPlayerY) == -16776961) {
 
-          // desk pop up 
-          // image();
+            if (blnPage == true) {
+
+              blnPage = false;
+              delay(300);
+
+            } else if (blnPage == false) {
+
+              blnPage = true;
+              delay(300);
+
+            }
 
           }
 
@@ -493,7 +509,29 @@ public class escape_room extends PApplet {
       blnNextLevel[0] = true;
 
     
-    } else if (intLevel == 4) {
+    } else if (intLevel == 3) {
+
+      // sees if the player is interacting with the paper on the desk 
+      if (blnPage == true) {
+
+        // desk pop up 
+        image(imgPage[intPageNumber],CENTER,CENTER);
+
+        // turns the page one to the left         
+        if (blnLeftArrow == true) {
+
+          intPageNumber = 0;
+
+        }  
+        
+        // turns the page one to the right 
+        if (blnRightArrow == true) {
+
+          intPageNumber = 1;
+
+        }
+
+      }
 
     } else if (intLevel == 5) {
 
@@ -618,6 +656,18 @@ public class escape_room extends PApplet {
       blnInteract = true;
 
     }
+
+    if (keyCode == LEFT) {
+
+      blnLeftArrow = true;
+
+    }
+
+    if (keyCode == RIGHT) {
+
+      blnRightArrow = true;
+
+    }
   }
 
 
@@ -645,6 +695,18 @@ public class escape_room extends PApplet {
     } if (key == 'e' || key == 'E') {
 
       blnInteract = false;
+
+    }
+
+    if (keyCode == LEFT) {
+
+      blnLeftArrow = false;
+
+    }
+
+    if (keyCode == RIGHT) {
+
+      blnRightArrow = false;
 
     }
   }
