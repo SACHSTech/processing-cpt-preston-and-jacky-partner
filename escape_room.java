@@ -15,35 +15,30 @@ public class escape_room extends PApplet {
   PImage[] imgPlayerUp;
   PImage[] imgPlayerDown;
 
-  // if combat is being used 
-  PImage[] imgPlayerLeftAttack;
-  PImage[] imgPlayerRightAttack;
-  PImage[] imgPlayerUpAttack;
-  PImage[] imgPlayerDownAttack;
-
   // player direction
   String strDirection = "Down";
 
   // game starting boolean
   boolean blnGameStarting = true;
 
+  // boolean for oxygen meter
+  boolean blnOxygenMeter = false;
+
   // game ending boolean 
   boolean blnGameEnding = false;
 
   // next level boolean
-  boolean blnNextLevel = false;
+  boolean[] blnNextLevel = {true,true,true,false,false,false};
 
   // game O2 meter
   int intOxygenMeter;
   int intTotalOxygen;
 
-  boolean blntouchingyellow = false;
-
   // number of levels
   int intNumLevels = 10;
 
   // current level
-  int intLevel = 5;
+  int intLevel = 0;
 
   // password for level 2
   String strPassword = "";
@@ -146,6 +141,7 @@ public class escape_room extends PApplet {
 
     if (blnGameStarting == true && intOxygenMeter > 0) {
      
+      StartingScreen();
       drawCollisionMaps();
       playerMovementAndCollisions();
       playerInteractions();
@@ -153,11 +149,11 @@ public class escape_room extends PApplet {
       OxygenMeter();
       playerUpdate();
       NextLevel();
-
     
     } else if (blnGameEnding == true) {
 
       background(0);
+      textSize(50);
       fill(255);
       text("ggs",width / 2,height / 2);
 
@@ -165,11 +161,16 @@ public class escape_room extends PApplet {
     } else {
 
       background(0);
+      textSize(50);
       fill(255);
       text("good try, maybe next time",width / 2,height / 2);
 
     }
 
+  }
+
+  public void StartingScreen() {
+  
   }
 
   /**
@@ -181,12 +182,12 @@ public class escape_room extends PApplet {
     image(imgLevelCollision[intLevel],0,0);
 
     // draws and invisible barrier for the player so they can not leave the level before finishing it properly 
-    if (intLevel == 3 && blnNextLevel == false) {
+    if (intLevel == 3 && blnNextLevel[1] == false) {
 
       fill(0);
       rect(0,0,8,height);
 
-    } else if (intLevel == 5 && blnNextLevel == false) {
+    } else if (intLevel == 5 && blnNextLevel[2] == false) {
 
       fill(0);
       rect(0,0,width,8);
@@ -200,18 +201,28 @@ public class escape_room extends PApplet {
    */
   public void OxygenMeter() {
 
-    fill(173, 216, 230);
-    noStroke();
-    rect(640,640,20, -intOxygenMeter);
-    stroke(0,0,0);
-    noFill();
-    rect(640,540,20,100);
-  
-    // slowly ticks away at the oxygen meter 
-    if (frameCount % 60 == 0) {
+    // only starts the meter once they have left the tutorial level 
+    if (blnOxygenMeter == true) {
+      fill(173, 216, 230);
+      noStroke();
+      rect(640,640,20, -intOxygenMeter);
+      stroke(0,0,0);
+      noFill();
+      rect(640,540,20,100);
+    
+      // slowly ticks away at the oxygen meter 
+      if (frameCount % 60 == 0) {
 
-      intOxygenMeter -= 1;
+        intOxygenMeter -= 1;
 
+      }
+    }
+
+    // only starts the oxygen meter once the player has made their way out of the tutorial level and into the real first level 
+    if (intLevel == 3) {
+
+      blnOxygenMeter = true;
+    
     }
   }
 
@@ -350,8 +361,7 @@ public class escape_room extends PApplet {
           }
 
         } else if (intPlayerY > 375 && intPlayerY < 490) {
-
-          
+   
           // coordinates for the letter C
           if (intPlayerX < 115 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
 
@@ -471,48 +481,95 @@ public class escape_room extends PApplet {
     if (intLevel == 1 || intLevel == 0) {
 
       // during the tutorial level, the player will always be able to go through the doors, however, once they entre the first room, they are no logner allowed to go back 
-      blnNextLevel = true;
+      blnNextLevel[0] = true;
 
     
     } else if (intLevel == 4) {
 
     } else if (intLevel == 5) {
 
+      // displays what the user has tyed onto the floor 
+      fill(0)
+;     textSize(40);
+      text(strPassword, (width / 2) - 20, height - 50);
+
       if (strPassword.equals("fabroa") == true) {
 
-        blnNextLevel = true;
+        blnNextLevel[2] = true;
+
+      } else {
+
+        blnNextLevel[2] = false;
 
       }
     }
 
-    // checks to see if the player is proceeding to the next level and if they are able to, if they are it will change the map and change their location as well
-    if (intLevel == 2 && intPlayerX < 600) {
-
-      intLevel += 1;
-
-    } else if (intPlayerX <= 16 && blnNextLevel == true) {
+    // allows players to go to the next level once they have completed it
+    if ((intLevel == 0 | intLevel == 1) && intPlayerX < 16) {
 
       intLevel += 1;
       intPlayerX = 664;
-      blnNextLevel = false;
+
+    // checks to see if the player is proceeding to the next level and if they are able to, if they are it will change the map and change their location as well
+    } else if (intLevel == 2 && intPlayerX < 600) {
+
+      intLevel += 1;
+
+    // keeps track if the level has been completed previously 
+    } else if (intPlayerX <= 16 && intLevel == 3 && blnNextLevel[1] == true) {
+
+      intLevel += 1;
+      intPlayerX = 664;
       
-    } else if (intPlayerX > 664) {
+    } else if (intPlayerY <= 16 && intLevel == 5 && blnNextLevel[2] == true) {
+
+      intLevel += 1;
+      intPlayerY = 664;
+
+    } else if (intPlayerX >= 664 && intLevel == 7 && blnNextLevel[3] == true) {
+
+      intLevel += 1;
+      intPlayerX = 16;
+
+    } else if (intPlayerY >= 664 && intLevel == 9 && blnNextLevel[4] == true) {
+
+      intLevel += 1;
+      intPlayerY = 16;
+
+    }
+
+    // allows players to walk to previously completed levels and walk back to new ones too using hallways 
+     if ((intLevel == 1 || intLevel == 0) && intPlayerX > 664) {
 
       intLevel -= 1;
       intPlayerX = 16;
 
-    } else if (intPlayerY <= 16 && blnNextLevel == true) {
+    } else if (intLevel == 4 && intPlayerX < 16) {
 
       intLevel += 1;
-      intPlayerY = 664;
-      blnNextLevel = false;
+      intPlayerX = 664;
+
+    } else if (intLevel == 6 && intPlayerY > 664) {
+      
+      intLevel += 1;
+      intPlayerY = 16;
+
+    } else if (intLevel == 8 && intPlayerX > 664) {
+
+      intLevel += 1;
+      intPlayerX = 16;
 
     } else if (intPlayerY > 664) {
 
       intLevel -= 1;
       intPlayerY = 16;
 
-    }
+    } else if (intPlayerX > 664) {
+
+      intLevel -= 1;
+      intPlayerX = 16;
+
+    } 
 
   }
 
