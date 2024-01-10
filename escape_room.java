@@ -21,7 +21,6 @@ public class escape_room extends PApplet {
   // boolean to detect if the player has interacted with the page on the desk 
   boolean blnPage;
 
-
   // page number
   int intPageNumber = 0;
 
@@ -287,9 +286,7 @@ public class escape_room extends PApplet {
 
         if (intPlayerY < height / 2) {
 
-          if (get(intPlayerX, intPlayerY - 8) == -16776961) {
-
-            if (get(intPlayerX, intPlayerY - 8) == -16776961 || get(intPlayerX + 64, intPlayerY) == -16776961) {
+          if (get(intPlayerX, intPlayerY - 8) == -16776961 || get(intPlayerX + 64, intPlayerY) == -16776961) {
 
               if (blnPage == true) {
   
