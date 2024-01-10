@@ -159,6 +159,7 @@ public class escape_room extends PApplet {
     } else if (blnGameEnding == true) {
 
       background(0);
+      textSize(50);
       fill(255);
       text("ggs",width / 2,height / 2);
 
@@ -166,6 +167,7 @@ public class escape_room extends PApplet {
     } else {
 
       background(0);
+      textSize(50);
       fill(255);
       text("good try, maybe next time",width / 2,height / 2);
 
