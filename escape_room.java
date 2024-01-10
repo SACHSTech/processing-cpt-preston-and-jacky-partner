@@ -146,6 +146,7 @@ public class escape_room extends PApplet {
 
     if (blnGameStarting == true && intOxygenMeter > 0) {
      
+      StartingScreen();
       drawCollisionMaps();
       playerMovementAndCollisions();
       playerInteractions();
@@ -170,6 +171,10 @@ public class escape_room extends PApplet {
 
     }
 
+  }
+
+  public void StartingScreen() {
+  
   }
 
   /**
