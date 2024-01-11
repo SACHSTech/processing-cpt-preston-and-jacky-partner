@@ -79,7 +79,7 @@ public class escape_room extends PApplet {
   boolean blnUp, blnDown, blnLeft, blnRight, blnInteract, blnLeftArrow, blnRightArrow;
 
   /**
-   * Called once at the beginning of execution, put your size all in this method
+   * sets the size of the screen for the game
    */
   public void settings() {
     
@@ -88,8 +88,7 @@ public class escape_room extends PApplet {
   }
 
   /** 
-   * Called once at the beginning of execution.  Add initial set up
-   * values here i.e background, stroke, fill etc.
+   * loads all images to be drawn for the game
    */
   public void setup() {
 
@@ -162,7 +161,7 @@ public class escape_room extends PApplet {
   }
 
   /**
-   * Called repeatedly, anything drawn to the screen goes here
+   * draws the methods that make up the game
    */
   public void draw() {
 
@@ -794,11 +793,6 @@ public class escape_room extends PApplet {
       intPlayerX = 16;
 
     } else if (intLevel == 6 && intPlayerY > 664) {
-
-      intLevel -= 1;
-      intPlayerY = 16;
-
-    } else if (intLevel == 7 && intPlayerY > 664) {
 
       intLevel -= 1;
       intPlayerY = 16;
