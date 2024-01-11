@@ -73,7 +73,7 @@ public class escape_room extends PApplet {
   int intPlayerY = 300;
 	
   // level 7 boolean values
-  boolean blnRickPoster, blnGundamPoster, blnIPoster = false;
+  boolean blnRickPoster, blnGundamPoster, blnIPoster, blnKeyI, blnTrapDoor = false;
 
   // movement booleans 
   boolean blnUp, blnDown, blnLeft, blnRight, blnInteract, blnLeftArrow, blnRightArrow;
@@ -168,15 +168,16 @@ public class escape_room extends PApplet {
 
     if (blnGameStarting == true && intOxygenMeter > 0) {
      
-      StartingScreen();
+      startingScreen();
       drawCollisionMaps();
       playerMovementAndCollisions();
       playerInteractions();
       drawMaps();
       oxygenMeter();
       playerUpdate();
-      MapDrawings();
-      NextLevel();
+      drawPopUps();
+      nextLevel();
+      System.out.println(blnTrapDoor);
 
     } else if (blnGameEnding == true) {
 
@@ -197,7 +198,7 @@ public class escape_room extends PApplet {
 
   }
 
-  public void StartingScreen() {
+  public void startingScreen() {
   
   }
 
@@ -260,7 +261,7 @@ public class escape_room extends PApplet {
    */
   public void playerMovementAndCollisions() {
 
-    if (blnPage == false && blnSafe == false)  {
+    if (blnPage == false && blnSafe == false && blnRickPoster == false && blnGundamPoster == false && blnIPoster == false)  {
       // left player collision detection
       if (blnLeft == true && (get(intPlayerX - 8, intPlayerY + 54) != -1.6777216E7 && get(intPlayerX - 8, intPlayerY + 54) != -16776961)) {
 
@@ -446,57 +447,64 @@ public class escape_room extends PApplet {
 
       } else if (intLevel == 7) {
 
-        if ((intPlayerX > 55 && intPlayerX < 136) && (get(intPlayerX, intPlayerY - 16) == -16776961) || (get(intPlayerX  - 16,intPlayerY - 16) == -16776961)) {
+        if (intPlayerY < 300) {
+          if ((intPlayerX > 50 && intPlayerX < 156) && (get(intPlayerX, intPlayerY - 8) == -16776961)) {
 
-          if (blnRickPoster == false) {
+            if (blnRickPoster == false) {
 
-            blnRickPoster = true;
+              blnRickPoster = true;
+              
+              delay(300);
+
+            } else if (blnRickPoster == true) {
+
+              blnRickPoster = false;
+              delay(300);
+
+            }
+
+          } else if ((intPlayerX > 170 && intPlayerX < 240) && (get(intPlayerX,intPlayerY - 16) == -16776961)) {
+
+            if (blnGundamPoster == false) {
+
+              blnGundamPoster = true;
             
-            delay(300);
+              delay(300);
 
-          } else if (blnRickPoster == true) {
 
-            blnRickPoster = false;
-            delay(300);
+            } else if (blnGundamPoster == true) {
 
-          }
+              blnGundamPoster = false;
+              delay(300);
 
-        } else if ((intPlayerX > 175 && intPlayerX < 260) && (get(intPlayerX,intPlayerY - 16) == -16776961) || (get(intPlayerX - 16,intPlayerY - 16) == -16776961)) {
+            }
 
-          if (blnGundamPoster == false) {
+          } else if ((intPlayerX > 300 && intPlayerX < 380) && (get(intPlayerX,intPlayerY - 8) == -16776961)) {
 
-            blnGundamPoster = true;
+          if (blnIPoster == false) {
+
+            blnIPoster = true;
           
             delay(300);
 
 
-          } else if (blnGundamPoster == true) {
+          } else if (blnIPoster == true) {
 
-            blnGundamPoster = false;
+            blnIPoster = false;
             delay(300);
 
+          } 
 
-          }
+          } 
 
-        } else if ((intPlayerX > 300 && intPlayerX < 386) && (get(intPlayerX,intPlayerY - 16) == -16776961) || (get(intPlayerX - 16,intPlayerY - 16) == -16776961)) {
+        } else if (get(intPlayerX, intPlayerY + 64) == -16776961 || get(intPlayerX + 42, intPlayerY + 64) == - 16776961){
+          
+          blnKeyI = true;
 
-         if (blnIPoster == false) {
-
-          blnIPoster = true;
-        
-          delay(300);
-
-
-         } else if (blnIPoster == true) {
-
-          blnIPoster = false;
-          delay(300);
-
-         } 
-        } else if ((get(intPlayerX, intPlayerY + 56) == -256 || get(intPlayerX + 30, intPlayerY + 56) == -256)) {
+        } else if (blnTrapDoor == true && (get(intPlayerX, intPlayerY + 56) == -256 || get(intPlayerX + 42, intPlayerY + 56) == -256)) {
 
           intLevel += 1;
-          
+            
         }
 
       } else if (intLevel == 10) {
@@ -576,7 +584,7 @@ public class escape_room extends PApplet {
   /**
    * draws the needed pop ups for the map 
    */
-  public void MapDrawings() {
+  public void drawPopUps() {
 
     // checks to see if the level has been completed or not 
     if (intLevel == 1 || intLevel == 0) {
@@ -692,21 +700,28 @@ public class escape_room extends PApplet {
 
         fill(255);
         textSize(20);
-        text("imagine getting rolled", 250, 600);
+        text("imagine getting rick rolled", 215, 500);
         
 
       } else if (blnGundamPoster == true) {
 
         fill(255);
         textSize(20);
-        text("looks like the creator was a gundam fan",125, 600);
+        text("looks like the creator was a gundam fan",150, 500);
            
 
       } else if (blnIPoster == true) {
 
         fill(255);
         textSize(20);
-        text("O, there is an I shaped hole behind this poster", 150, 600);
+        text("You see a bent corner and decide", 150, 500);
+        text("to pull on it revealing a I shaped hole in the wall", 100, 525);
+
+        if (blnKeyI == true) {
+          text("You put in the ''I'' shaped key that you found.", 120, 550);
+          text("Clank, Whirrr, Hummmm, something must of happened", 75, 575);
+          blnTrapDoor = true;
+        }
 
       }
 
@@ -717,7 +732,7 @@ public class escape_room extends PApplet {
   /**
    * detects if the player has completed a level and changes the level map accordingly 
    */
-  public void NextLevel() {
+  public void nextLevel() {
     // allows players to go to the next level once they have completed it
     if ((intLevel == 0 | intLevel == 1) && intPlayerX < 16) {
 
