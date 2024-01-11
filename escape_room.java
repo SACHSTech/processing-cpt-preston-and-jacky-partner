@@ -18,6 +18,9 @@ public class escape_room extends PApplet {
   // paper on desk popup
   PImage[] imgPage;
 
+  // safe popup
+  PImage imgSafe;
+
   // boolean to detect if the player has interacted with the page on the desk 
   boolean blnPage = false;
 
@@ -40,7 +43,7 @@ public class escape_room extends PApplet {
   boolean[] blnNextLevel = {true,true,true,false,false,false};
 
   // game O2 meter
-  int intOxygenMeter;
+  int intOxygenMeter = 100;
   int intTotalOxygen;
 
   // number of levels
@@ -80,8 +83,6 @@ public class escape_room extends PApplet {
    * values here i.e background, stroke, fill etc.
    */
   public void setup() {
-
-    intOxygenMeter = 100;
 
     // setting up image variable for levels
     imgLevel = new PImage[intNumLevels];
@@ -144,8 +145,10 @@ public class escape_room extends PApplet {
 
     }
 
-    imgPage[0] = loadImage("escape_room/levels/page" + 0 + ".png");
-    imgPage[1] = loadImage("escape_room/levels/page" + 1 + ".png");
+    imgPage[0] = loadImage("escape_room/popups/page" + 0 + ".png");
+    imgPage[1] = loadImage("escape_room/popups/page" + 1 + ".png");
+
+    imgSafe = loadImage("escape_room/popups/safe.png");
 
   }
 
@@ -161,16 +164,16 @@ public class escape_room extends PApplet {
       playerMovementAndCollisions();
       playerInteractions();
       drawMaps();
-      OxygenMeter();
+      oxygenMeter();
       playerUpdate();
-      NextLevel();
+      nextLevel();
 
     } else if (blnGameEnding == true) {
 
       background(0);
       textSize(50);
       fill(255);
-      text("ggs",width / 2,height / 2);
+      text("ggs wp",width / 2,height / 2);
 
     // to draw the end screen once the player has died 
     } else {
@@ -178,7 +181,7 @@ public class escape_room extends PApplet {
       background(0);
       textSize(50);
       fill(255);
-      text("good try, maybe next time",width / 2,height / 2);
+      text("mission failed sucessfully, we'll get'em next time",width / 2,height / 2);
 
     }
 
@@ -214,7 +217,7 @@ public class escape_room extends PApplet {
   /**
    * draws the oxygen meter
    */
-  public void OxygenMeter() {
+  public void oxygenMeter() {
 
     // only starts the meter once they have left the tutorial level 
     if (blnOxygenMeter == true) {
@@ -501,7 +504,7 @@ public class escape_room extends PApplet {
   /**
    * determiens if the level has been properly completed and then allows the player to move onto the next one 
    */
-  public void NextLevel() {
+  public void nextLevel() {
 
     // checks to see if the level has been completed or not 
     if (intLevel == 1 || intLevel == 0) {
