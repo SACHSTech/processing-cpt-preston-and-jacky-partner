@@ -19,7 +19,7 @@ public class escape_room extends PApplet {
   PImage[] imgPage;
 
   // boolean to detect if the player has interacted with the page on the desk 
-  boolean blnPage;
+  boolean blnPage = false;
 
   // page number
   int intPageNumber = 0;
@@ -245,33 +245,35 @@ public class escape_room extends PApplet {
    * movement for the player and checks for collisions
    */
   public void playerMovementAndCollisions() {
-    
-    // left player collision detection
-    if (blnLeft == true && (get(intPlayerX - 8, intPlayerY + 54) != -1.6777216E7 && get(intPlayerX - 8, intPlayerY + 54) != -16776961)) {
 
-      intPlayerX -= 8;
-      
-    } 
-    
-    // right player collision detection 
-    if (blnRight == true && (get(intPlayerX + 50, intPlayerY + 54) != -1.6777216E7 && get(intPlayerX + 50, intPlayerY + 54) != -16776961)) {
+    if (blnPage == false) {
+      // left player collision detection
+      if (blnLeft == true && (get(intPlayerX - 8, intPlayerY + 54) != -1.6777216E7 && get(intPlayerX - 8, intPlayerY + 54) != -16776961)) {
 
-      intPlayerX += 8;
-      
-    } 
-    
-    // up player collision detection
-    if (blnUp == true && (get(intPlayerX, intPlayerY + 28) != -1.6777216E7 && get(intPlayerX + 28, intPlayerY + 28) != -1.6777216E7 && get(intPlayerX, intPlayerY + 28) != -16776961 && get(intPlayerX + 28, intPlayerY + 28) != -16776961)) {
+        intPlayerX -= 8;
         
-      intPlayerY -= 8;
+      } 
       
-    } 
-    
-    // down player collision detection 
-    if (blnDown == true && (get(intPlayerX, intPlayerY + 62) != -1.6777216E7 && get(intPlayerX + 28, intPlayerY + 62) != -1.6777216E7 && get(intPlayerX, intPlayerY + 62) != -16776961 && get(intPlayerX + 28, intPlayerY + 44) != -16776961)) {
+      // right player collision detection 
+      if (blnRight == true && (get(intPlayerX + 50, intPlayerY + 54) != -1.6777216E7 && get(intPlayerX + 50, intPlayerY + 54) != -16776961)) {
 
-      intPlayerY += 8;
+        intPlayerX += 8;
+        
+      } 
       
+      // up player collision detection
+      if (blnUp == true && (get(intPlayerX, intPlayerY + 28) != -1.6777216E7 && get(intPlayerX + 28, intPlayerY + 28) != -1.6777216E7 && get(intPlayerX, intPlayerY + 28) != -16776961 && get(intPlayerX + 28, intPlayerY + 28) != -16776961)) {
+          
+        intPlayerY -= 8;
+        
+      } 
+      
+      // down player collision detection 
+      if (blnDown == true && (get(intPlayerX, intPlayerY + 62) != -1.6777216E7 && get(intPlayerX + 28, intPlayerY + 62) != -1.6777216E7 && get(intPlayerX, intPlayerY + 62) != -16776961 && get(intPlayerX + 28, intPlayerY + 44) != -16776961)) {
+
+        intPlayerY += 8;
+        
+      }
     }
   }
 
