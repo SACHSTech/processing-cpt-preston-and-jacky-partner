@@ -18,11 +18,14 @@ public class escape_room extends PApplet {
   // paper on desk popup
   PImage[] imgPage;
 
+  // boolean for verification for safe combo
+  boolean blnVerify = false;
+
   // safe popup
   PImage imgSafe;
 
   // boolean to detect if the player has interacted with the page on the desk 
-  boolean blnPage = false;
+  boolean blnPage, blnSafe = false;
 
   // page number
   int intPageNumber = 0;
@@ -39,8 +42,11 @@ public class escape_room extends PApplet {
   // game ending boolean 
   boolean blnGameEnding = false;
 
+  // string for safe combination
+  String strCode = "";
+
   // next level boolean
-  boolean[] blnNextLevel = {true,true,true,false,false,false};
+  boolean[] blnNextLevel = {true,false,false,false,false,false};
 
   // game O2 meter
   int intOxygenMeter = 100;
@@ -221,6 +227,7 @@ public class escape_room extends PApplet {
 
     // only starts the meter once they have left the tutorial level 
     if (blnOxygenMeter == true) {
+
       fill(173, 216, 230);
       noStroke();
       rect(640,640,20, -intOxygenMeter);
@@ -249,7 +256,7 @@ public class escape_room extends PApplet {
    */
   public void playerMovementAndCollisions() {
 
-    if (blnPage == false) {
+    if (blnPage == false && blnSafe == false)  {
       // left player collision detection
       if (blnLeft == true && (get(intPlayerX - 8, intPlayerY + 54) != -1.6777216E7 && get(intPlayerX - 8, intPlayerY + 54) != -16776961)) {
 
@@ -311,11 +318,18 @@ public class escape_room extends PApplet {
 
           if (get(intPlayerX, intPlayerY + 64) == -16776961 || get(intPlayerX - 8, intPlayerY) == -16776961 || get(intPlayerX, intPlayerY - 8) == -16776961 ) {
 
-          // safe pop up 
-          // image();
+            if (blnSafe == true) {
+  
+                blnSafe = false;
+                delay(300);
+  
+            } else if (blnSafe == false) {
 
+                blnSafe = true;
+                delay(300);
+  
+            }
           }
-
         }
 
       } else if (intLevel == 5) {
@@ -498,8 +512,8 @@ public class escape_room extends PApplet {
         image(imgPlayerRight[0], intPlayerX, intPlayerY);
 
       }
-      }
     }
+  }
 
   /**
    * determiens if the level has been properly completed and then allows the player to move onto the next one 
@@ -535,6 +549,64 @@ public class escape_room extends PApplet {
 
         }
 
+      }
+
+      // checks if the user has interacted with the safe 
+      if (blnSafe == true) {
+
+        // safe pop up 
+        image(imgSafe,CENTER,CENTER);
+
+        // checks if the user has clicked the check mark button 
+        if (blnVerify == true) {
+
+          // checks to see if the user inputted the correct digits
+          if (strCode.equals("4132")) {
+
+            // changes the output from the digits to OPEN to let the user know they got the code correct
+            strCode = "OPEN";
+
+            blnVerify = false;
+            blnNextLevel[1] = true;   
+            
+            // displasy the new message
+            fill(173, 216, 230);       
+            textSize(130);
+            text(strCode, 105, 220);
+   
+
+          } else {
+
+            // changes the variable to WRONG to let the user know they got the code wrong and must try again 
+            strCode = "WRONG";
+            blnVerify = false;
+            fill(173, 216, 230);       
+            textSize(130);
+            text(strCode, 105, 220);
+          
+          } 
+
+        } else {
+
+          // displays the numbers that the user inputted into the safe
+          fill(173, 216, 230);       
+          textSize(130);
+          text(strCode, 105, 220);
+          
+          // if the numbers were wrong, it will show wrong for .5 seconds and then set the code to empty to allow them to try again 
+          if (strCode.equals("WRONG")) {
+
+            delay(500);
+            strCode = "";
+
+          // if the numbers were right, it show open for .5 seconds and then it will open the safe door, which will remove the pop keypad for the safe
+          } else if (strCode.equals("OPEN")) {
+
+            delay(500);
+            blnSafe = false;
+
+          }
+        }
       }
 
     } else if (intLevel == 5) {
@@ -600,28 +672,27 @@ public class escape_room extends PApplet {
       intLevel += 1;
       intPlayerX = 664;
 
-    } else if (intLevel == 6 && intPlayerY > 664) {
+    } else if (intLevel == 4 && intPlayerX > 664) {
       
-      intLevel += 1;
-      intPlayerY = 16;
-
-    } else if (intLevel == 8 && intPlayerX > 664) {
-
-      intLevel += 1;
+      intLevel -= 1;
       intPlayerX = 16;
 
-    } else if (intPlayerY > 664) {
-
-      intLevel -= 1;
-      intPlayerY = 16;
-
-    } else if (intPlayerX > 664) {
+    } else if (intLevel == 5 && intPlayerX > 664) {
 
       intLevel -= 1;
       intPlayerX = 16;
 
-    } 
+    } else if (intLevel == 6 && intPlayerY < 16) {
 
+      intLevel += 1;
+      intPlayerX = 664;
+
+    } else if (intLevel == 6 && intPlayerY > 664) {
+
+      intLevel -= 1;
+      intPlayerY = 16;
+
+    }
   }
 
   /**
@@ -674,7 +745,6 @@ public class escape_room extends PApplet {
     }
   }
 
-
   /**
    * detects which keys are released and then sets the corresponding boolean value to false 
    */
@@ -712,6 +782,121 @@ public class escape_room extends PApplet {
 
       blnRightArrow = false;
 
+    }
+  }
+
+  /**
+   * detects moues inputs 
+   */
+  public void mousePressed() {
+
+    if (blnSafe) {
+
+      // deletion key, placed outside the 2 if statement below becuaes it needs to accept input even when the passcode hits 6 digits long 
+      if ((mouseX > 261 && mouseX < 335) && (mouseY > 506 && mouseY < 592)) {
+
+        if (strCode.length() > 0) {
+
+          strCode = strCode.substring(0, strCode.length() - 1);
+
+        }
+      }
+
+      // verification key, placed outside the if statement below becuaes it needs to accept input een when the passcode hits 6 digits long 
+      if ((mouseX > 96 && mouseX < 175) && (mouseY > 506 && mouseY < 592)) {
+
+        blnVerify = true;
+
+      }
+
+      // makes the max digit password length to 6
+      if (strCode.length() < 6) {
+          
+        // used to check for the y value of the first 3 keys in the first row 
+        if (mouseY > 250 && mouseY < 340) {
+          
+          // x boundaries for the number 1 key
+          if (mouseX > 96 && mouseX < 175) {
+
+            strCode += '1';
+
+          }
+
+          // x boundaries for the number 2 key
+          if (mouseX > 176 && mouseX < 260) {
+
+            strCode += '2';
+
+          }
+
+          // x boundaries for the number 3 key
+          if (mouseX > 261 && mouseX < 335) {
+
+            strCode += '3';
+
+          }
+
+        // checks the y boundaries for the second row of keys 
+        } else if (mouseY > 341 && mouseY < 420) {
+
+          // x boundaries for the number 4 key
+          if (mouseX > 96 && mouseX < 175) {
+
+            strCode += '4';
+
+          }
+
+          // x boundaries for the number 5 key
+          if (mouseX > 176 && mouseX < 260) {
+
+            strCode += '5';
+
+          }
+
+          // x boundaries for the number 6 key
+          if (mouseX > 261 && mouseX < 335) {
+
+            strCode += '6';
+
+          }
+
+        // checks the y boundaries for the third row of keys 
+        } else if (mouseY > 421 && mouseY < 505) {
+
+          // x boundaries for the number 7 key
+          if (mouseX > 96 && mouseX < 175) {
+
+            strCode += '7';
+
+          }
+
+          // x boundaries for the number 8 key
+          if (mouseX > 176 && mouseX < 260) {
+
+            strCode += '8';
+
+          }
+
+          // x boundaries for the number 9 key
+          if (mouseX > 261 && mouseX < 335) {
+
+            strCode += '9';
+
+          }
+
+        // checks the boundary for the 0 key 
+        } else if (mouseY > 506 && mouseY < 592) {
+
+          // x boundaries for the number 0 key
+          if (mouseX > 176 && mouseX < 260) {
+
+            strCode += '0';
+
+          }
+        }
+      }
+
+      
     }
   }
 
