@@ -798,6 +798,11 @@ public class escape_room extends PApplet {
       intLevel -= 1;
       intPlayerY = 16;
 
+    } else if (intLevel == 7 && intPlayerY > 664) {
+
+      intLevel -= 1;
+      intPlayerY = 16;
+
     }
 
   }
