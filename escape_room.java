@@ -73,7 +73,7 @@ public class escape_room extends PApplet {
   int intPlayerY = 300;
 	
   // level 7 boolean values
-  boolean blnRickPoster, blnGundamPoster, blnIPoster, blnKeyI, blnTrapDoor = false;
+  boolean blnRickPoster, blnGundamPoster, blnIPoster, blnKeyI, blnTrapDoor, blnLockedTrapDoor = false;
 
   // movement booleans 
   boolean blnUp, blnDown, blnLeft, blnRight, blnInteract, blnLeftArrow, blnRightArrow;
@@ -176,7 +176,7 @@ public class escape_room extends PApplet {
       playerUpdate();
       drawPopUps();
       nextLevel();
-      System.out.println(blnTrapDoor);
+      System.out.println(blnLockedTrapDoor);
 
     } else if (blnGameEnding == true) {
 
@@ -500,18 +500,29 @@ public class escape_room extends PApplet {
           
           blnKeyI = true;
 
+        }  else if (blnTrapDoor == false && (get(intPlayerX, intPlayerY + 56) == -256 || get(intPlayerX + 42, intPlayerY + 56) == -256)) {
+
+          blnLockedTrapDoor = true; 
+            
         } else if (blnTrapDoor == true && (get(intPlayerX, intPlayerY + 56) == -256 || get(intPlayerX + 42, intPlayerY + 56) == -256)) {
 
           intLevel += 1;
-            
-        }
 
-      } else if (intLevel == 10) {
+        }  
+
+      } else if (intLevel == 8 && (get(intPlayerX, intPlayerY + 56) == -256 || get(intPlayerX + 42, intPlayerY + 56) == -256)) {
+
+        intLevel -= 1;
 
       }
-
     } 
+    
+    // detects passively if the player is still standing on the trap door even though they can't open it 
+    if (intLevel == 7 &&  (get(intPlayerX, intPlayerY + 56) != -256 || get(intPlayerX + 42, intPlayerY + 56) != -256)) {
 
+      blnLockedTrapDoor = false;
+
+    }
   }
 
   /**
@@ -721,6 +732,10 @@ public class escape_room extends PApplet {
           text("Clank, Whirrr, Hummmm, something must of happened", 75, 575);
           blnTrapDoor = true;
         }
+
+      } else if (blnLockedTrapDoor == true) {
+
+        text("You pull with all your might, but it seems to be sealed tight",120,500);
 
       }
 
