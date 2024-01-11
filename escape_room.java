@@ -56,7 +56,7 @@ public class escape_room extends PApplet {
   int intNumLevels = 10;
 
   // current level
-  int intLevel = 3;
+  int intLevel = 7;
 
   // password for level 2
   String strPassword = "";
@@ -72,6 +72,9 @@ public class escape_room extends PApplet {
   int intPlayerX = 300;
   int intPlayerY = 300;
 	
+  // level 7 boolean values
+  boolean blnRickPoster, blnGundamPoster, blnIPoster = false;
+
   // movement booleans 
   boolean blnUp, blnDown, blnLeft, blnRight, blnInteract, blnLeftArrow, blnRightArrow;
 
@@ -172,7 +175,8 @@ public class escape_room extends PApplet {
       drawMaps();
       oxygenMeter();
       playerUpdate();
-      nextLevel();
+      MapDrawings();
+      NextLevel();
 
     } else if (blnGameEnding == true) {
 
@@ -442,7 +446,60 @@ public class escape_room extends PApplet {
 
       } else if (intLevel == 7) {
 
-      } else if (intLevel == 9) {
+        if ((intPlayerX > 55 && intPlayerX < 136) && (get(intPlayerX, intPlayerY - 16) == -16776961) || (get(intPlayerX  - 16,intPlayerY - 16) == -16776961)) {
+
+          if (blnRickPoster == false) {
+
+            blnRickPoster = true;
+            
+            delay(300);
+
+          } else if (blnRickPoster == true) {
+
+            blnRickPoster = false;
+            delay(300);
+
+          }
+
+        } else if ((intPlayerX > 175 && intPlayerX < 260) && (get(intPlayerX,intPlayerY - 16) == -16776961) || (get(intPlayerX - 16,intPlayerY - 16) == -16776961)) {
+
+          if (blnGundamPoster == false) {
+
+            blnGundamPoster = true;
+          
+            delay(300);
+
+
+          } else if (blnGundamPoster == true) {
+
+            blnGundamPoster = false;
+            delay(300);
+
+
+          }
+
+        } else if ((intPlayerX > 300 && intPlayerX < 386) && (get(intPlayerX,intPlayerY - 16) == -16776961) || (get(intPlayerX - 16,intPlayerY - 16) == -16776961)) {
+
+         if (blnIPoster == false) {
+
+          blnIPoster = true;
+        
+          delay(300);
+
+
+         } else if (blnIPoster == true) {
+
+          blnIPoster = false;
+          delay(300);
+
+         } 
+        } else if ((get(intPlayerX, intPlayerY + 56) == -256 || get(intPlayerX + 30, intPlayerY + 56) == -256)) {
+
+          intLevel += 1;
+          
+        }
+
+      } else if (intLevel == 10) {
 
       }
 
@@ -458,6 +515,7 @@ public class escape_room extends PApplet {
     // draws out the correct room depending on the level the player is on 
     image(imgLevel[intLevel],0,0);
 
+       
   }
 
   /**
@@ -516,9 +574,9 @@ public class escape_room extends PApplet {
   }
 
   /**
-   * determiens if the level has been properly completed and then allows the player to move onto the next one 
+   * draws the needed pop ups for the map 
    */
-  public void nextLevel() {
+  public void MapDrawings() {
 
     // checks to see if the level has been completed or not 
     if (intLevel == 1 || intLevel == 0) {
@@ -572,7 +630,7 @@ public class escape_room extends PApplet {
             // displasy the new message
             fill(173, 216, 230);       
             textSize(130);
-            text(strCode, 105, 220);
+            text(strCode, 110, 215);
    
 
           } else {
@@ -582,7 +640,7 @@ public class escape_room extends PApplet {
             blnVerify = false;
             fill(173, 216, 230);       
             textSize(130);
-            text(strCode, 105, 220);
+            text(strCode, 110, 215);
           
           } 
 
@@ -591,7 +649,7 @@ public class escape_room extends PApplet {
           // displays the numbers that the user inputted into the safe
           fill(173, 216, 230);       
           textSize(130);
-          text(strCode, 105, 220);
+          text(strCode, 110, 220);
           
           // if the numbers were wrong, it will show wrong for .5 seconds and then set the code to empty to allow them to try again 
           if (strCode.equals("WRONG")) {
@@ -603,9 +661,12 @@ public class escape_room extends PApplet {
           } else if (strCode.equals("OPEN")) {
 
             delay(500);
+            strCode = "OPEN ";
             blnSafe = false;
 
-          }
+          // allows the player to sill use the safe even if they have unlocked it 
+          } else if (strCode.equals("OPEN "));
+
         }
       }
 
@@ -625,8 +686,38 @@ public class escape_room extends PApplet {
         blnNextLevel[2] = false;
 
       }
-    }
+    } else if (intLevel == 7) {
 
+      if (blnRickPoster == true) {
+
+        fill(255);
+        textSize(20);
+        text("imagine getting rolled", 250, 600);
+        
+
+      } else if (blnGundamPoster == true) {
+
+        fill(255);
+        textSize(20);
+        text("looks like the creator was a gundam fan",125, 600);
+           
+
+      } else if (blnIPoster == true) {
+
+        fill(255);
+        textSize(20);
+        text("O, there is an I shaped hole behind this poster", 150, 600);
+
+      }
+
+
+    }
+  }
+
+  /**
+   * detects if the player has completed a level and changes the level map accordingly 
+   */
+  public void NextLevel() {
     // allows players to go to the next level once they have completed it
     if ((intLevel == 0 | intLevel == 1) && intPlayerX < 16) {
 
@@ -644,17 +735,27 @@ public class escape_room extends PApplet {
       intLevel += 1;
       intPlayerX = 664;
       
+    } else if (intLevel == 4 && intPlayerX < 16) {
+
+      intLevel += 1;
+      intPlayerX = 664;
+
     } else if (intPlayerY <= 16 && intLevel == 5 && blnNextLevel[2] == true) {
 
       intLevel += 1;
       intPlayerY = 664;
+
+    } else if (intLevel == 6 && intPlayerY < 16) {
+
+      intLevel += 1;
+      intPlayerX = 664;
 
     } else if (intPlayerX >= 664 && intLevel == 7 && blnNextLevel[3] == true) {
 
       intLevel += 1;
       intPlayerX = 16;
 
-    } else if (intPlayerY >= 664 && intLevel == 9 && blnNextLevel[4] == true) {
+    } else if (intPlayerY >= 664 && intLevel == 10 && blnNextLevel[4] == true) {
 
       intLevel += 1;
       intPlayerY = 16;
@@ -667,11 +768,6 @@ public class escape_room extends PApplet {
       intLevel -= 1;
       intPlayerX = 16;
 
-    } else if (intLevel == 4 && intPlayerX < 16) {
-
-      intLevel += 1;
-      intPlayerX = 664;
-
     } else if (intLevel == 4 && intPlayerX > 664) {
       
       intLevel -= 1;
@@ -682,17 +778,13 @@ public class escape_room extends PApplet {
       intLevel -= 1;
       intPlayerX = 16;
 
-    } else if (intLevel == 6 && intPlayerY < 16) {
-
-      intLevel += 1;
-      intPlayerX = 664;
-
     } else if (intLevel == 6 && intPlayerY > 664) {
 
       intLevel -= 1;
       intPlayerY = 16;
 
     }
+
   }
 
   /**
