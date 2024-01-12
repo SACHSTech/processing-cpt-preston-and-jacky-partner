@@ -703,6 +703,7 @@ public class escape_room extends PApplet {
         blnNextLevel[2] = false;
 
       }
+      
     } else if (intLevel == 7) {
 
       // pops up text when the player interacts with the Rick Poster
@@ -731,9 +732,11 @@ public class escape_room extends PApplet {
 
         // gives different more unique text if the player has found the specific key before ineracting with it 
         if (blnKeyI == true) {
+
           text("You put in the ''I'' shaped key that you found.", 120, 550);
           text("Clank, Whirrr, Hummmm, something must of happened", 75, 575);
           blnTrapDoor = true;
+
         }
 
       // gives a hint to the player if they are trying to interact with the trap door before performing all the needed steps before it 
