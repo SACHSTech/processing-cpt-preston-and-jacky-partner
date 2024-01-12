@@ -23,6 +23,12 @@ public class escape_room extends PApplet {
   int intPageNumber = 0;
   String strCode = "";
 
+  // level 5 variable 
+  String strPassword = "";
+
+  // level 7 boolean values
+  boolean blnRickPoster, blnGundamPoster, blnIPoster, blnKeyI, blnTrapDoor, blnLockedTrapDoor = false;
+
   // player direction
   String strDirection = "Down";
 
@@ -35,16 +41,10 @@ public class escape_room extends PApplet {
   int intTotalOxygen;
   boolean blnOxygenMeter = false;
 
-  // level variables 
+  // leveling variables 
   int intNumLevels = 10;
   int intLevel = 7;
   boolean[] blnNextLevel = {true,false,false,false,false,false};
-
-  // password for level 2
-  String strPassword = "";
-
-  // health
-  int intHealth = 100;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -53,9 +53,6 @@ public class escape_room extends PApplet {
   // player position 
   int intPlayerX = 300;
   int intPlayerY = 300;
-	
-  // level 7 boolean values
-  boolean blnRickPoster, blnGundamPoster, blnIPoster, blnKeyI, blnTrapDoor, blnLockedTrapDoor = false;
 
   // movement booleans 
   boolean blnUp, blnDown, blnLeft, blnRight, blnInteract, blnLeftArrow, blnRightArrow;
@@ -333,6 +330,7 @@ public class escape_room extends PApplet {
           }
         }
 
+      // note, the quote we are using is "good morning everyone, please take your seats"
       } else if (intLevel == 5) {
 
         // uses position and colour detection to determine the key that the player is standing on top of. It will then print out the specific key onto the screen 
@@ -451,7 +449,6 @@ public class escape_room extends PApplet {
             if (blnRickPoster == false) {
 
               blnRickPoster = true;
-              
               delay(300);
 
             } else if (blnRickPoster == true) {
@@ -467,7 +464,6 @@ public class escape_room extends PApplet {
             if (blnGundamPoster == false) {
 
               blnGundamPoster = true;
-            
               delay(300);
 
 
@@ -484,7 +480,6 @@ public class escape_room extends PApplet {
           if (blnIPoster == false) {
 
             blnIPoster = true;
-          
             delay(300);
           
           } else if (blnIPoster == true) {
@@ -778,7 +773,7 @@ public class escape_room extends PApplet {
       intLevel += 1;
       intPlayerX = 664;
 
-    } else if (intPlayerY <= 16 && intLevel == 5 && blnNextLevel[2] == true) {
+    } else if (intLevel == 5 && intPlayerY <= 16 && blnNextLevel[2] == true) {
 
       intLevel += 1;
       intPlayerY = 664;
@@ -788,12 +783,12 @@ public class escape_room extends PApplet {
       intLevel += 1;
       intPlayerX = 664;
 
-    } else if (intPlayerX >= 664 && intLevel == 7 && blnNextLevel[3] == true) {
+    } else if (intLevel == 7 && intPlayerX < 16 && blnNextLevel[3] == true) {
 
-      intLevel += 1;
-      intPlayerX = 16;
+      intLevel += 2;
+      intPlayerX = 664;
 
-    } else if (intPlayerY >= 664 && intLevel == 10 && blnNextLevel[4] == true) {
+    } else if (intLevel == 10 && intPlayerY > 664 && blnNextLevel[4] == true) {
 
       intLevel += 1;
       intPlayerY = 16;
@@ -821,7 +816,13 @@ public class escape_room extends PApplet {
       intLevel -= 1;
       intPlayerY = 16;
 
-    }
+    } else if (intLevel == 9 && intPlayerX > 664) {
+
+      // goes down 2 levels becuaes the player enters into the top floor of that room
+      intLevel -= 2;
+      intPlayerX = 16;
+
+    } 
 
   }
 
