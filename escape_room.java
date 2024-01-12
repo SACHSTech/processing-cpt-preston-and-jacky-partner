@@ -43,7 +43,7 @@ public class escape_room extends PApplet {
 
   // leveling variables 
   int intNumLevels = 10;
-  int intLevel = 7;
+  int intLevel = 0;
   boolean[] blnNextLevel = {true,false,false,false,false,false};
 
   // number of frames for each player animation 
@@ -739,11 +739,9 @@ public class escape_room extends PApplet {
       // gives a hint to the player if they are trying to interact with the trap door before performing all the needed steps before it 
       } else if (blnLockedTrapDoor == true) {
 
-        text("You pull with all your might, but it seems to be sealed tight",120,500);
+        text("You pull with all your might, but it seems to be sealed tight",75,500);
 
       }
-
-
     }
   }
 
@@ -781,7 +779,7 @@ public class escape_room extends PApplet {
     } else if (intLevel == 6 && intPlayerY < 16) {
 
       intLevel += 1;
-      intPlayerX = 664;
+      intPlayerY = 664;
 
     } else if (intLevel == 7 && intPlayerX < 16 && blnNextLevel[3] == true) {
 
@@ -1026,8 +1024,6 @@ public class escape_room extends PApplet {
           }
         }
       }
-
-      
     }
   }
 
