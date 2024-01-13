@@ -110,7 +110,6 @@ public class escape_room extends PApplet {
 
     }
   
-  
     for (int i = 0; i < intNumFrames; i++) {
       
       imgPlayerRight[i] = loadImage("escape_room/player/playerRight" + i + ".png");
