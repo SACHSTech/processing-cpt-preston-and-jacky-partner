@@ -17,8 +17,8 @@ public class escape_room extends PApplet {
 
   // level 2 and 3 variables 
   PImage[] imgPage;
-  boolean blnVerify = false;
   PImage imgSafe;
+  boolean blnVerify = false;
   boolean blnPage, blnSafe = false;
   int intPageNumber = 0;
   String strCode = "";
@@ -26,7 +26,7 @@ public class escape_room extends PApplet {
   // level 5 variable 
   String strPassword = "";
 
-  // level 7 boolean values
+  // level 7 variables
   boolean blnRickPoster, blnGundamPoster, blnIPoster, blnKeyI, blnTrapDoor, blnLockedTrapDoor = false;
 
   // player direction
@@ -36,15 +36,15 @@ public class escape_room extends PApplet {
   boolean blnGameStarting = true;
   boolean blnGameEnding = false;
 
-  // game O2 meter variables
+  // game oxygen meter variables
+  boolean blnOxygenMeter = false;
   int intOxygenMeter = 100;
   int intTotalOxygen;
-  boolean blnOxygenMeter = false;
 
-  // leveling variables 
+  // level variables 
+  boolean[] blnNextLevel = {true,false,false,false,false,false};
   int intNumLevels = 10;
   int intLevel = 0;
-  boolean[] blnNextLevel = {true,false,false,false,false,false};
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -54,7 +54,7 @@ public class escape_room extends PApplet {
   int intPlayerX = 300;
   int intPlayerY = 300;
 
-  // movement booleans 
+  // player booleans 
   boolean blnUp, blnDown, blnLeft, blnRight, blnInteract, blnLeftArrow, blnRightArrow;
 
   /**
@@ -172,7 +172,6 @@ public class escape_room extends PApplet {
       text("mission failed sucessfully, we'll get'em next time",width / 2,height / 2);
 
     }
-
   }
 
   /**
@@ -435,7 +434,6 @@ public class escape_room extends PApplet {
             delay(300);
 
           }
-        
         }
 
       } else if (intLevel == 7) {
