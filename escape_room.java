@@ -15,54 +15,36 @@ public class escape_room extends PApplet {
   PImage[] imgPlayerUp;
   PImage[] imgPlayerDown;
 
-  // paper on desk popup
+  // level 2 and 3 variables 
   PImage[] imgPage;
-
-  // boolean for verification for safe combo
-  boolean blnVerify = false;
-
-  // safe popup
   PImage imgSafe;
-
-  // boolean to detect if the player has interacted with the page on the desk 
+  boolean blnVerify = false;
   boolean blnPage, blnSafe = false;
-
-  // page number
   int intPageNumber = 0;
+  String strCode = "";
+
+  // level 5 variable 
+  String strPassword = "";
+
+  // level 7 variables
+  boolean blnRickPoster, blnGundamPoster, blnIPoster, blnKeyI, blnTrapDoor, blnLockedTrapDoor = false;
 
   // player direction
   String strDirection = "Down";
 
-  // game starting boolean
+  // game starting and ending variables
   boolean blnGameStarting = true;
-
-  // boolean for oxygen meter
-  boolean blnOxygenMeter = false;
-
-  // game ending boolean 
   boolean blnGameEnding = false;
 
-  // string for safe combination
-  String strCode = "";
-
-  // next level boolean
-  boolean[] blnNextLevel = {true,false,false,false,false,false};
-
-  // game O2 meter
+  // game oxygen meter variables
+  boolean blnOxygenMeter = false;
   int intOxygenMeter = 100;
   int intTotalOxygen;
 
-  // number of levels
+  // level variables 
+  boolean[] blnNextLevel = {true,false,false,false,false,false};
   int intNumLevels = 10;
-
-  // current level
-  int intLevel = 7;
-
-  // password for level 2
-  String strPassword = "";
-
-  // health
-  int intHealth = 100;
+  int intLevel = 0;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -71,11 +53,8 @@ public class escape_room extends PApplet {
   // player position 
   int intPlayerX = 300;
   int intPlayerY = 300;
-	
-  // level 7 boolean values
-  boolean blnRickPoster, blnGundamPoster, blnIPoster, blnKeyI, blnTrapDoor = false;
 
-  // movement booleans 
+  // player booleans 
   boolean blnUp, blnDown, blnLeft, blnRight, blnInteract, blnLeftArrow, blnRightArrow;
 
   /**
@@ -131,7 +110,6 @@ public class escape_room extends PApplet {
 
     }
   
-  
     for (int i = 0; i < intNumFrames; i++) {
       
       imgPlayerRight[i] = loadImage("escape_room/player/playerRight" + i + ".png");
@@ -176,8 +154,8 @@ public class escape_room extends PApplet {
       playerUpdate();
       drawPopUps();
       nextLevel();
-      System.out.println(blnTrapDoor);
 
+    // draws a screen if the player has completed the game without running out of oxygen 
     } else if (blnGameEnding == true) {
 
       background(0);
@@ -194,9 +172,11 @@ public class escape_room extends PApplet {
       text("mission failed sucessfully, we'll get'em next time",width / 2,height / 2);
 
     }
-
   }
 
+  /**
+   * draws a starting screen for the game and will allow the player to decide difficulty before starting 
+   */
   public void startingScreen() {
   
   }
@@ -220,12 +200,17 @@ public class escape_room extends PApplet {
       fill(0);
       rect(0,0,width,8);
 
+    } else if (intLevel == 7 && blnNextLevel[3] == false) {
+
+      fill(0);
+      rect(0,0,8,height);
+
     }
 
   }
 
   /**
-   * draws the oxygen meter
+   * draws the oxygen meter and keeps track if the player has oxygen left for the rest of the game
    */
   public void oxygenMeter() {
 
@@ -260,6 +245,7 @@ public class escape_room extends PApplet {
    */
   public void playerMovementAndCollisions() {
 
+    // prevents players from moving if they are interacting with an object
     if (blnPage == false && blnSafe == false && blnRickPoster == false && blnGundamPoster == false && blnIPoster == false)  {
       // left player collision detection
       if (blnLeft == true && (get(intPlayerX - 8, intPlayerY + 54) != -1.6777216E7 && get(intPlayerX - 8, intPlayerY + 54) != -16776961)) {
@@ -296,12 +282,14 @@ public class escape_room extends PApplet {
    */
   public void playerInteractions() {
 
+    // detects if the player is trying to interact with an object, everything inside this if statement runs when that key is pressed
     if (blnInteract == true) {
 
       if (intLevel == 3) {
 
         if (intPlayerY < height / 2) {
 
+          // detection for the desk
           if (get(intPlayerX, intPlayerY - 8) == -16776961 || get(intPlayerX + 64, intPlayerY) == -16776961) {
 
               if (blnPage == true) {
@@ -309,6 +297,7 @@ public class escape_room extends PApplet {
                 blnPage = false;
                 delay(300);
   
+              // allows the player to leave the desk and page pop up if they think they have figured out the correct code for the room 
               } else if (blnPage == false) {
   
                 blnPage = true;
@@ -320,13 +309,16 @@ public class escape_room extends PApplet {
 
         } else {
 
+          // detection for the safe in the room 
           if (get(intPlayerX, intPlayerY + 64) == -16776961 || get(intPlayerX - 8, intPlayerY) == -16776961 || get(intPlayerX, intPlayerY - 8) == -16776961 ) {
 
+            // sees if the player is interacting with the safe
             if (blnSafe == true) {
   
                 blnSafe = false;
                 delay(300);
   
+            // allows the player to exit the safe pop up if they don't know the correct code 
             } else if (blnSafe == false) {
 
                 blnSafe = true;
@@ -336,6 +328,7 @@ public class escape_room extends PApplet {
           }
         }
 
+      // note, the quote we are using is "good morning everyone, please take your seats"
       } else if (intLevel == 5) {
 
         // uses position and colour detection to determine the key that the player is standing on top of. It will then print out the specific key onto the screen 
@@ -441,18 +434,18 @@ public class escape_room extends PApplet {
             delay(300);
 
           }
-        
         }
 
       } else if (intLevel == 7) {
 
         if (intPlayerY < 300) {
+
+          // detection for the Rick Poster
           if ((intPlayerX > 50 && intPlayerX < 156) && (get(intPlayerX, intPlayerY - 8) == -16776961)) {
 
             if (blnRickPoster == false) {
 
               blnRickPoster = true;
-              
               delay(300);
 
             } else if (blnRickPoster == true) {
@@ -462,12 +455,12 @@ public class escape_room extends PApplet {
 
             }
 
+          // detection for the Gundam Poster 
           } else if ((intPlayerX > 170 && intPlayerX < 240) && (get(intPlayerX,intPlayerY - 16) == -16776961)) {
 
             if (blnGundamPoster == false) {
 
               blnGundamPoster = true;
-            
               delay(300);
 
 
@@ -478,15 +471,14 @@ public class escape_room extends PApplet {
 
             }
 
+          // detection for the Robotic Poster
           } else if ((intPlayerX > 300 && intPlayerX < 380) && (get(intPlayerX,intPlayerY - 8) == -16776961)) {
 
           if (blnIPoster == false) {
 
             blnIPoster = true;
-          
             delay(300);
-
-
+          
           } else if (blnIPoster == true) {
 
             blnIPoster = false;
@@ -496,22 +488,37 @@ public class escape_room extends PApplet {
 
           } 
 
+        // detection for the shelf that is in the room
         } else if (get(intPlayerX, intPlayerY + 64) == -16776961 || get(intPlayerX + 42, intPlayerY + 64) == - 16776961){
           
           blnKeyI = true;
 
+        // detects if the player is trying to interact with the trap door before doing all the needed steps before it 
+        }  else if (blnTrapDoor == false && (get(intPlayerX, intPlayerY + 56) == -256 || get(intPlayerX + 42, intPlayerY + 56) == -256)) {
+
+          blnLockedTrapDoor = true; 
+            
+        // detects if the player is trying to interact with the trap door after performing all the needed tasks, this will also allow the player to move down a floor in that room 
         } else if (blnTrapDoor == true && (get(intPlayerX, intPlayerY + 56) == -256 || get(intPlayerX + 42, intPlayerY + 56) == -256)) {
 
           intLevel += 1;
-            
-        }
 
-      } else if (intLevel == 10) {
+        }  
+
+      // allows the player to go back through the trap door to the uppper floor 
+      } else if (intLevel == 8 && (get(intPlayerX, intPlayerY + 56) == -256 || get(intPlayerX + 42, intPlayerY + 56) == -256)) {
+
+        intLevel -= 1;
 
       }
-
     } 
+    
+    // passively detects if the player is still standing on the trap door even though they can't open it. Does not require the player to hit any keys 
+    if (intLevel == 7 &&  (get(intPlayerX, intPlayerY + 56) != -256 || get(intPlayerX + 42, intPlayerY + 56) != -256)) {
 
+      blnLockedTrapDoor = false;
+
+    }
   }
 
   /**
@@ -693,8 +700,10 @@ public class escape_room extends PApplet {
         blnNextLevel[2] = false;
 
       }
+      
     } else if (intLevel == 7) {
 
+      // pops up text when the player interacts with the Rick Poster
       if (blnRickPoster == true) {
 
         fill(255);
@@ -702,6 +711,7 @@ public class escape_room extends PApplet {
         text("imagine getting rick rolled", 215, 500);
         
 
+      // pops up text when the player interacts with the gundam poster 
       } else if (blnGundamPoster == true) {
 
         fill(255);
@@ -709,6 +719,7 @@ public class escape_room extends PApplet {
         text("looks like the creator was a gundam fan",150, 500);
            
 
+      // pops text once the player interacts with the robotic like poster 
       } else if (blnIPoster == true) {
 
         fill(255);
@@ -716,15 +727,21 @@ public class escape_room extends PApplet {
         text("You see a bent corner and decide", 150, 500);
         text("to pull on it revealing a I shaped hole in the wall", 100, 525);
 
+        // gives different more unique text if the player has found the specific key before ineracting with it 
         if (blnKeyI == true) {
+
           text("You put in the ''I'' shaped key that you found.", 120, 550);
           text("Clank, Whirrr, Hummmm, something must of happened", 75, 575);
           blnTrapDoor = true;
+
         }
 
+      // gives a hint to the player if they are trying to interact with the trap door before performing all the needed steps before it 
+      } else if (blnLockedTrapDoor == true) {
+
+        text("You pull with all your might, but it seems to be sealed tight",75,500);
+
       }
-
-
     }
   }
 
@@ -743,7 +760,7 @@ public class escape_room extends PApplet {
 
       intLevel += 1;
 
-    // keeps track if the level has been completed previously 
+    // detects if the player is trying to move onto the next level, and if the player has met all the requirements to do so, it increases the level by 1 
     } else if (intPlayerX <= 16 && intLevel == 3 && blnNextLevel[1] == true) {
 
       intLevel += 1;
@@ -754,7 +771,7 @@ public class escape_room extends PApplet {
       intLevel += 1;
       intPlayerX = 664;
 
-    } else if (intPlayerY <= 16 && intLevel == 5 && blnNextLevel[2] == true) {
+    } else if (intLevel == 5 && intPlayerY <= 16 && blnNextLevel[2] == true) {
 
       intLevel += 1;
       intPlayerY = 664;
@@ -762,21 +779,21 @@ public class escape_room extends PApplet {
     } else if (intLevel == 6 && intPlayerY < 16) {
 
       intLevel += 1;
+      intPlayerY = 664;
+
+    } else if (intLevel == 7 && intPlayerX < 16 && blnNextLevel[3] == true) {
+
+      intLevel += 2;
       intPlayerX = 664;
 
-    } else if (intPlayerX >= 664 && intLevel == 7 && blnNextLevel[3] == true) {
-
-      intLevel += 1;
-      intPlayerX = 16;
-
-    } else if (intPlayerY >= 664 && intLevel == 10 && blnNextLevel[4] == true) {
+    } else if (intLevel == 10 && intPlayerY > 664 && blnNextLevel[4] == true) {
 
       intLevel += 1;
       intPlayerY = 16;
 
     }
 
-    // allows players to walk to previously completed levels and walk back to new ones too using hallways 
+    // detects if players are trying to leave that level, and it will move them down a level if they want to 
      if ((intLevel == 1 || intLevel == 0) && intPlayerX > 664) {
 
       intLevel -= 1;
@@ -797,7 +814,13 @@ public class escape_room extends PApplet {
       intLevel -= 1;
       intPlayerY = 16;
 
-    }
+    } else if (intLevel == 9 && intPlayerX > 664) {
+
+      // goes down 2 levels becuaes the player enters into the top floor of that room
+      intLevel -= 2;
+      intPlayerX = 16;
+
+    } 
 
   }
 
@@ -892,13 +915,13 @@ public class escape_room extends PApplet {
   }
 
   /**
-   * detects moues inputs 
+   * detects moues inputs and outputs it 
    */
   public void mousePressed() {
 
     if (blnSafe) {
 
-      // deletion key, placed outside the 2 if statement below becuaes it needs to accept input even when the passcode hits 6 digits long 
+      // deletion key is placed here because it needs to run even when the code has hit its max length 
       if ((mouseX > 261 && mouseX < 335) && (mouseY > 506 && mouseY < 592)) {
 
         if (strCode.length() > 0) {
@@ -908,7 +931,7 @@ public class escape_room extends PApplet {
         }
       }
 
-      // verification key, placed outside the if statement below becuaes it needs to accept input een when the passcode hits 6 digits long 
+      // verification key is placed here becuaes it needs to run even when the code has hit its max length 
       if ((mouseX > 96 && mouseX < 175) && (mouseY > 506 && mouseY < 592)) {
 
         blnVerify = true;
@@ -1001,11 +1024,13 @@ public class escape_room extends PApplet {
           }
         }
       }
-
-      
     }
   }
 
+  /**
+   * sees which direction the player is currently moving in 
+   * @return a boolean value as true that corresponds to the last direction that player as moving in 
+   */
   public boolean blnMoving() {
     return blnUp || blnDown || blnLeft || blnRight;
   }
