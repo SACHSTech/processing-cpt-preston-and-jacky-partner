@@ -31,7 +31,11 @@ public class escape_room extends PApplet {
 
   // level 9 variables
   PImage[] imgCards;
+  boolean[] blnCard = {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false};
+  int[] intX = {264,307,350,393,264,307,350,393,264,307,350,393,264,307,350,393};
+  int[] intY = {249,249,249,249,302,302,302,302,355,355,355,355,408,408,408,408};
   boolean blnTable = false;
+  boolean blnblue = false;
 
   // player direction
   String strDirection = "Down";
@@ -169,6 +173,8 @@ public class escape_room extends PApplet {
       drawPopUps();
       nextLevel();
 
+      System.out.println(blnblue);
+
     // draws a screen if the player has completed the game without running out of oxygen 
     } else if (blnGameEnding == true) {
 
@@ -219,6 +225,21 @@ public class escape_room extends PApplet {
       fill(0);
       rect(0,0,8,height);
 
+    } else if (intLevel == 8) {
+
+      // checks if the player is interacting with the table 
+      if (blnTable == true) {
+
+        for (int i = 0; i < 16; i++) {
+
+          if (blnCard[i] == false) {
+
+            fill(0,0,255);
+            rect(intX[i],intY[i],32,43);
+
+          }
+        }
+      }
     }
 
   }
@@ -780,15 +801,13 @@ public class escape_room extends PApplet {
     } else if (intLevel == 8) {
 
       // checks if the player is interacting with the table 
-      if (blnTable == true) {
+      if (blnTable == true) {  
 
-        // uses a for loop to set the y level 
-        for (int y = 249; y <= 460; y += 53) {
+        for (int i = 0; i < 16; i++) {
 
-          // uses a for loop to set the x level 
-          for (int x = 264; x <= 435; x += 43) {
+          if (blnCard[i] == false) {
 
-            image(imgCards[0],x,y);
+            image(imgCards[0],intX[i],intY[i]);
 
           }
         }
@@ -970,7 +989,7 @@ public class escape_room extends PApplet {
    */
   public void mousePressed() {
 
-    if (blnSafe) {
+    if (blnSafe == true) {
 
       // deletion key is placed here because it needs to run even when the code has hit its max length 
       if ((mouseX > 261 && mouseX < 335) && (mouseY > 506 && mouseY < 592)) {
@@ -1073,6 +1092,88 @@ public class escape_room extends PApplet {
             strCode += '0';
 
           }
+        }
+      }
+    } else if (blnTable == true) {
+
+      if (mouseY > 249 && mouseY < 297) {
+
+        if (mouseX > 258 && mouseX < 300) {
+
+          blnCard[0] = true;            
+
+        } else if (mouseX > 305 && mouseX < 343) {
+
+          blnCard[1] = true;
+
+        } else if (mouseX > 344 && mouseX < 386) {
+
+          blnCard[2] = true;
+
+        } else if (mouseX > 387 && mouseX < 425) {
+
+          blnCard[3] = true;
+          
+        }
+
+      } else if (mouseY > 300 && mouseY < 348) {
+
+        if (mouseX > 258 && mouseX < 300) {
+
+          blnCard[4] = true;            
+
+        } else if (mouseX > 305 && mouseX < 343) {
+
+          blnCard[5] = true;
+
+        } else if (mouseX > 344 && mouseX < 386) {
+
+          blnCard[6] = true;
+
+        } else if (mouseX > 387 && mouseX < 425) {
+
+          blnCard[7] = true;
+          
+        }
+
+      } else if (mouseY > 351 && mouseY < 399) {
+
+        if (mouseX > 258 && mouseX < 300) {
+
+          blnCard[8] = true;            
+
+        } else if (mouseX > 305 && mouseX < 343) {
+
+          blnCard[9] = true;
+
+        } else if (mouseX > 344 && mouseX < 386) {
+
+          blnCard[10] = true;
+
+        } else if (mouseX > 387 && mouseX < 425) {
+
+          blnCard[11] = true;
+          
+        }
+
+      } else if (mouseY > 405 && mouseY < 453) {
+
+        if (mouseX > 258 && mouseX < 300) {
+
+          blnCard[12] = true;            
+
+        } else if (mouseX > 305 && mouseX < 343) {
+
+          blnCard[13] = true;
+
+        } else if (mouseX > 344 && mouseX < 386) {
+
+          blnCard[14] = true;
+
+        } else if (mouseX > 387 && mouseX < 425) {
+
+          blnCard[15] = true;
+          
         }
       }
     }
