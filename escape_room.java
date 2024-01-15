@@ -779,10 +779,13 @@ public class escape_room extends PApplet {
       }
     } else if (intLevel == 8) {
 
+      // checks if the player is interacting with the table 
       if (blnTable == true) {
 
+        // uses a for loop to set the y level 
         for (int y = 249; y <= 460; y += 53) {
 
+          // uses a for loop to set the x level 
           for (int x = 264; x <= 435; x += 43) {
 
             image(imgCards[0],x,y);
