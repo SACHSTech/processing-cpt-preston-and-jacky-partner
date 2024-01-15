@@ -35,7 +35,9 @@ public class escape_room extends PApplet {
   int[] intX = {264,307,350,393,264,307,350,393,264,307,350,393,264,307,350,393};
   int[] intY = {249,249,249,249,302,302,302,302,355,355,355,355,408,408,408,408};
   boolean blnTable = false;
-  boolean blnblue = false;
+  int intCardsFlipped = 0;
+  int intCardFlipped1; 
+  int intCardFlipped2;
 
   // player direction
   String strDirection = "Down";
@@ -173,8 +175,7 @@ public class escape_room extends PApplet {
       drawPopUps();
       nextLevel();
 
-      System.out.println(blnblue);
-
+      System.out.println(intCardsFlipped);
     // draws a screen if the player has completed the game without running out of oxygen 
     } else if (blnGameEnding == true) {
 
@@ -808,6 +809,9 @@ public class escape_room extends PApplet {
           if (blnCard[i] == false) {
 
             image(imgCards[0],intX[i],intY[i]);
+
+          } else if (blnCard[i] == true) {
+
 
           }
         }
