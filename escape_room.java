@@ -29,6 +29,9 @@ public class escape_room extends PApplet {
   // level 7 variables
   boolean blnRickPoster, blnGundamPoster, blnIPoster, blnKeyI, blnTrapDoor, blnLockedTrapDoor = false;
 
+  // level 9 variables
+  PImage[] imgCards;
+
   // player direction
   String strDirection = "Down";
 
