@@ -31,6 +31,7 @@ public class escape_room extends PApplet {
 
   // level 9 variables
   PImage[] imgCards;
+  boolean blnTable = false;
 
   // player direction
   String strDirection = "Down";
@@ -47,7 +48,7 @@ public class escape_room extends PApplet {
   // level variables 
   boolean[] blnNextLevel = {true,false,false,false,false,false};
   int intNumLevels = 10;
-  int intLevel = 0;
+  int intLevel = 8;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -92,7 +93,11 @@ public class escape_room extends PApplet {
     // setting up image variable for up movement animation 
     imgPlayerUp = new PImage[intNumFrames];
 
+    // settiing up image variables for pages
     imgPage = new PImage[2];
+
+    // setting up image variables for cards
+    imgCards = new PImage[8];
 
     for (int i = 0; i < intNumLevels; i++) {
 
@@ -136,6 +141,12 @@ public class escape_room extends PApplet {
 
     imgPage[0] = loadImage("escape_room/popups/page" + 0 + ".png");
     imgPage[1] = loadImage("escape_room/popups/page" + 1 + ".png");
+
+    for (int i = 0; i < 8; i++) {
+
+      imgCards[i] = loadImage("escape_room/popups/card" + i + ".png");
+
+    }
 
     imgSafe = loadImage("escape_room/popups/safe.png");
 
@@ -509,15 +520,36 @@ public class escape_room extends PApplet {
         }  
 
       // allows the player to go back through the trap door to the uppper floor 
-      } else if (intLevel == 8 && (get(intPlayerX, intPlayerY + 56) == -256 || get(intPlayerX + 42, intPlayerY + 56) == -256)) {
+      } else if (intLevel == 8) {
 
-        intLevel -= 1;
+        if (get(intPlayerX, intPlayerY + 56) == -256 || get(intPlayerX + 42, intPlayerY + 56) == -256) {
+          
+          intLevel -= 1;
 
-      }
+        }
+
+        // detects if the player is interacting with the table 
+        if ((get(intPlayerX,intPlayerY + 56) == -16776961) || (get(intPlayerX + 42,intPlayerY + 56) == -16776961) || (get(intPlayerX + 42, intPlayerY) == -16776961) || (get(intPlayerX,intPlayerY) == -16776961)) {
+
+          if (blnTable == true) {
+
+            blnTable = false;
+            delay(300);
+
+          } else if (blnTable == false) {
+
+            blnTable = true;
+            delay(300);
+
+          }
+
+        }
+
+      } 
     } 
     
     // passively detects if the player is still standing on the trap door even though they can't open it. Does not require the player to hit any keys 
-    if (intLevel == 7 &&  (get(intPlayerX, intPlayerY + 56) != -256 || get(intPlayerX + 42, intPlayerY + 56) != -256)) {
+    if (intLevel == 7 &&  (get(intPlayerX, intPlayerY + 64) != -256 || get(intPlayerX + 42, intPlayerY + 64) != -256)) {
 
       blnLockedTrapDoor = false;
 
@@ -744,6 +776,19 @@ public class escape_room extends PApplet {
 
         text("You pull with all your might, but it seems to be sealed tight",75,500);
 
+      }
+    } else if (intLevel == 8) {
+
+      if (blnTable == true) {
+
+        for (int y = 249; y <= 460; y += 53) {
+
+          for (int x = 264; x <= 435; x += 43) {
+
+            image(imgCards[0],x,y);
+
+          }
+        }
       }
     }
   }
