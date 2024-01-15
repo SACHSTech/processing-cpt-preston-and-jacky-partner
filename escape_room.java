@@ -35,6 +35,7 @@ public class escape_room extends PApplet {
   int[] intX = {264,307,350,393,264,307,350,393,264,307,350,393,264,307,350,393};
   int[] intY = {249,249,249,249,302,302,302,302,355,355,355,355,408,408,408,408};
   boolean blnTable = false;
+  boolean blnCardFlipped = false;
   int intCardsFlipped = 0;
   int intCardFlipped1; 
   int intCardFlipped2;
@@ -812,9 +813,34 @@ public class escape_room extends PApplet {
 
           } else if (blnCard[i] == true) {
 
+            blnCardFlipped = true;
+
+            if (intCardsFlipped < 1) {
+
+              intCardFlipped1 = i;
+
+            } else if (intCardsFlipped > 1) {
+
+              intCardFlipped2 = i;
+
+            }
 
           }
         }
+
+        if (blnCardFlipped == true) {
+
+          intCardsFlipped += 1;
+          blnCardFlipped = false;
+
+        } if (intCardsFlipped == 2) {
+
+          blnCard[intCardFlipped1] = false;
+          blnCard[intCardFlipped2] = false;
+          intCardsFlipped = 0;
+
+        }
+
       }
     }
   }
