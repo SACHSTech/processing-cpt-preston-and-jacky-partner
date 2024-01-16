@@ -1,6 +1,5 @@
 import processing.core.PApplet;
 import processing.core.PImage;
-
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Random;
@@ -35,10 +34,11 @@ public class escape_room extends PApplet {
   // level 9 variables
   PImage[] imgCards;
   boolean[] blnCard = {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false};
+  boolean[] blnFound = {false,false,false,false,false,false,false,false};
   int[] intX = {264,307,350,393,264,307,350,393,264,307,350,393,264,307,350,393};
   int[] intY = {249,249,249,249,302,302,302,302,355,355,355,355,408,408,408,408};
   boolean blnTable = false;
-  boolean blnFound1, blnFound2, blnFound3, blnFound4, blnFound5, blnFound6, blnFound7, blnFound8 = false;
+  int intCardsFlipped = 0;
 
   // player direction
   String strDirection = "Down";
@@ -175,7 +175,7 @@ public class escape_room extends PApplet {
       playerUpdate();
       drawPopUps();
       nextLevel();
-
+      
     // draws a screen if the player has completed the game without running out of oxygen 
     } else if (blnGameEnding == true) {
 
@@ -809,70 +809,100 @@ public class escape_room extends PApplet {
           if (blnCard[i] == false) {
 
             image(imgCards[0],intX[i],intY[i]);
-
+            
           } else if (blnCard[i] == true) {
 
-            if (i == 0 && blnFound1 == false) {
+            if (i == 0 && blnFound[0] == false) {
 
               image(imgCards[1],intX[i],intY[i]);
 
-            } else if (i == 1 && blnFound1 == false) {
+            } 
+            
+            if (i == 1 && blnFound[0] == false) {
 
               image(imgCards[1],intX[i],intY[i]);
 
-            } else if (i == 2) {
+            } 
+            
+            if (i == 2 && blnFound[1] == false) {
 
               image(imgCards[2],intX[i],intY[i]);
 
-            } else if (i == 3) {
+            } 
+            
+            if (i == 3 && blnFound[1] == false) {
 
               image(imgCards[2],intX[i],intY[i]);
 
-            } else if (i == 4) {
+            } 
+            
+            if (i == 4 && blnFound[2] == false) {
 
               image(imgCards[3],intX[i],intY[i]);
 
-            } else if (i == 5) {
+            } 
+            
+            if (i == 5 && blnFound[2] == false) {
 
               image(imgCards[3],intX[i],intY[i]);
 
-            } else if (i == 6) {
+            } 
+            
+            if (i == 6 && blnFound[3] == false) {
 
               image(imgCards[4],intX[i],intY[i]);
 
-            } else if (i == 7) {
+            } 
+            
+            if (i == 7 && blnFound[3] == false) {
 
               image(imgCards[4],intX[i],intY[i]);
 
-            } else if (i == 8) {
+            } 
+            
+            if (i == 8 && blnFound[4] == false) {
 
               image(imgCards[5],intX[i],intY[i]);
 
-            } else if (i == 9) {
+            } 
+            
+            if (i == 9 && blnFound[4] == false) {
 
               image(imgCards[5],intX[i],intY[i]);
 
-            } else if (i == 10) {
+            } 
+            
+            if (i == 10 && blnFound[5] == false) {
 
               image(imgCards[6],intX[i],intY[i]);
 
-            } else if (i == 11) {
+            } 
+            
+            if (i == 11 && blnFound[5] == false) {
 
               image(imgCards[6],intX[i],intY[i]);
 
-            } else if (i == 12) {
+            } 
+            
+            if (i == 12 && blnFound[6] == false) {
 
               image(imgCards[7],intX[i],intY[i]);
 
-            } else if (i == 13) {
+            } 
+            
+            if (i == 13 && blnFound[6] == false) {
 
               image(imgCards[7],intX[i],intY[i]);
 
-            } else if (i == 14) {
+            } 
+            
+            if (i == 14 && blnFound[7] == false) {
 
               image(imgCards[8],intX[i],intY[i]);
 
-            } else if (i == 15) {
+            } 
+            
+            if (i == 15 && blnFound[7] == false) {
 
               image(imgCards[8],intX[i],intY[i]);
 
@@ -881,42 +911,111 @@ public class escape_room extends PApplet {
           } 
         }
 
-        if (blnCard[0] == true && blnCard[1] == true) {
+        if (intCardsFlipped >= 2) {
 
-            blnFound1 = true;
+          if (blnCard[0] == true && blnCard[1] == true) {
 
-        } else if (blnCard[2] == true && blnCard[3] == true) {
+            blnFound[0] = true;
+            intCardsFlipped = 0;;
 
-            blnFound2 = true;
+          } else {
 
-        } else if (blnCard[4] == true && blnCard[5] == true) {
+            blnCard[0] = false;
+            blnCard[1] = false;
+            intCardsFlipped = 0;
 
-          blnFound3 = true;
+          }
+          
+          if (blnCard[2] == true && blnCard[3] == true) {
 
-        } else if (blnCard[6] == true && blnCard[7] == true) {
+            blnFound[1] = true;
+            intCardsFlipped = 0;
 
-          blnFound4 = true;
+          } else {
 
-        } else if (blnCard[8] == true && blnCard[9] == true) {
+            blnCard[2] = false;
+            blnCard[3] = false;
+            intCardsFlipped = 0;
 
-          blnFound5 = true;
+          }
+          
+          if (blnCard[4] == true && blnCard[5] == true) {
 
-        } else if (blnCard[10] == true && blnCard[11] == true) {
+            blnFound[2] = true;
+            intCardsFlipped = 0;
 
-          blnFound6 = true;
+          } else {
 
-        } else if (blnCard[12] == true && blnCard[13] == true) {
+            blnCard[4] = false;
+            blnCard[5] = false;
+            intCardsFlipped = 0;
 
-          blnFound7 = true;
+          }
+          
+          if (blnCard[6] == true && blnCard[7] == true) {
 
-        } else if (blnCard[13] == true && blnCard[15] == true) {
+            blnFound[3] = true;
+            intCardsFlipped = 0;
 
-          blnFound8 = true;
+          } else {
 
-        } else {
+            blnCard[6] = false;
+            blnCard[7] = false;
+            intCardsFlipped = 0;
 
-          Arrays.fill(blnCard,false);
+          }
+          
+          if (blnCard[8] == true && blnCard[9] == true) {
 
+            blnFound[4] = true;
+            intCardsFlipped = 0;
+
+          } else {
+
+            blnCard[8] = false;
+            blnCard[9] = false;
+            intCardsFlipped = 0;
+
+          }
+          
+          if (blnCard[10] == true && blnCard[11] == true) {
+
+            blnFound[5] = true;
+            intCardsFlipped = 0;
+
+          } else {
+
+            blnCard[10] = false;
+            blnCard[11] = false;
+            intCardsFlipped = 0;
+
+          }
+          
+          if (blnCard[12] == true && blnCard[13] == true) {
+
+            blnFound[6] = true;
+            intCardsFlipped = 0;
+
+          } else {
+
+            blnCard[12] = false;
+            blnCard[13] = false;
+            intCardsFlipped = 0;
+
+          }
+          
+          if (blnCard[14] == true && blnCard[15] == true) {
+
+            blnFound[7] = true;
+            intCardsFlipped = 0;
+
+          } else {
+
+            blnCard[14] = false;
+            blnCard[15] = false;
+            intCardsFlipped = 0;
+
+          }
         }
       }
     }
@@ -1207,19 +1306,23 @@ public class escape_room extends PApplet {
 
         if (mouseX > 258 && mouseX < 300) {
 
-          blnCard[0] = true;            
+          blnCard[0] = true;  
+          intCardsFlipped += 1;          
 
         } else if (mouseX > 305 && mouseX < 343) {
 
           blnCard[1] = true;
+          intCardsFlipped += 1; 
 
         } else if (mouseX > 344 && mouseX < 386) {
 
           blnCard[2] = true;
+          intCardsFlipped += 1; 
 
         } else if (mouseX > 387 && mouseX < 425) {
 
           blnCard[3] = true;
+          intCardsFlipped += 1; 
           
         }
 
@@ -1227,19 +1330,23 @@ public class escape_room extends PApplet {
 
         if (mouseX > 258 && mouseX < 300) {
 
-          blnCard[4] = true;            
+          blnCard[4] = true;   
+          intCardsFlipped += 1;          
 
         } else if (mouseX > 305 && mouseX < 343) {
 
           blnCard[5] = true;
+          intCardsFlipped += 1; 
 
         } else if (mouseX > 344 && mouseX < 386) {
 
           blnCard[6] = true;
+          intCardsFlipped += 1; 
 
         } else if (mouseX > 387 && mouseX < 425) {
 
           blnCard[7] = true;
+          intCardsFlipped += 1; 
           
         }
 
@@ -1247,19 +1354,23 @@ public class escape_room extends PApplet {
 
         if (mouseX > 258 && mouseX < 300) {
 
-          blnCard[8] = true;            
+          blnCard[8] = true; 
+          intCardsFlipped += 1;            
 
         } else if (mouseX > 305 && mouseX < 343) {
 
           blnCard[9] = true;
+          intCardsFlipped += 1; 
 
         } else if (mouseX > 344 && mouseX < 386) {
 
           blnCard[10] = true;
+          intCardsFlipped += 1; 
 
         } else if (mouseX > 387 && mouseX < 425) {
 
           blnCard[11] = true;
+          intCardsFlipped += 1; 
           
         }
 
@@ -1267,19 +1378,23 @@ public class escape_room extends PApplet {
 
         if (mouseX > 258 && mouseX < 300) {
 
-          blnCard[12] = true;            
+          blnCard[12] = true;  
+          intCardsFlipped += 1;           
 
         } else if (mouseX > 305 && mouseX < 343) {
 
           blnCard[13] = true;
+          intCardsFlipped += 1; 
 
         } else if (mouseX > 344 && mouseX < 386) {
 
           blnCard[14] = true;
+          intCardsFlipped += 1; 
 
         } else if (mouseX > 387 && mouseX < 425) {
 
           blnCard[15] = true;
+          intCardsFlipped += 1; 
           
         }
       }
