@@ -1,5 +1,7 @@
 import processing.core.PApplet;
 import processing.core.PImage;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -31,6 +33,12 @@ public class escape_room extends PApplet {
 
   // level 9 variables
   PImage[] imgCards;
+  boolean[] blnCard = {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false};
+  boolean[] blnFound = {false,false,false,false,false,false,false,false};
+  int[] intX = {264,307,350,393,264,307,350,393,264,307,350,393,264,307,350,393};
+  int[] intY = {249,249,249,249,302,302,302,302,355,355,355,355,408,408,408,408};
+  boolean blnTable = false;
+  int intCardsFlipped = 0;
 
   // player direction
   String strDirection = "Down";
@@ -47,7 +55,7 @@ public class escape_room extends PApplet {
   // level variables 
   boolean[] blnNextLevel = {true,false,false,false,false,false};
   int intNumLevels = 10;
-  int intLevel = 0;
+  int intLevel = 8;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -92,7 +100,11 @@ public class escape_room extends PApplet {
     // setting up image variable for up movement animation 
     imgPlayerUp = new PImage[intNumFrames];
 
+    // settiing up image variables for pages
     imgPage = new PImage[2];
+
+    // setting up image variables for cards
+    imgCards = new PImage[9];
 
     for (int i = 0; i < intNumLevels; i++) {
 
@@ -137,6 +149,12 @@ public class escape_room extends PApplet {
     imgPage[0] = loadImage("escape_room/popups/page" + 0 + ".png");
     imgPage[1] = loadImage("escape_room/popups/page" + 1 + ".png");
 
+    for (int i = 0; i <= 8; i++) {
+
+      imgCards[i] = loadImage("escape_room/popups/card" + i + ".png");
+
+    }
+
     imgSafe = loadImage("escape_room/popups/safe.png");
 
   }
@@ -157,7 +175,7 @@ public class escape_room extends PApplet {
       playerUpdate();
       drawPopUps();
       nextLevel();
-
+      
     // draws a screen if the player has completed the game without running out of oxygen 
     } else if (blnGameEnding == true) {
 
@@ -208,6 +226,21 @@ public class escape_room extends PApplet {
       fill(0);
       rect(0,0,8,height);
 
+    } else if (intLevel == 8) {
+
+      // checks if the player is interacting with the table 
+      if (blnTable == true) {
+
+        for (int i = 0; i < 16; i++) {
+
+          if (blnCard[i] == false) {
+
+            fill(0,0,255);
+            rect(intX[i],intY[i],32,43);
+
+          }
+        }
+      }
     }
 
   }
@@ -509,15 +542,36 @@ public class escape_room extends PApplet {
         }  
 
       // allows the player to go back through the trap door to the uppper floor 
-      } else if (intLevel == 8 && (get(intPlayerX, intPlayerY + 56) == -256 || get(intPlayerX + 42, intPlayerY + 56) == -256)) {
+      } else if (intLevel == 8) {
 
-        intLevel -= 1;
+        if (get(intPlayerX, intPlayerY + 56) == -256 || get(intPlayerX + 42, intPlayerY + 56) == -256) {
+          
+          intLevel -= 1;
 
-      }
+        }
+
+        // detects if the player is interacting with the table 
+        if ((get(intPlayerX,intPlayerY + 56) == -16776961) || (get(intPlayerX + 42,intPlayerY + 56) == -16776961) || (get(intPlayerX + 42, intPlayerY) == -16776961) || (get(intPlayerX,intPlayerY) == -16776961)) {
+
+          if (blnTable == true) {
+
+            blnTable = false;
+            delay(300);
+
+          } else if (blnTable == false) {
+
+            blnTable = true;
+            delay(300);
+
+          }
+
+        }
+
+      } 
     } 
     
     // passively detects if the player is still standing on the trap door even though they can't open it. Does not require the player to hit any keys 
-    if (intLevel == 7 &&  (get(intPlayerX, intPlayerY + 56) != -256 || get(intPlayerX + 42, intPlayerY + 56) != -256)) {
+    if (intLevel == 7 &&  (get(intPlayerX, intPlayerY + 64) != -256 || get(intPlayerX + 42, intPlayerY + 64) != -256)) {
 
       blnLockedTrapDoor = false;
 
@@ -745,6 +799,225 @@ public class escape_room extends PApplet {
         text("You pull with all your might, but it seems to be sealed tight",75,500);
 
       }
+    } else if (intLevel == 8) {
+
+      // checks if the player is interacting with the table 
+      if (blnTable == true) {  
+        
+        for (int i = 0; i < 16; i++) {
+
+          if (blnCard[i] == false) {
+
+            image(imgCards[0],intX[i],intY[i]);
+            
+          } else if (blnCard[i] == true) {
+
+            if (i == 0 && blnFound[0] == false) {
+
+              image(imgCards[1],intX[i],intY[i]);
+
+            } 
+            
+            if (i == 1 && blnFound[0] == false) {
+
+              image(imgCards[1],intX[i],intY[i]);
+
+            } 
+            
+            if (i == 2 && blnFound[1] == false) {
+
+              image(imgCards[2],intX[i],intY[i]);
+
+            } 
+            
+            if (i == 3 && blnFound[1] == false) {
+
+              image(imgCards[2],intX[i],intY[i]);
+
+            } 
+            
+            if (i == 4 && blnFound[2] == false) {
+
+              image(imgCards[3],intX[i],intY[i]);
+
+            } 
+            
+            if (i == 5 && blnFound[2] == false) {
+
+              image(imgCards[3],intX[i],intY[i]);
+
+            } 
+            
+            if (i == 6 && blnFound[3] == false) {
+
+              image(imgCards[4],intX[i],intY[i]);
+
+            } 
+            
+            if (i == 7 && blnFound[3] == false) {
+
+              image(imgCards[4],intX[i],intY[i]);
+
+            } 
+            
+            if (i == 8 && blnFound[4] == false) {
+
+              image(imgCards[5],intX[i],intY[i]);
+
+            } 
+            
+            if (i == 9 && blnFound[4] == false) {
+
+              image(imgCards[5],intX[i],intY[i]);
+
+            } 
+            
+            if (i == 10 && blnFound[5] == false) {
+
+              image(imgCards[6],intX[i],intY[i]);
+
+            } 
+            
+            if (i == 11 && blnFound[5] == false) {
+
+              image(imgCards[6],intX[i],intY[i]);
+
+            } 
+            
+            if (i == 12 && blnFound[6] == false) {
+
+              image(imgCards[7],intX[i],intY[i]);
+
+            } 
+            
+            if (i == 13 && blnFound[6] == false) {
+
+              image(imgCards[7],intX[i],intY[i]);
+
+            } 
+            
+            if (i == 14 && blnFound[7] == false) {
+
+              image(imgCards[8],intX[i],intY[i]);
+
+            } 
+            
+            if (i == 15 && blnFound[7] == false) {
+
+              image(imgCards[8],intX[i],intY[i]);
+
+            }
+
+          } 
+        }
+
+        if (intCardsFlipped >= 2) {
+
+          if (blnCard[0] == true && blnCard[1] == true) {
+
+            blnFound[0] = true;
+            intCardsFlipped = 0;;
+
+          } else {
+
+            blnCard[0] = false;
+            blnCard[1] = false;
+            intCardsFlipped = 0;
+
+          }
+          
+          if (blnCard[2] == true && blnCard[3] == true) {
+
+            blnFound[1] = true;
+            intCardsFlipped = 0;
+
+          } else {
+
+            blnCard[2] = false;
+            blnCard[3] = false;
+            intCardsFlipped = 0;
+
+          }
+          
+          if (blnCard[4] == true && blnCard[5] == true) {
+
+            blnFound[2] = true;
+            intCardsFlipped = 0;
+
+          } else {
+
+            blnCard[4] = false;
+            blnCard[5] = false;
+            intCardsFlipped = 0;
+
+          }
+          
+          if (blnCard[6] == true && blnCard[7] == true) {
+
+            blnFound[3] = true;
+            intCardsFlipped = 0;
+
+          } else {
+
+            blnCard[6] = false;
+            blnCard[7] = false;
+            intCardsFlipped = 0;
+
+          }
+          
+          if (blnCard[8] == true && blnCard[9] == true) {
+
+            blnFound[4] = true;
+            intCardsFlipped = 0;
+
+          } else {
+
+            blnCard[8] = false;
+            blnCard[9] = false;
+            intCardsFlipped = 0;
+
+          }
+          
+          if (blnCard[10] == true && blnCard[11] == true) {
+
+            blnFound[5] = true;
+            intCardsFlipped = 0;
+
+          } else {
+
+            blnCard[10] = false;
+            blnCard[11] = false;
+            intCardsFlipped = 0;
+
+          }
+          
+          if (blnCard[12] == true && blnCard[13] == true) {
+
+            blnFound[6] = true;
+            intCardsFlipped = 0;
+
+          } else {
+
+            blnCard[12] = false;
+            blnCard[13] = false;
+            intCardsFlipped = 0;
+
+          }
+          
+          if (blnCard[14] == true && blnCard[15] == true) {
+
+            blnFound[7] = true;
+            intCardsFlipped = 0;
+
+          } else {
+
+            blnCard[14] = false;
+            blnCard[15] = false;
+            intCardsFlipped = 0;
+
+          }
+        }
+      }
     }
   }
 
@@ -922,7 +1195,7 @@ public class escape_room extends PApplet {
    */
   public void mousePressed() {
 
-    if (blnSafe) {
+    if (blnSafe == true) {
 
       // deletion key is placed here because it needs to run even when the code has hit its max length 
       if ((mouseX > 261 && mouseX < 335) && (mouseY > 506 && mouseY < 592)) {
@@ -1025,6 +1298,104 @@ public class escape_room extends PApplet {
             strCode += '0';
 
           }
+        }
+      }
+    } else if (blnTable == true) {
+
+      if (mouseY > 249 && mouseY < 297) {
+
+        if (mouseX > 258 && mouseX < 300) {
+
+          blnCard[0] = true;  
+          intCardsFlipped += 1;          
+
+        } else if (mouseX > 305 && mouseX < 343) {
+
+          blnCard[1] = true;
+          intCardsFlipped += 1; 
+
+        } else if (mouseX > 344 && mouseX < 386) {
+
+          blnCard[2] = true;
+          intCardsFlipped += 1; 
+
+        } else if (mouseX > 387 && mouseX < 425) {
+
+          blnCard[3] = true;
+          intCardsFlipped += 1; 
+          
+        }
+
+      } else if (mouseY > 300 && mouseY < 348) {
+
+        if (mouseX > 258 && mouseX < 300) {
+
+          blnCard[4] = true;   
+          intCardsFlipped += 1;          
+
+        } else if (mouseX > 305 && mouseX < 343) {
+
+          blnCard[5] = true;
+          intCardsFlipped += 1; 
+
+        } else if (mouseX > 344 && mouseX < 386) {
+
+          blnCard[6] = true;
+          intCardsFlipped += 1; 
+
+        } else if (mouseX > 387 && mouseX < 425) {
+
+          blnCard[7] = true;
+          intCardsFlipped += 1; 
+          
+        }
+
+      } else if (mouseY > 351 && mouseY < 399) {
+
+        if (mouseX > 258 && mouseX < 300) {
+
+          blnCard[8] = true; 
+          intCardsFlipped += 1;            
+
+        } else if (mouseX > 305 && mouseX < 343) {
+
+          blnCard[9] = true;
+          intCardsFlipped += 1; 
+
+        } else if (mouseX > 344 && mouseX < 386) {
+
+          blnCard[10] = true;
+          intCardsFlipped += 1; 
+
+        } else if (mouseX > 387 && mouseX < 425) {
+
+          blnCard[11] = true;
+          intCardsFlipped += 1; 
+          
+        }
+
+      } else if (mouseY > 405 && mouseY < 453) {
+
+        if (mouseX > 258 && mouseX < 300) {
+
+          blnCard[12] = true;  
+          intCardsFlipped += 1;           
+
+        } else if (mouseX > 305 && mouseX < 343) {
+
+          blnCard[13] = true;
+          intCardsFlipped += 1; 
+
+        } else if (mouseX > 344 && mouseX < 386) {
+
+          blnCard[14] = true;
+          intCardsFlipped += 1; 
+
+        } else if (mouseX > 387 && mouseX < 425) {
+
+          blnCard[15] = true;
+          intCardsFlipped += 1; 
+          
         }
       }
     }
