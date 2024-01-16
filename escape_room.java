@@ -1,5 +1,8 @@
 import processing.core.PApplet;
 import processing.core.PImage;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -35,6 +38,7 @@ public class escape_room extends PApplet {
   int[] intX = {264,307,350,393,264,307,350,393,264,307,350,393,264,307,350,393};
   int[] intY = {249,249,249,249,302,302,302,302,355,355,355,355,408,408,408,408};
   boolean blnTable = false;
+  boolean blnFound1, blnFound2, blnFound3, blnFound4, blnFound5, blnFound6, blnFound7, blnFound8 = false;
 
   // player direction
   String strDirection = "Down";
@@ -100,7 +104,7 @@ public class escape_room extends PApplet {
     imgPage = new PImage[2];
 
     // setting up image variables for cards
-    imgCards = new PImage[8];
+    imgCards = new PImage[9];
 
     for (int i = 0; i < intNumLevels; i++) {
 
@@ -145,7 +149,7 @@ public class escape_room extends PApplet {
     imgPage[0] = loadImage("escape_room/popups/page" + 0 + ".png");
     imgPage[1] = loadImage("escape_room/popups/page" + 1 + ".png");
 
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i <= 8; i++) {
 
       imgCards[i] = loadImage("escape_room/popups/card" + i + ".png");
 
@@ -799,7 +803,7 @@ public class escape_room extends PApplet {
 
       // checks if the player is interacting with the table 
       if (blnTable == true) {  
-
+        
         for (int i = 0; i < 16; i++) {
 
           if (blnCard[i] == false) {
@@ -808,8 +812,111 @@ public class escape_room extends PApplet {
 
           } else if (blnCard[i] == true) {
 
-           
-          }
+            if (i == 0 && blnFound1 == false) {
+
+              image(imgCards[1],intX[i],intY[i]);
+
+            } else if (i == 1 && blnFound1 == false) {
+
+              image(imgCards[1],intX[i],intY[i]);
+
+            } else if (i == 2) {
+
+              image(imgCards[2],intX[i],intY[i]);
+
+            } else if (i == 3) {
+
+              image(imgCards[2],intX[i],intY[i]);
+
+            } else if (i == 4) {
+
+              image(imgCards[3],intX[i],intY[i]);
+
+            } else if (i == 5) {
+
+              image(imgCards[3],intX[i],intY[i]);
+
+            } else if (i == 6) {
+
+              image(imgCards[4],intX[i],intY[i]);
+
+            } else if (i == 7) {
+
+              image(imgCards[4],intX[i],intY[i]);
+
+            } else if (i == 8) {
+
+              image(imgCards[5],intX[i],intY[i]);
+
+            } else if (i == 9) {
+
+              image(imgCards[5],intX[i],intY[i]);
+
+            } else if (i == 10) {
+
+              image(imgCards[6],intX[i],intY[i]);
+
+            } else if (i == 11) {
+
+              image(imgCards[6],intX[i],intY[i]);
+
+            } else if (i == 12) {
+
+              image(imgCards[7],intX[i],intY[i]);
+
+            } else if (i == 13) {
+
+              image(imgCards[7],intX[i],intY[i]);
+
+            } else if (i == 14) {
+
+              image(imgCards[8],intX[i],intY[i]);
+
+            } else if (i == 15) {
+
+              image(imgCards[8],intX[i],intY[i]);
+
+            }
+
+          } 
+        }
+
+        if (blnCard[0] == true && blnCard[1] == true) {
+
+            blnFound1 = true;
+
+        } else if (blnCard[2] == true && blnCard[3] == true) {
+
+            blnFound2 = true;
+
+        } else if (blnCard[4] == true && blnCard[5] == true) {
+
+          blnFound3 = true;
+
+        } else if (blnCard[6] == true && blnCard[7] == true) {
+
+          blnFound4 = true;
+
+        } else if (blnCard[8] == true && blnCard[9] == true) {
+
+          blnFound5 = true;
+
+        } else if (blnCard[10] == true && blnCard[11] == true) {
+
+          blnFound6 = true;
+
+        } else if (blnCard[12] == true && blnCard[13] == true) {
+
+          blnFound7 = true;
+
+        } else if (blnCard[13] == true && blnCard[15] == true) {
+
+          blnFound8 = true;
+
+        } else {
+
+          Arrays.fill(blnCard,false);
+
         }
       }
     }
