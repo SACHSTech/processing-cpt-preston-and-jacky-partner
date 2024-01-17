@@ -42,7 +42,6 @@ public class escape_room extends PApplet {
   boolean blnStairs = false;
   int intCardDelay = 0;
   int intCrowBarCount = 0;
-
   int[] intCardLocations = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
   int[] intCardStatus = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
   int[] intX = {264,307,350,393,264,307,350,393,264,307,350,393,264,307,350,393};
@@ -979,7 +978,6 @@ public class escape_room extends PApplet {
             intCardStatus[9] = 0;
             intCardsFlipped = 0;
    
-
           }
           
           if (intCardStatus[10] == 1 && intCardStatus[11] == 1 && intCardDelay >= 30) {
@@ -995,7 +993,6 @@ public class escape_room extends PApplet {
             intCardStatus[10] = 0;
             intCardStatus[11] = 0;
             intCardsFlipped = 0;
-          
 
           }
           
@@ -1187,19 +1184,27 @@ public class escape_room extends PApplet {
 
       blnLeft = false;
 
-    } if (key == 'd' || key =='D') {
+    } 
+    
+    if (key == 'd' || key =='D') {
       
       blnRight = false;
 
-    } if (key == 'w' || key =='W') {
+    } 
+    
+    if (key == 'w' || key =='W') {
       
       blnUp = false;
 
-    } if (key == 's' || key =='S') {
+    } 
+    
+    if (key == 's' || key =='S') {
       
       blnDown = false;
 
-    } if (key == 'e' || key == 'E') {
+    } 
+    
+    if (key == 'e' || key == 'E') {
 
       blnInteract = false;
 
