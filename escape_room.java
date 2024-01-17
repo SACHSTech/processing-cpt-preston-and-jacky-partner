@@ -554,7 +554,7 @@ public class escape_room extends PApplet {
         // detects if the player is interacting with the table 
         if ((get(intPlayerX,intPlayerY + 56) == -16776961) || (get(intPlayerX + 42,intPlayerY + 56) == -16776961) || (get(intPlayerX + 42, intPlayerY) == -16776961) || (get(intPlayerX,intPlayerY) == -16776961)) {
 
-          if (intPlayerX < (width / 2)) {
+          if (intPlayerX < (width / 2) && intPlayerY > (height / 2)) {
             if (blnTable == true) {
 
               blnTable = false;
@@ -568,6 +568,10 @@ public class escape_room extends PApplet {
             }
           } else if (intPlayerX > (width / 2)) {
 
+
+          } else if (intPlayerX < (width / 2) && intPlayerY < (height / 2)) {
+
+            
 
           }
 
