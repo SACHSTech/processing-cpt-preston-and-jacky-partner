@@ -16,6 +16,9 @@ public class escape_room extends PApplet {
   PImage[] imgPlayerUp;
   PImage[] imgPlayerDown;
 
+  // starting screen variables
+  PImage imgStartingScreen;
+
   // level 2 and 3 variables 
   PImage[] imgPage;
   PImage imgSafe;
@@ -171,6 +174,8 @@ public class escape_room extends PApplet {
 
     imgStairs = loadImage("escape_room/popups/stairs.png");
 
+    imgStartingScreen = loadImage("escape_room/startScreen.png");
+
   }
 
   /**
@@ -178,9 +183,12 @@ public class escape_room extends PApplet {
    */
   public void draw() {
 
-    if (blnGameStarting == true && intOxygenMeter > 0) {
-     
+    if (blnGameStarting == false) {
+
       startingScreen();
+
+    } else if (blnGameStarting == true && intOxygenMeter > 0) {
+     
       drawCollisionMaps();
       playerMovementAndCollisions();
       playerInteractions();
@@ -214,6 +222,16 @@ public class escape_room extends PApplet {
    */
   public void startingScreen() {
   
+
+    if (blnGameStarting == false) {
+
+      image(imgStartingScreen,CENTER,CENTER);
+
+    } else if (blnGameStarting == true) {
+
+
+
+    }
   }
 
   /**
@@ -1200,6 +1218,12 @@ public class escape_room extends PApplet {
    * detects moues inputs and outputs it 
    */
   public void mousePressed() {
+
+    if (blnGameStarting == false) {
+
+      blnGameStarting = true;
+
+    }
 
     if (blnSafe == true) {
 
