@@ -57,13 +57,13 @@ public class escape_room extends PApplet {
 
   // game oxygen meter variables
   boolean blnOxygenMeter = false;
-  int intOxygenMeter = 100;
-  int intTotalOxygen;
+  int intOxygenMeter = 300;
+  int intTotalOxygen = 300;
 
   // level variables 
   boolean[] blnNextLevel = {true,false,false,false,false,false};
   int intNumLevels = 10;
-  int intLevel = 8;
+  int intLevel = 0;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -255,7 +255,7 @@ public class escape_room extends PApplet {
       rect(640,640,20, -intOxygenMeter);
       stroke(0,0,0);
       noFill();
-      rect(640,540,20,100);
+      rect(640,640,20, -intTotalOxygen);
     
       // slowly ticks away at the oxygen meter 
       if (frameCount % 60 == 0) {
@@ -802,7 +802,8 @@ public class escape_room extends PApplet {
 
         // gives different more unique text if the player has found the specific key before ineracting with it 
         if (blnKeyI == true) {
-
+          
+          textSize(20);
           text("You put in the ''I'' shaped key that you found.", 120, 550);
           text("Clank, Whirrr, Hummmm, something must of happened", 75, 575);
           blnTrapDoor = true;
@@ -812,6 +813,7 @@ public class escape_room extends PApplet {
       // gives a hint to the player if they are trying to interact with the trap door before performing all the needed steps before it 
       } else if (blnLockedTrapDoor == true) {
 
+        textSize(20);
         text("You pull with all your might, but it seems to be sealed tight",75,500);
 
       }
