@@ -1,6 +1,5 @@
 import processing.core.PApplet;
 import processing.core.PImage;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
@@ -33,9 +32,15 @@ public class escape_room extends PApplet {
 
   // level 9 variables
   PImage[] imgCards;
+  PImage imgCrowBar;
+  PImage imgStairs;
+  boolean[] blnFound = {false,false,false,false,false,false,false,false};
+  boolean blnCrowBar = false;
+  boolean blnStairs = false;
+  int intCrowBarCount = 0;
+
   int[] intCardLocations = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
   int[] intCardStatus = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-  boolean[] blnFound = {false,false,false,false,false,false,false,false};
   int[] intX = {264,307,350,393,264,307,350,393,264,307,350,393,264,307,350,393};
   int[] intY = {249,249,249,249,302,302,302,302,355,355,355,355,408,408,408,408};
   boolean blnTable = false;
@@ -159,6 +164,11 @@ public class escape_room extends PApplet {
     }
 
     imgSafe = loadImage("escape_room/popups/safe.png");
+
+    imgCrowBar = loadImage("escape_room/popups/crowbar.png");
+    imgCrowBar.resize(60,72);
+
+    imgStairs = loadImage("escape_room/popups/stairs.png");
 
   }
 
@@ -525,6 +535,7 @@ public class escape_room extends PApplet {
         } else if (blnTrapDoor == true && (get(intPlayerX, intPlayerY + 56) == -256 || get(intPlayerX + 42, intPlayerY + 56) == -256)) {
 
           intLevel += 1;
+          delay(300);
           blnFirstTimeEntered = true;
 
         }  
@@ -535,26 +546,35 @@ public class escape_room extends PApplet {
         if (get(intPlayerX, intPlayerY + 56) == -256 || get(intPlayerX + 42, intPlayerY + 56) == -256) {
           
           intLevel -= 1;
+          delay(300);
 
         }
 
         // detects if the player is interacting with the table 
         if ((get(intPlayerX,intPlayerY + 56) == -16776961) || (get(intPlayerX + 42,intPlayerY + 56) == -16776961) || (get(intPlayerX + 42, intPlayerY) == -16776961) || (get(intPlayerX,intPlayerY) == -16776961)) {
 
-          if (blnTable == true) {
+          if (intPlayerX < (width / 2)) {
+            if (blnTable == true) {
 
-            blnTable = false;
-            delay(300);
+              blnTable = false;
+              delay(300);
 
-          } else if (blnTable == false) {
+            } else if (blnTable == false) {
 
-            blnTable = true;
-            delay(300);
+              blnTable = true;
+              delay(300);
+
+            }
+          } else if (intPlayerX > (width / 2)) {
+
 
           }
 
-        }
+        } else if ((get(intPlayerX,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42, intPlayerY) == -16711936) || (get(intPlayerX,intPlayerY) == -16711936)) {
 
+          blnCrowBar = true;
+
+        } 
       } 
     } 
     
@@ -562,6 +582,14 @@ public class escape_room extends PApplet {
     if (intLevel == 7 &&  (get(intPlayerX, intPlayerY + 64) != -256 || get(intPlayerX + 42, intPlayerY + 64) != -256)) {
 
       blnLockedTrapDoor = false;
+
+    } else if (intLevel == 8 && (get(intPlayerX,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42, intPlayerY) == -16711936) || (get(intPlayerX,intPlayerY) == -16711936)) {
+
+      blnStairs = true;
+
+    } else if (intLevel == 8 && (get(intPlayerX,intPlayerY + 56) != -16711936) && (get(intPlayerX + 42,intPlayerY + 56) != -16711936) && (get(intPlayerX + 42, intPlayerY) != -16711936) && (get(intPlayerX,intPlayerY) != -16711936)) {
+
+      blnStairs = false;
 
     }
   }
@@ -794,13 +822,28 @@ public class escape_room extends PApplet {
 
         for (int i = 0; i < intCardLocations.length; i++) {
 
-          int randomIndexToSwap = intRand.nextInt(intCardLocations.length);
-          int temp = intCardLocations[randomIndexToSwap];
-          intCardLocations[randomIndexToSwap] = intCardLocations[i];
-          intCardLocations[i] = temp;
+          int intRandomSwap = intRand.nextInt(intCardLocations.length);
+          int intTemp = intCardLocations[intRandomSwap];
+          intCardLocations[intRandomSwap] = intCardLocations[i];
+          intCardLocations[i] = intTemp;
 
         }
       } 
+
+      if (blnStairs == true) {
+
+        image(imgStairs,550,353);
+
+      }
+
+      // detects if the user has the crowbar and then prints out the crow bar above the player's head 
+      if (blnCrowBar == true && intCrowBarCount <= 60) {
+
+        image(imgCrowBar,intPlayerX,intPlayerY - 60);
+        intCrowBarCount ++;
+
+      }
+
 
       // checks if the player is interacting with the table 
       if (blnTable == true) {  
@@ -819,6 +862,13 @@ public class escape_room extends PApplet {
             image(imgCards[intCardLocations[i]],intX[i],intY[i]);
 
           } 
+        }
+
+        if (blnFound[0] && blnFound[1] && blnFound[2] && blnFound[3] && blnFound[4] && blnFound[5] && blnFound[6] && blnFound[7]) {
+
+          blnTable = false;
+          blnNextLevel[3] = true;
+
         }
 
         // checks if two cards have been flipped, and then checks if any pairs have been found
@@ -945,6 +995,11 @@ public class escape_room extends PApplet {
 
           }
         }
+      // turns all the cards back once the player has left the table before finishing it 
+      } else if (blnTable == false) {
+
+        Arrays.fill(intCardStatus,0);
+
       }
     }
   }
