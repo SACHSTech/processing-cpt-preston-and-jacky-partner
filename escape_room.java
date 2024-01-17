@@ -107,7 +107,7 @@ public class escape_room extends PApplet {
     imgPage = new PImage[2];
 
     // setting up image variables for cards
-    imgCards = new PImage[18];
+    imgCards = new PImage[17];
 
     for (int i = 0; i < intNumLevels; i++) {
 
@@ -152,7 +152,7 @@ public class escape_room extends PApplet {
     imgPage[0] = loadImage("escape_room/popups/page" + 0 + ".png");
     imgPage[1] = loadImage("escape_room/popups/page" + 1 + ".png");
 
-    for (int i = 0; i <= 17; i++) {
+    for (int i = 0; i <= 16; i++) {
 
       imgCards[i] = loadImage("escape_room/popups/card" + i + ".png");
 
