@@ -56,7 +56,7 @@ public class escape_room extends PApplet {
   String strDirection = "Down";
 
   // game starting and ending variables
-  boolean blnGameStarting = true;
+  boolean blnGameStarting = false;
   boolean blnGameEnding = false;
 
   // game oxygen meter variables
@@ -67,7 +67,7 @@ public class escape_room extends PApplet {
   // level variables 
   boolean[] blnNextLevel = {true,false,false,false,false,false};
   int intNumLevels = 10;
-  int intLevel = 7;
+  int intLevel = 0;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -573,6 +573,7 @@ public class escape_room extends PApplet {
         if ((get(intPlayerX,intPlayerY + 56) == -16776961) || (get(intPlayerX + 42,intPlayerY + 56) == -16776961) || (get(intPlayerX + 42, intPlayerY) == -16776961) || (get(intPlayerX,intPlayerY) == -16776961)) {
 
           if (intPlayerX < (width / 2) && intPlayerY > (height / 2)) {
+            
             if (blnTable == true) {
 
               blnTable = false;
@@ -584,10 +585,13 @@ public class escape_room extends PApplet {
               delay(300);
 
             }
-          } else if (intPlayerX > (width / 2)) {
+
+          // box detection
+          } else if (intPlayerX > (width / 2) && intPlayerY < (height / 2)) {
 
 
-          } else if (intPlayerX < (width / 2) && intPlayerY < (height / 2)) {
+          // stairs detection
+          } else if (intPlayerX < (width / 2) && intPlayerY > (height / 2)) {
 
 
 
