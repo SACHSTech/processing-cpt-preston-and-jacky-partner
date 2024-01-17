@@ -64,7 +64,7 @@ public class escape_room extends PApplet {
   // level variables 
   boolean[] blnNextLevel = {true,false,false,false,false,false};
   int intNumLevels = 10;
-  int intLevel = 8;
+  int intLevel = 7;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -1091,9 +1091,14 @@ public class escape_room extends PApplet {
       intLevel -= 1;
       intPlayerY = 16;
 
-    } else if (intLevel == 9 && intPlayerX > 664) {
+    } else if (intLevel == 7 && intPlayerY > 664) {
 
-      // goes down 2 levels becuaes the player enters into the top floor of that room
+      intLevel -=1;
+      intPlayerY = 16;
+
+    } else if (intLevel == 8 && intPlayerX > 664) {
+
+      // goes down 2 levels because the player enters into the top floor of that room
       intLevel -= 2;
       intPlayerX = 16;
 
