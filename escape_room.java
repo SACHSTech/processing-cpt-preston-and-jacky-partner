@@ -571,7 +571,7 @@ public class escape_room extends PApplet {
 
           } else if (intPlayerX < (width / 2) && intPlayerY < (height / 2)) {
 
-            
+
 
           }
 
@@ -1303,100 +1303,103 @@ public class escape_room extends PApplet {
       }
     } else if (blnTable == true) {
 
-      if (mouseY > 249 && mouseY < 297) {
+      // prevents the plaeyr from flipping more then 2 cards at a time 
+      if (intCardDelay == 0) {
 
-        if (mouseX > 258 && mouseX < 300) {
+        if (mouseY > 249 && mouseY < 297) {
 
-          intCardStatus[intCardLocations[0]] += 1;  
-          intCardsFlipped += 1;          
+          if (mouseX > 258 && mouseX < 300) {
 
-        } else if (mouseX > 305 && mouseX < 343) {
+            intCardStatus[intCardLocations[0]] += 1;  
+            intCardsFlipped += 1;          
 
-          intCardStatus[intCardLocations[1]] += 1;
-          intCardsFlipped += 1; 
+          } else if (mouseX > 305 && mouseX < 343) {
 
-        } else if (mouseX > 344 && mouseX < 386) {
+            intCardStatus[intCardLocations[1]] += 1;
+            intCardsFlipped += 1; 
 
-          intCardStatus[intCardLocations[2]] += 1;
-          intCardsFlipped += 1; 
+          } else if (mouseX > 344 && mouseX < 386) {
 
-        } else if (mouseX > 387 && mouseX < 425) {
+            intCardStatus[intCardLocations[2]] += 1;
+            intCardsFlipped += 1; 
 
-          intCardStatus[intCardLocations[3]] += 1;
-          intCardsFlipped += 1; 
-          
-        }
+          } else if (mouseX > 387 && mouseX < 425) {
 
-      } else if (mouseY > 300 && mouseY < 348) {
+            intCardStatus[intCardLocations[3]] += 1;
+            intCardsFlipped += 1; 
+            
+          }
 
-        if (mouseX > 258 && mouseX < 300) {
+        } else if (mouseY > 300 && mouseY < 348) {
 
-          intCardStatus[intCardLocations[4]] += 1;   
-          intCardsFlipped += 1;          
+          if (mouseX > 258 && mouseX < 300) {
 
-        } else if (mouseX > 305 && mouseX < 343) {
+            intCardStatus[intCardLocations[4]] += 1;   
+            intCardsFlipped += 1;          
 
-          intCardStatus[intCardLocations[5]] += 1;
-          intCardsFlipped += 1; 
+          } else if (mouseX > 305 && mouseX < 343) {
 
-        } else if (mouseX > 344 && mouseX < 386) {
+            intCardStatus[intCardLocations[5]] += 1;
+            intCardsFlipped += 1; 
 
-          intCardStatus[intCardLocations[6]] += 1;
-          intCardsFlipped += 1; 
+          } else if (mouseX > 344 && mouseX < 386) {
 
-        } else if (mouseX > 387 && mouseX < 425) {
+            intCardStatus[intCardLocations[6]] += 1;
+            intCardsFlipped += 1; 
 
-          intCardStatus[intCardLocations[7]] += 1;
-          intCardsFlipped += 1; 
-          
-        }
+          } else if (mouseX > 387 && mouseX < 425) {
 
-      } else if (mouseY > 351 && mouseY < 399) {
+            intCardStatus[intCardLocations[7]] += 1;
+            intCardsFlipped += 1; 
+            
+          }
 
-        if (mouseX > 258 && mouseX < 300) {
+        } else if (mouseY > 351 && mouseY < 399) {
 
-          intCardStatus[intCardLocations[8]] += 1; 
-          intCardsFlipped += 1;            
+          if (mouseX > 258 && mouseX < 300) {
 
-        } else if (mouseX > 305 && mouseX < 343) {
+            intCardStatus[intCardLocations[8]] += 1; 
+            intCardsFlipped += 1;            
 
-          intCardStatus[intCardLocations[9]] += 1;
-          intCardsFlipped += 1; 
+          } else if (mouseX > 305 && mouseX < 343) {
 
-        } else if (mouseX > 344 && mouseX < 386) {
+            intCardStatus[intCardLocations[9]] += 1;
+            intCardsFlipped += 1; 
 
-          intCardStatus[intCardLocations[10]] += 1;
-          intCardsFlipped += 1; 
+          } else if (mouseX > 344 && mouseX < 386) {
 
-        } else if (mouseX > 387 && mouseX < 425) {
+            intCardStatus[intCardLocations[10]] += 1;
+            intCardsFlipped += 1; 
 
-          intCardStatus[intCardLocations[11]] += 1;
-          intCardsFlipped += 1; 
-          
-        }
+          } else if (mouseX > 387 && mouseX < 425) {
 
-      } else if (mouseY > 405 && mouseY < 453) {
+            intCardStatus[intCardLocations[11]] += 1;
+            intCardsFlipped += 1; 
+            
+          }
 
-        if (mouseX > 258 && mouseX < 300) {
+        } else if (mouseY > 405 && mouseY < 453) {
 
-          intCardStatus[intCardLocations[12]] += 1;  
-          intCardsFlipped += 1;           
+          if (mouseX > 258 && mouseX < 300) {
 
-        } else if (mouseX > 305 && mouseX < 343) {
+            intCardStatus[intCardLocations[12]] += 1;  
+            intCardsFlipped += 1;           
 
-          intCardStatus[intCardLocations[13]] += 1;
-          intCardsFlipped += 1; 
+          } else if (mouseX > 305 && mouseX < 343) {
 
-        } else if (mouseX > 344 && mouseX < 386) {
+            intCardStatus[intCardLocations[13]] += 1;
+            intCardsFlipped += 1; 
 
-          intCardStatus[intCardLocations[14]] += 1;
-          intCardsFlipped += 1; 
+          } else if (mouseX > 344 && mouseX < 386) {
 
-        } else if (mouseX > 387 && mouseX < 425) {
+            intCardStatus[intCardLocations[14]] += 1;
+            intCardsFlipped += 1; 
 
-          intCardStatus[intCardLocations[15]] += 1;
-          intCardsFlipped += 1; 
-          
+          } else if (mouseX > 387 && mouseX < 425) {
+
+            intCardStatus[intCardLocations[15]] += 1;
+            intCardsFlipped += 1; 
+          }
         }
       }
     }
