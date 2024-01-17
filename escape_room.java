@@ -33,6 +33,7 @@ public class escape_room extends PApplet {
 
   // level 9 variables
   PImage[] imgCards;
+  int[] intCardLocations = {15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0};
   boolean[] blnCard = {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false};
   boolean[] blnFound = {false,false,false,false,false,false,false,false};
   int[] intX = {264,307,350,393,264,307,350,393,264,307,350,393,264,307,350,393};
@@ -806,105 +807,105 @@ public class escape_room extends PApplet {
         
         for (int i = 0; i < 16; i++) {
 
-          if (blnCard[i] == false) {
+          if (blnCard[intCardLocations[i]] == false) {
 
-            image(imgCards[0],intX[i],intY[i]);
+            image(imgCards[0],intX[intCardLocations[i]],intY[intCardLocations[i]]);
             
-          } else if (blnCard[i] == true) {
+          } else if (blnCard[intCardLocations[i]] == true) {
 
             if (i == 0 && blnFound[0] == false) {
 
-              image(imgCards[1],intX[i],intY[i]);
+              image(imgCards[1],intX[intCardLocations[i]],intY[intCardLocations[i]]);
 
             } 
             
             if (i == 1 && blnFound[0] == false) {
 
-              image(imgCards[1],intX[i],intY[i]);
+              image(imgCards[1],intX[intCardLocations[i]],intY[intCardLocations[i]]);
 
             } 
             
             if (i == 2 && blnFound[1] == false) {
 
-              image(imgCards[2],intX[i],intY[i]);
+              image(imgCards[2],intX[intCardLocations[i]],intY[intCardLocations[i]]);
 
             } 
             
             if (i == 3 && blnFound[1] == false) {
 
-              image(imgCards[2],intX[i],intY[i]);
+              image(imgCards[2],intX[intCardLocations[i]],intY[intCardLocations[i]]);
 
             } 
             
             if (i == 4 && blnFound[2] == false) {
 
-              image(imgCards[3],intX[i],intY[i]);
+              image(imgCards[3],intX[intCardLocations[i]],intY[intCardLocations[i]]);
 
             } 
             
             if (i == 5 && blnFound[2] == false) {
 
-              image(imgCards[3],intX[i],intY[i]);
+              image(imgCards[3],intX[intCardLocations[i]],intY[intCardLocations[i]]);
 
             } 
             
             if (i == 6 && blnFound[3] == false) {
 
-              image(imgCards[4],intX[i],intY[i]);
+              image(imgCards[4],intX[intCardLocations[i]],intY[intCardLocations[i]]);
 
             } 
             
             if (i == 7 && blnFound[3] == false) {
 
-              image(imgCards[4],intX[i],intY[i]);
+              image(imgCards[4],intX[intCardLocations[i]],intY[intCardLocations[i]]);
 
             } 
             
             if (i == 8 && blnFound[4] == false) {
 
-              image(imgCards[5],intX[i],intY[i]);
+              image(imgCards[5],intX[intCardLocations[i]],intY[intCardLocations[i]]);
 
             } 
             
             if (i == 9 && blnFound[4] == false) {
 
-              image(imgCards[5],intX[i],intY[i]);
+              image(imgCards[5],intX[intCardLocations[i]],intY[intCardLocations[i]]);
 
             } 
             
             if (i == 10 && blnFound[5] == false) {
 
-              image(imgCards[6],intX[i],intY[i]);
+              image(imgCards[6],intX[intCardLocations[i]],intY[intCardLocations[i]]);
 
             } 
             
             if (i == 11 && blnFound[5] == false) {
 
-              image(imgCards[6],intX[i],intY[i]);
+              image(imgCards[6],intX[intCardLocations[i]],intY[intCardLocations[i]]);
 
             } 
             
             if (i == 12 && blnFound[6] == false) {
 
-              image(imgCards[7],intX[i],intY[i]);
+              image(imgCards[7],intX[intCardLocations[i]],intY[intCardLocations[i]]);
 
             } 
             
             if (i == 13 && blnFound[6] == false) {
 
-              image(imgCards[7],intX[i],intY[i]);
+              image(imgCards[7],intX[intCardLocations[i]],intY[intCardLocations[i]]);
 
             } 
             
             if (i == 14 && blnFound[7] == false) {
 
-              image(imgCards[8],intX[i],intY[i]);
+              image(imgCards[8],intX[intCardLocations[i]],intY[intCardLocations[i]]);
 
             } 
             
             if (i == 15 && blnFound[7] == false) {
 
-              image(imgCards[8],intX[i],intY[i]);
+              image(imgCards[8],intX[intCardLocations[i]],intY[intCardLocations[i]]);
 
             }
 
@@ -913,106 +914,106 @@ public class escape_room extends PApplet {
 
         if (intCardsFlipped >= 2) {
 
-          if (blnCard[0] == true && blnCard[1] == true) {
+          if (blnCard[intCardLocations[0]] == true && blnCard[intCardLocations[1]] == true) {
 
             blnFound[0] = true;
             intCardsFlipped = 0;;
 
           } else {
 
-            blnCard[0] = false;
-            blnCard[1] = false;
+            blnCard[intCardLocations[0]] = false;
+            blnCard[intCardLocations[1]] = false;
             intCardsFlipped = 0;
 
           }
           
-          if (blnCard[2] == true && blnCard[3] == true) {
+          if (blnCard[intCardLocations[2]] == true && blnCard[intCardLocations[3]] == true) {
 
             blnFound[1] = true;
             intCardsFlipped = 0;
 
           } else {
 
-            blnCard[2] = false;
-            blnCard[3] = false;
+            blnCard[intCardLocations[2]] = false;
+            blnCard[intCardLocations[3]] = false;
             intCardsFlipped = 0;
 
           }
           
-          if (blnCard[4] == true && blnCard[5] == true) {
+          if (blnCard[intCardLocations[4]] == true && blnCard[intCardLocations[5]] == true) {
 
             blnFound[2] = true;
             intCardsFlipped = 0;
 
           } else {
 
-            blnCard[4] = false;
-            blnCard[5] = false;
+            blnCard[intCardLocations[4]] = false;
+            blnCard[intCardLocations[5]] = false;
             intCardsFlipped = 0;
 
           }
           
-          if (blnCard[6] == true && blnCard[7] == true) {
+          if (blnCard[intCardLocations[6]] == true && blnCard[intCardLocations[7]] == true) {
 
             blnFound[3] = true;
             intCardsFlipped = 0;
 
           } else {
 
-            blnCard[6] = false;
-            blnCard[7] = false;
+            blnCard[intCardLocations[6]] = false;
+            blnCard[intCardLocations[7]] = false;
             intCardsFlipped = 0;
 
           }
           
-          if (blnCard[8] == true && blnCard[9] == true) {
+          if (blnCard[intCardLocations[8]] == true && blnCard[intCardLocations[9]] == true) {
 
             blnFound[4] = true;
             intCardsFlipped = 0;
 
           } else {
 
-            blnCard[8] = false;
-            blnCard[9] = false;
+            blnCard[intCardLocations[8]] = false;
+            blnCard[intCardLocations[9]] = false;
             intCardsFlipped = 0;
 
           }
           
-          if (blnCard[10] == true && blnCard[11] == true) {
+          if (blnCard[intCardLocations[10]] == true && blnCard[intCardLocations[11]] == true) {
 
             blnFound[5] = true;
             intCardsFlipped = 0;
 
           } else {
 
-            blnCard[10] = false;
-            blnCard[11] = false;
+            blnCard[intCardLocations[10]] = false;
+            blnCard[intCardLocations[11]] = false;
             intCardsFlipped = 0;
 
           }
           
-          if (blnCard[12] == true && blnCard[13] == true) {
+          if (blnCard[intCardLocations[12]] == true && blnCard[intCardLocations[13]] == true) {
 
             blnFound[6] = true;
             intCardsFlipped = 0;
 
           } else {
 
-            blnCard[12] = false;
-            blnCard[13] = false;
+            blnCard[intCardLocations[12]] = false;
+            blnCard[intCardLocations[13]] = false;
             intCardsFlipped = 0;
 
           }
           
-          if (blnCard[14] == true && blnCard[15] == true) {
+          if (blnCard[intCardLocations[14]] == true && blnCard[intCardLocations[15]] == true) {
 
             blnFound[7] = true;
             intCardsFlipped = 0;
 
           } else {
 
-            blnCard[14] = false;
-            blnCard[15] = false;
+            blnCard[intCardLocations[14]] = false;
+            blnCard[intCardLocations[15]] = false;
             intCardsFlipped = 0;
 
           }
@@ -1306,22 +1307,22 @@ public class escape_room extends PApplet {
 
         if (mouseX > 258 && mouseX < 300) {
 
-          blnCard[0] = true;  
+          blnCard[intCardLocations[0]] = true;  
           intCardsFlipped += 1;          
 
         } else if (mouseX > 305 && mouseX < 343) {
 
-          blnCard[1] = true;
+          blnCard[intCardLocations[1]] = true;
           intCardsFlipped += 1; 
 
         } else if (mouseX > 344 && mouseX < 386) {
 
-          blnCard[2] = true;
+          blnCard[intCardLocations[2]] = true;
           intCardsFlipped += 1; 
 
         } else if (mouseX > 387 && mouseX < 425) {
 
-          blnCard[3] = true;
+          blnCard[intCardLocations[3]] = true;
           intCardsFlipped += 1; 
           
         }
@@ -1330,22 +1331,22 @@ public class escape_room extends PApplet {
 
         if (mouseX > 258 && mouseX < 300) {
 
-          blnCard[4] = true;   
+          blnCard[intCardLocations[4]] = true;   
           intCardsFlipped += 1;          
 
         } else if (mouseX > 305 && mouseX < 343) {
 
-          blnCard[5] = true;
+          blnCard[intCardLocations[5]] = true;
           intCardsFlipped += 1; 
 
         } else if (mouseX > 344 && mouseX < 386) {
 
-          blnCard[6] = true;
+          blnCard[intCardLocations[6]] = true;
           intCardsFlipped += 1; 
 
         } else if (mouseX > 387 && mouseX < 425) {
 
-          blnCard[7] = true;
+          blnCard[intCardLocations[7]] = true;
           intCardsFlipped += 1; 
           
         }
@@ -1354,22 +1355,22 @@ public class escape_room extends PApplet {
 
         if (mouseX > 258 && mouseX < 300) {
 
-          blnCard[8] = true; 
+          blnCard[intCardLocations[8]] = true; 
           intCardsFlipped += 1;            
 
         } else if (mouseX > 305 && mouseX < 343) {
 
-          blnCard[9] = true;
+          blnCard[intCardLocations[9]] = true;
           intCardsFlipped += 1; 
 
         } else if (mouseX > 344 && mouseX < 386) {
 
-          blnCard[10] = true;
+          blnCard[intCardLocations[10]] = true;
           intCardsFlipped += 1; 
 
         } else if (mouseX > 387 && mouseX < 425) {
 
-          blnCard[11] = true;
+          blnCard[intCardLocations[11]] = true;
           intCardsFlipped += 1; 
           
         }
@@ -1378,22 +1379,22 @@ public class escape_room extends PApplet {
 
         if (mouseX > 258 && mouseX < 300) {
 
-          blnCard[12] = true;  
+          blnCard[intCardLocations[12]] = true;  
           intCardsFlipped += 1;           
 
         } else if (mouseX > 305 && mouseX < 343) {
 
-          blnCard[13] = true;
+          blnCard[intCardLocations[13]] = true;
           intCardsFlipped += 1; 
 
         } else if (mouseX > 344 && mouseX < 386) {
 
-          blnCard[14] = true;
+          blnCard[intCardLocations[14]] = true;
           intCardsFlipped += 1; 
 
         } else if (mouseX > 387 && mouseX < 425) {
 
-          blnCard[15] = true;
+          blnCard[intCardLocations[15]] = true;
           intCardsFlipped += 1; 
           
         }
