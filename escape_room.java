@@ -884,14 +884,14 @@ public class escape_room extends PApplet {
           intCardDelay += 1;
 
           // if a pair has been found, it removes them from the grid 
-          if (intCardStatus[0] == 1 && intCardStatus[1] == 1 && intCardDelay >= 10) {
+          if (intCardStatus[0] == 1 && intCardStatus[1] == 1 && intCardDelay >= 30) {
           
             intCardStatus[0] = 2;
             intCardStatus[1] = 2;
             blnFound[0] = true;
             intCardsFlipped = 0;
 
-          } else if (blnFound[0] == false && intCardDelay >= 10) {
+          } else if (blnFound[0] == false && intCardDelay >= 30) {
 
             intCardStatus[0] = 0;
             intCardStatus[1] = 0;
@@ -899,14 +899,14 @@ public class escape_room extends PApplet {
 
           }
           
-          if (intCardStatus[2] == 1 && intCardStatus[3] == 1 && intCardDelay >= 10) {
+          if (intCardStatus[2] == 1 && intCardStatus[3] == 1 && intCardDelay >= 30) {
 
             intCardStatus[2] = 2;
             intCardStatus[3] = 2;
             blnFound[1] = true;
             intCardsFlipped = 0;
 
-          } else if (blnFound[1] == false && intCardDelay >= 10){
+          } else if (blnFound[1] == false && intCardDelay >= 30){
 
             intCardStatus[2] = 0;
             intCardStatus[3] = 0;
@@ -914,14 +914,14 @@ public class escape_room extends PApplet {
 
           }
           
-          if (intCardStatus[4] == 1 && intCardStatus[5] == 1 && intCardDelay >= 10) {
+          if (intCardStatus[4] == 1 && intCardStatus[5] == 1 && intCardDelay >= 30) {
 
             intCardStatus[4] = 2;
             intCardStatus[5] = 2;
             blnFound[2] = true;
             intCardsFlipped = 0;
 
-          } else if (blnFound[2] == false && intCardDelay >= 10)  {
+          } else if (blnFound[2] == false && intCardDelay >= 30)  {
 
             intCardStatus[4] = 0;
             intCardStatus[5] = 0;
@@ -929,14 +929,14 @@ public class escape_room extends PApplet {
 
           }
           
-          if (intCardStatus[6] == 1 && intCardStatus[7] == 1 && intCardDelay >= 10) {
+          if (intCardStatus[6] == 1 && intCardStatus[7] == 1 && intCardDelay >= 30) {
 
             intCardStatus[6] = 2;
             intCardStatus[7] = 2;
             blnFound[3] = true;
             intCardsFlipped = 0;
 
-          } else if (blnFound[3] == false && intCardDelay >= 10) {
+          } else if (blnFound[3] == false && intCardDelay >= 30) {
 
             intCardStatus[6] = 0;
             intCardStatus[7] = 0;
@@ -944,14 +944,14 @@ public class escape_room extends PApplet {
 
           }
           
-          if (intCardStatus[8] == 1 && intCardStatus[9] == 1 && intCardDelay >= 10) {
+          if (intCardStatus[8] == 1 && intCardStatus[9] == 1 && intCardDelay >= 30) {
 
             intCardStatus[8] = 2;
             intCardStatus[9] = 2;
             blnFound[4] = true;
             intCardsFlipped = 0;
 
-          } else if (blnFound[4] == false && intCardDelay >= 10) {
+          } else if (blnFound[4] == false && intCardDelay >= 30) {
 
             intCardStatus[8] = 0;
             intCardStatus[9] = 0;
@@ -960,7 +960,7 @@ public class escape_room extends PApplet {
 
           }
           
-          if (intCardStatus[10] == 1 && intCardStatus[11] == 1 && intCardDelay >= 10) {
+          if (intCardStatus[10] == 1 && intCardStatus[11] == 1 && intCardDelay >= 30) {
 
             intCardStatus[10] = 2;
             intCardStatus[11]= 2;
@@ -968,7 +968,7 @@ public class escape_room extends PApplet {
             intCardsFlipped = 0;
       
 
-          } else if (blnFound[5] == false && intCardDelay >= 10) {
+          } else if (blnFound[5] == false && intCardDelay >= 30) {
 
             intCardStatus[10] = 0;
             intCardStatus[11] = 0;
@@ -977,14 +977,14 @@ public class escape_room extends PApplet {
 
           }
           
-          if (intCardStatus[12] == 1 && intCardStatus[13] == 1 && intCardDelay >= 10) {
+          if (intCardStatus[12] == 1 && intCardStatus[13] == 1 && intCardDelay >= 30) {
 
             intCardStatus[12] = 2;
             intCardStatus[13] = 2;
             blnFound[6] = true;
             intCardsFlipped = 0;
 
-          } else if (blnFound[6] == false && intCardDelay >= 10) {
+          } else if (blnFound[6] == false && intCardDelay >= 30) {
 
             intCardStatus[12] = 0;
             intCardStatus[13] = 0;
@@ -992,14 +992,14 @@ public class escape_room extends PApplet {
 
           }
           
-          if (intCardStatus[14] == 1 && intCardStatus[15] == 1 && intCardDelay >= 10) {
+          if (intCardStatus[14] == 1 && intCardStatus[15] == 1 && intCardDelay >= 30) {
 
             intCardStatus[14] = 2;
             intCardStatus[15] = 2;
             blnFound[7] = true;
             intCardsFlipped = 0;
 
-          } else if (blnFound[7] == false && intCardDelay >= 10)  {
+          } else if (blnFound[7] == false && intCardDelay >= 30)  {
 
             intCardStatus[14] = 0;
             intCardStatus[15] = 0;
