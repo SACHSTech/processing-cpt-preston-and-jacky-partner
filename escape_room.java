@@ -226,7 +226,7 @@ public class escape_room extends PApplet{
     } else {
 
       background(0);
-      textSize(50);
+      textSize(20);
       fill(255);
       text("mission failed sucessfully, we'll get'em next time", width / 2, height / 2);
 
@@ -292,6 +292,7 @@ public class escape_room extends PApplet{
           text("START",250,350);
 
         }
+
       } else if (blnStartButtonPressed == true) {
         
         // detects if the user has selected the easy difficulty 
@@ -446,7 +447,8 @@ public class escape_room extends PApplet{
   public void playerMovementAndCollisions() {
 
     // prevents players from moving if they are interacting with an object
-    if (blnPage == false && blnSafe == false && blnRickPoster == false && blnGundamPoster == false && blnIPoster == false)  {
+    if (blnPage == false && blnSafe == false && blnRickPoster == false && blnGundamPoster == false && blnIPoster == false && blnTable == false)  {
+      
       // left player collision detection
       if (blnLeft == true && (get(intPlayerX - 8, intPlayerY + 54) != -1.6777216E7 && get(intPlayerX - 8, intPlayerY + 54) != -16776961)) {
 
@@ -492,19 +494,18 @@ public class escape_room extends PApplet{
           // detection for the desk
           if (get(intPlayerX, intPlayerY - 8) == -16776961 || get(intPlayerX + 64, intPlayerY) == -16776961) {
 
-              if (blnPage == true) {
-  
-                blnPage = false;
-                delay(300);
-  
-              // allows the player to leave the desk and page pop up if they think they have figured out the correct code for the room 
-              } else if (blnPage == false) {
-  
-                blnPage = true;
-                delay(300);
-  
-              }
+            if (blnPage == true) {
 
+              blnPage = false;
+              delay(300);
+
+            // allows the player to leave the desk and page pop up if they think they have figured out the correct code for the room 
+            } else if (blnPage == false) {
+
+              blnPage = true;
+              delay(300);
+
+            }
           }
 
         } else {
@@ -583,7 +584,12 @@ public class escape_room extends PApplet{
           // coordinates for deletion key
           } else if (intPlayerX > 237 && intPlayerX < 380 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) { 
           
-            strPassword = "";
+            // prevents the player from using the delete key even when there is nothing left in the string 
+            if (strPassword.length() > 0) {
+
+              strPassword = strPassword.substring(0, strPassword.length() - 1);
+
+            }
             delay(300);
 
           // coordinates for the letter H
@@ -745,6 +751,7 @@ public class escape_room extends PApplet{
 
           }
 
+        // crowbar detection
         } else if ((get(intPlayerX,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42, intPlayerY) == -16711936) || (get(intPlayerX,intPlayerY) == -16711936)) {
 
           blnCrowBar = true;
@@ -776,7 +783,6 @@ public class escape_room extends PApplet{
 
     // draws out the correct room depending on the level the player is on 
     image(imgLevel[intLevel],0,0);
-
        
   }
 
@@ -784,7 +790,7 @@ public class escape_room extends PApplet{
    * updates the player model depending on the direction that the player is moving 
    */
   public void playerUpdate() {
-
+    
     if (blnUp == true) {
 
       image(imgPlayerUp[intMoveFrames], intPlayerX, intPlayerY);
@@ -868,7 +874,6 @@ public class escape_room extends PApplet{
           intPageNumber = 1;
 
         }
-
       }
 
       // checks if the user has interacted with the safe 
@@ -894,7 +899,6 @@ public class escape_room extends PApplet{
             textSize(130);
             text(strCode, 110, 215);
    
-
           } else {
 
             // changes the variable to WRONG to let the user know they got the code wrong and must try again 
@@ -928,7 +932,6 @@ public class escape_room extends PApplet{
 
           // allows the player to sill use the safe even if they have unlocked it 
           } else if (strCode.equals("OPEN "));
-
         }
       }
 
@@ -1021,7 +1024,6 @@ public class escape_room extends PApplet{
 
       }
 
-
       // checks if the player is interacting with the table 
       if (blnTable == true) {  
         
@@ -1041,7 +1043,8 @@ public class escape_room extends PApplet{
           } 
         }
 
-        if (blnFound[0] && blnFound[1] && blnFound[2] && blnFound[3] && blnFound[4] && blnFound[5] && blnFound[6] && blnFound[7]) {
+        // detects if the player has completed teh card game
+        if ((blnFound[0] && blnFound[1] && blnFound[2] && blnFound[3] && blnFound[4] && blnFound[5] && blnFound[6] && blnFound[7]) == true) {
 
           blnTable = false;
           blnNextLevel[3] = true;
@@ -1181,6 +1184,7 @@ public class escape_room extends PApplet{
           intCardDelay = 0;
 
         }
+
       // turns all the cards back once the player has left the table before finishing it 
       } else if (blnTable == false) {
 
@@ -1264,14 +1268,13 @@ public class escape_room extends PApplet{
       intLevel -=1;
       intPlayerY = 16;
 
-    } else if (intLevel == 8 && intPlayerX > 664) {
+    } else if (intLevel == 9 && intPlayerX > 664) {
 
-      // goes down 2 levels because the player enters into the top floor of that room
+      // goes down by 2 so that the player ends up on the top floor and not the botto floor
       intLevel -= 2;
       intPlayerX = 16;
 
-    } 
-
+    }
   }
 
   /**
@@ -1412,9 +1415,7 @@ public class escape_room extends PApplet{
           blnGameStarting = true;
 
         }
-
       }
-
     }
 
     if (blnSafe == true) {
@@ -1522,6 +1523,7 @@ public class escape_room extends PApplet{
           }
         }
       }
+      
     } else if (blnTable == true) {
 
       // prevents the plaeyr from flipping more then 2 cards at a time 
