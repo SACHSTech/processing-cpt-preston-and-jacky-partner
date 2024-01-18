@@ -1,10 +1,7 @@
 import processing.core.PApplet;
 import processing.core.PImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
-import javax.sound.sampled.*;
 import java.util.Scanner;
 
 public class escape_room extends PApplet {
@@ -40,9 +37,7 @@ public class escape_room extends PApplet {
 
   // level 5 variable 
   String strPassword = "";
-  static boolean blnDesk = false;
-  File file = new File("escape_room/AudioFiles/Music2.wav");
-  Scanner scanner = new Scanner(System.in);
+  boolean blnDesk = false;
 
   // level 7 variables                            
   boolean blnRickPoster, blnGundamPoster, blnIPoster, blnKeyI, blnTrapDoor, blnLockedTrapDoor = false;
@@ -238,17 +233,6 @@ public class escape_room extends PApplet {
       playerUpdate();
       drawPopUps();
       nextLevel();
-
-      try {
-
-        AudioPlayer();
-
-      } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
-
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-
-      }
 
     // draws a screen if the player has completed the game without running out of oxygen 
     } else if (blnGameEnding == true) {
@@ -569,11 +553,11 @@ public class escape_room extends PApplet {
       } else if (intLevel == 5) {
 
         // detects if the player is interacting with the table 
-        if (get(intPlayerX, intPlayerY + 64) == -16776961 || get(intPlayerX - 8, intPlayerY) == -16776961 || get(intPlayerX, intPlayerY - 8) == -16776961 ) {
+        if ((get(intPlayerX, intPlayerY + 64) == -16776961 || get(intPlayerX - 8, intPlayerY) == -16776961 || get(intPlayerX, intPlayerY - 8) == -16776961)) {
 
           blnDesk = true;
 
-        }
+        } 
 
         // runs even when the password is at max length 
         if ((intPlayerY > 261 && intPlayerY <= 375) && (intPlayerX > 237 && intPlayerX < 380) && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) { 
@@ -1722,31 +1706,6 @@ public class escape_room extends PApplet {
           }
         }
       }
-    }
-  }
-
-  /**
-   * 
-   * @throws LineUnavailableException indicates if this method does not have permission to open the file 
-   * @throws UnsupportedAudioFileException indicates if the audio file is not supported 
-   * @throws IOException indicates if the the audio file is missing 
-   */
-  public void AudioPlayer() throws LineUnavailableException, UnsupportedAudioFileException, IOException {
-
-     // only plays the clip when the player is interacting with the table
-     if (blnDesk == true) {
-          
-      AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
-      Clip clip = AudioSystem.getClip();
-      clip.open(audioStream);
-      clip.start();
-
-       // turns off the audio and allows the player to restart it once it ends 
-       blnDesk = false;
-
-      String strStart = scanner.next();
-      scanner.close();
-
     }
   }
   
