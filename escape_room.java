@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
-public class escape_room extends PApplet {
+public class escape_room extends PApplet{
 
   // level image variable 
   PImage[] imgLevel;
@@ -18,6 +18,10 @@ public class escape_room extends PApplet {
 
   // starting screen variables
   PImage imgStartingScreen;
+  boolean blnStartButtonPressed = false;
+  boolean blnEasy = false;
+  boolean blnMedium = false;
+  boolean blnHard = false;
 
   // level 2 and 3 variables 
   PImage[] imgPage;
@@ -38,17 +42,14 @@ public class escape_room extends PApplet {
   PImage imgCrowBar;
   PImage imgStairs;
   boolean[] blnFound = {false,false,false,false,false,false,false,false};
-  boolean blnCrowBar = false;
-  boolean blnStairs = false;
-  int intCardDelay = 0;
-  int intCrowBarCount = 0;
+  boolean blnCrowBar,blnStairs, blnTable, blnFirstTimeEntered = false;
   int[] intCardLocations = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
   int[] intCardStatus = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
   int[] intX = {264,307,350,393,264,307,350,393,264,307,350,393,264,307,350,393};
   int[] intY = {249,249,249,249,302,302,302,302,355,355,355,355,408,408,408,408};
-  boolean blnTable = false;
-  boolean blnFirstTimeEntered = true;
   int intCardsFlipped = 0;
+  int intCardDelay = 0;
+  int intCrowBarCount = 0;
   Random intRand = new Random();
 
   // player direction
@@ -60,8 +61,8 @@ public class escape_room extends PApplet {
 
   // game oxygen meter variables
   boolean blnOxygenMeter = false;
-  int intOxygenMeter = 300;
-  int intTotalOxygen = 300;
+  int intOxygenMeter = 1;
+  int intTotalOxygen = 1;
 
   // level variables 
   boolean[] blnNextLevel = {true,false,false,false,false,false};
@@ -117,18 +118,21 @@ public class escape_room extends PApplet {
     // setting up image variables for cards
     imgCards = new PImage[17];
 
+    // loading in all level images
     for (int i = 0; i < intNumLevels; i++) {
 
       imgLevel[i] = loadImage("escape_room/levels/level" + i + ".png"); 
 
     }
 
+    // loading in all level collision maps
     for (int i = 0; i < intNumLevels; i++) {
 
       imgLevelCollision[i] = loadImage("escape_room/levels/collisions/level" + i + ".png"); 
 
     }
 
+    // loading in all left player animation images
     for (int i = 0; i < intNumFrames; i++) {
       
       imgPlayerLeft[i] = loadImage("escape_room/player/playerLeft" + i + ".png");
@@ -136,6 +140,7 @@ public class escape_room extends PApplet {
 
     }
   
+    // loading in all right player animation images
     for (int i = 0; i < intNumFrames; i++) {
       
       imgPlayerRight[i] = loadImage("escape_room/player/playerRight" + i + ".png");
@@ -143,6 +148,7 @@ public class escape_room extends PApplet {
 
     }
       
+    // loading in all up player animation images
     for (int i = 0; i < intNumFrames; i++) {
       
       imgPlayerUp[i] = loadImage("escape_room/player/playerUp" + i + ".png");
@@ -150,6 +156,7 @@ public class escape_room extends PApplet {
 
     }
   
+    // loading in all down player animation images
     for (int i = 0; i < intNumFrames; i++) {
       
       imgPlayerDown[i] = loadImage("escape_room/player/playerDown" + i + ".png");
@@ -157,22 +164,30 @@ public class escape_room extends PApplet {
 
     }
 
+    // loading page 1 of the stack of papers found on level 3
     imgPage[0] = loadImage("escape_room/popups/page" + 0 + ".png");
+
+    // loading in page 2 of the stack of papers found on level 3
     imgPage[1] = loadImage("escape_room/popups/page" + 1 + ".png");
 
+    // loading in safe pop up for the safe in level 3
+    imgSafe = loadImage("escape_room/popups/safe.png");
+
+    // loading in cards for the level 8 matching card game
     for (int i = 0; i <= 16; i++) {
 
       imgCards[i] = loadImage("escape_room/popups/card" + i + ".png");
 
     }
 
-    imgSafe = loadImage("escape_room/popups/safe.png");
-
+    // loading and resized the crowbar image found on level 8
     imgCrowBar = loadImage("escape_room/popups/crowbar.png");
     imgCrowBar.resize(60,72);
 
+    // loading in the stairs image found on level 8
     imgStairs = loadImage("escape_room/popups/stairs.png");
 
+    // loading in the starting screen image 
     imgStartingScreen = loadImage("escape_room/startScreen.png");
 
   }
@@ -182,11 +197,13 @@ public class escape_room extends PApplet {
    */
   public void draw() {
 
+    // detects if the game has started 
     if (blnGameStarting == false) {
 
       startingScreen();
 
-    } else if (blnGameStarting == true && intOxygenMeter > 0) {
+    // detects if the game has started and if the user still has oxygen left 
+    } else if (blnGameStarting == true && intOxygenMeter > 0 ) {
      
       drawCollisionMaps();
       playerMovementAndCollisions();
@@ -220,17 +237,133 @@ public class escape_room extends PApplet {
    * draws a starting screen for the game and will allow the player to decide difficulty before starting 
    */
   public void startingScreen() {
-  
 
+    // detects if the game has started
     if (blnGameStarting == false) {
 
+      // draws the starting screen image
       image(imgStartingScreen,CENTER,CENTER);
 
-    } else if (blnGameStarting == true) {
+      // changes the text colour of the exit button if they are hovering over the button
+      if ((mouseX > 20 && mouseX < 75) && (mouseY > 10 && mouseY < 35)) {
 
+        fill(255);
+        stroke(0);
+        rect(20,10,55,25);
+        fill(100,0,0);
+        strokeWeight(5);
+        textSize(20);
+        text("EXIT",25,30);
 
+      } else {
 
-    }
+        fill(255);
+        stroke(0);
+        rect(20,10,55,25);
+        fill(0);
+        strokeWeight(5);
+        textSize(20);
+        text("EXIT",25,30);
+
+      }
+
+      // detects if the start button has been pressed 
+      if (blnStartButtonPressed == false) {  
+
+        // detects if the player is hovering over the button, and changes the text colour accordingly 
+        if ((mouseX > 240 && mouseX < 445) && (mouseY > 290 && mouseY < 365)) {
+
+          fill(255);
+          stroke(0,0,100);
+          rect(240,290,205,75);
+          fill(0,0,100);
+          strokeWeight(5);
+          textSize(60);
+          text("START",250,350);
+
+        } else {
+
+          fill(255);
+          stroke(0);
+          rect(240,290,205,75);
+          fill(0);
+          strokeWeight(5);
+          textSize(60);
+          text("START",250,350);
+
+        }
+      } else if (blnStartButtonPressed == true) {
+        
+        // detects if the user has selected the easy difficulty 
+        if ((mouseX > 250 && mouseX < 445) && (mouseY > 200 && mouseY < 275)) {
+
+          fill(255);
+          stroke(0,0,100);
+          rect(250,200,195,75);
+          fill(0,0,100);
+          strokeWeight(5);
+          textSize(60);
+          text("EASY",275,260);
+
+        } else {
+
+          fill(255);
+          stroke(0);
+          rect(250,200,195,75);
+          fill(0);
+          strokeWeight(5);
+          textSize(60);
+          text("EASY",275,260);
+
+        }
+
+        // detets if the player has selected the medium difficulty 
+        if ((mouseX > 220 && mouseX < 470) && (mouseY > 300 && mouseY < 375)) {
+
+          fill(255);
+          stroke(0,0,100);
+          rect(220,300,250,75);
+          fill(0,0,100);
+          strokeWeight(5);
+          textSize(60);
+          text("MEDIUM",225,360);
+
+        } else {
+
+          fill(255);
+          stroke(0);
+          rect(220,300,250,75);
+          fill(0);
+          strokeWeight(5);
+          textSize(60);
+          text("MEDIUM",225,360);
+
+        }
+
+        // detects if the player has selected the hard difficulty 
+        if ((mouseX > 250 && mouseX < 445) && (mouseY > 400 && mouseY < 475)) {
+
+          fill(255);
+          stroke(0,0,100);
+          rect(250,400,195,75);
+          fill(0,0,100);
+          strokeWeight(5);
+          textSize(60);
+          text("HARD",265,460);
+
+        } else {
+
+          fill(255);
+          stroke(0);
+          rect(250,400,195,75);
+          fill(0);
+          strokeWeight(5);
+          textSize(60);
+          text("HARD",265,460);
+
+        }
+      }
+    } 
   }
 
   /**
@@ -265,18 +398,34 @@ public class escape_room extends PApplet {
    */
   public void oxygenMeter() {
 
-    // only starts the meter once they have left the tutorial level 
-    if (blnOxygenMeter == true) {
+    // sets the amount of oxygen higher if the player has selected the medium difficulty and lower if they selected the hard difficulty 
+    if (blnMedium == true) {
+
+      intOxygenMeter = 300;
+      intTotalOxygen = 300;
+      blnMedium = false;
+
+    } else if (blnHard == true) {
+
+      intOxygenMeter = 200;
+      intTotalOxygen = 200;
+      blnHard = false;
+
+    }
+
+    // only starts the meter once they have left the tutorial level and if the player did not select the easy difficulty 
+    if (blnOxygenMeter == true && blnEasy != true) {
 
       fill(173, 216, 230);
       noStroke();
       rect(640,640,20, -intOxygenMeter);
+      strokeWeight(1);
       stroke(0,0,0);
       noFill();
       rect(640,640,20, -intTotalOxygen);
     
       // slowly ticks away at the oxygen meter 
-      if (frameCount % 60 == 0) {
+      if (frameCount % 120 == 0) {
 
         intOxygenMeter -= 1;
 
@@ -1230,7 +1379,41 @@ public class escape_room extends PApplet {
 
     if (blnGameStarting == false) {
 
-      blnGameStarting = true;
+      // detects if the player wants to leave the game
+      if ((mouseX > 20 && mouseX < 75) && (mouseY > 10 && mouseY < 35)) {
+
+        System.exit(0);
+
+      }
+      
+      // detects if the player his hovering over the button on the starting screen 
+      if (blnStartButtonPressed == false) {
+
+        if ((mouseX > 240 && mouseX < 445) && (mouseY > 290 && mouseY < 365)) {
+
+          blnStartButtonPressed = true;
+
+        } 
+      } else if (blnStartButtonPressed == true) {
+
+        if ((mouseX > 250 && mouseX < 445) && (mouseY > 200 && mouseY < 275)) {
+
+          blnEasy = true;
+          blnGameStarting = true;
+
+        } else if ((mouseX > 220 && mouseX < 470) && (mouseY > 300 && mouseY < 375)) {
+
+          blnMedium = true;
+          blnGameStarting = true;
+
+        } else if ((mouseX > 250 && mouseX < 445) && (mouseY > 400 && mouseY < 475)) {
+
+          blnHard = true;
+          blnGameStarting = true;
+
+        }
+
+      }
 
     }
 
