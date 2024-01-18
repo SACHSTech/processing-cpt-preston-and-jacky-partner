@@ -45,6 +45,7 @@ public class escape_room extends PApplet{
   PImage[] imgCards;
   PImage imgCrowBar;
   PImage imgStairs;
+  PImage imgIKey;
   boolean[] blnFound = {false,false,false,false,false,false,false,false};
   boolean blnCrowBar,blnStairs, blnTable, blnFirstTimeEntered = false;
   int[] intCardLocations = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
@@ -53,6 +54,7 @@ public class escape_room extends PApplet{
   int[] intY = {249,249,249,249,302,302,302,302,355,355,355,355,408,408,408,408};
   int intCardsFlipped = 0;
   int intCardDelay = 0;
+  int intKeyTimer = 0;
   int intCrowBarCount = 0;
   Random intRand = new Random();
 
@@ -72,7 +74,7 @@ public class escape_room extends PApplet{
   boolean[] blnNextLevel = {true,false,false,false,false,false};
   boolean[] blnLeftLevel = {false,false,false,false};
   int intNumLevels = 10;
-  int intLevel = 8;
+  int intLevel = 0;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -203,6 +205,9 @@ public class escape_room extends PApplet{
       imgKeyCard[i] = loadImage("escape_room/popups/keycard" + i + ".png");
 
     }
+
+    // loading in the I shaped key
+    imgIKey = loadImage("escape_room/popups/iKey.png");
 
   }
 
@@ -999,6 +1004,14 @@ public class escape_room extends PApplet{
       if (blnNextLevel[3] == true && blnLeftLevel[2] == true) {
 
         image(imgKeyCard[2],75,560);
+
+      }
+
+      // prints out a key over the player's head
+      if (blnKeyI == true && intKeyTimer <= 100) {
+
+        image(imgIKey,intPlayerX,intPlayerY - 30);
+        intKeyTimer ++;
 
       }
 
