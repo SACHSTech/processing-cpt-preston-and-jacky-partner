@@ -1,10 +1,13 @@
 import processing.core.PApplet;
 import processing.core.PImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
+import javax.sound.sampled.*;
 import java.util.Scanner;
 
-public class escape_room extends PApplet{
+public class escape_room extends PApplet {
 
   // level image variable 
   PImage[] imgLevel;
@@ -37,6 +40,9 @@ public class escape_room extends PApplet{
 
   // level 5 variable 
   String strPassword = "";
+  boolean blnDesk = false;
+  File file = new File("");
+  Scanner scanner = new Scanner(System.in);
 
   // level 7 variables
   boolean blnRickPoster, blnGundamPoster, blnIPoster, blnKeyI, blnTrapDoor, blnLockedTrapDoor = false;
@@ -74,7 +80,7 @@ public class escape_room extends PApplet{
   boolean[] blnNextLevel = {true,false,false,false,false,false};
   boolean[] blnLeftLevel = {false,false,false,false};
   int intNumLevels = 10;
-  int intLevel = 0;
+  int intLevel = 5;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -226,7 +232,12 @@ public class escape_room extends PApplet{
      
       drawCollisionMaps();
       playerMovementAndCollisions();
-      playerInteractions();
+      try {
+        playerInteractions();
+      } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
       drawMaps();
       oxygenMeter();
       playerUpdate();
@@ -501,7 +512,7 @@ public class escape_room extends PApplet{
   /**
    * player interactions with objects 
    */
-  public void playerInteractions() {
+  public void playerInteractions() throws LineUnavailableException, UnsupportedAudioFileException, IOException {
 
     // detects if the player is trying to interact with an object, everything inside this if statement runs when that key is pressed
     if (blnInteract == true) {
@@ -550,6 +561,33 @@ public class escape_room extends PApplet{
 
       // note, the quote we are using is "good morning everyone, please take your seats"
       } else if (intLevel == 5) {
+
+        // detects if the player is interacting with the table 
+        if (get(intPlayerX, intPlayerY + 64) == -16776961 || get(intPlayerX - 8, intPlayerY) == -16776961 || get(intPlayerX, intPlayerY - 8) == -16776961 ) {
+
+          blnDesk = true;
+
+        }
+
+        // only plays the clip when the player is interacting with the table
+        if (blnDesk == true) {
+
+          /*
+
+          AudiioInputStream audioStream = AudioSystem.getAudioInputStream(file);
+          Clip clip = AudioSystem.getClip();
+          clip.open(audiostream);
+          clip.start();
+          
+          String strStart = scanner.next();
+          scanner.close();
+
+          // turns off the audio and allows the player to restart it once it ends 
+          blnDesk = false;
+          
+          */
+
+        }
 
         // runs even when the password is at max length 
         if ((intPlayerY > 261 && intPlayerY <= 375) && (intPlayerX > 237 && intPlayerX < 380) && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) { 
