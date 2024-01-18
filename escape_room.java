@@ -70,8 +70,9 @@ public class escape_room extends PApplet{
 
   // level variables 
   boolean[] blnNextLevel = {true,false,false,false,false,false};
+  boolean[] blnLeftLevel = {false,false,false,false};
   int intNumLevels = 10;
-  int intLevel = 3;
+  int intLevel = 8;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -953,10 +954,14 @@ public class escape_room extends PApplet{
         }
       }
 
-      if (blnNextLevel[1] == true && intKeyCardTimer[0] <= 100) {
+      if (blnNextLevel[1] == true && intKeyCardTimer[0] <= 100 && blnLeftLevel[0] == false) {
 
         image(imgKeyCard[0],intPlayerX,intPlayerY - 30);
         intKeyCardTimer[0] ++;
+
+      } else if (blnNextLevel[1] == true && blnLeftLevel[0] == true) {
+
+        image(imgKeyCard[0],435,200);
 
       }
 
@@ -977,14 +982,25 @@ public class escape_room extends PApplet{
 
       }
 
-      if (blnNextLevel[2] == true && intKeyCardTimer[1] <= 100) {
+      if (blnNextLevel[2] == true && intKeyCardTimer[1] <= 100 && blnLeftLevel[1] == false) {
 
         image(imgKeyCard[1],intPlayerX,intPlayerY - 30);
         intKeyCardTimer[1] ++;
 
+      } else if (blnNextLevel[2] == true && blnLeftLevel[1] == true) {
+
+        image(imgKeyCard[1], 50,555);
+
       }
       
     } else if (intLevel == 7) {
+
+      // prints out the keycard once the player has completed the level and left it 
+      if (blnNextLevel[3] == true && blnLeftLevel[2] == true) {
+
+        image(imgKeyCard[2],75,560);
+
+      }
 
       // pops up text when the player interacts with the Rick Poster
       if (blnRickPoster == true) {
@@ -1029,6 +1045,14 @@ public class escape_room extends PApplet{
       }
     } else if (intLevel == 8) {
 
+      // pritns out the keycard once the level is completed
+      if (blnNextLevel[3] == true && intKeyCardTimer[2] <= 100 && blnLeftLevel[2] == false) {
+
+        image(imgKeyCard[2],intPlayerX,intPlayerY - 30);
+        intKeyCardTimer[2] ++;
+
+      }
+
       // randomizes the cards the first time the player walks in, every other time, the cards don't randomize
       if (blnFirstTimeEntered == true && blnTable == false) {
 
@@ -1053,13 +1077,6 @@ public class escape_room extends PApplet{
 
         image(imgCrowBar,intPlayerX,intPlayerY - 60);
         intCrowBarCount ++;
-
-      }
-
-      if (blnNextLevel[3] == true && intKeyCardTimer[2] <= 100) {
-
-        image(imgKeyCard[2],intPlayerX,intPlayerY - 30);
-        intKeyCardTimer[2] ++;
 
       }
 
@@ -1252,6 +1269,7 @@ public class escape_room extends PApplet{
     } else if (intPlayerX <= 16 && intLevel == 3 && blnNextLevel[1] == true) {
 
       intLevel += 1;
+      blnLeftLevel[0] = true;
       intPlayerX = 664;
       
     } else if (intLevel == 4 && intPlayerX < 16) {
@@ -1263,6 +1281,7 @@ public class escape_room extends PApplet{
 
       intLevel += 1;
       intPlayerY = 664;
+      blnLeftLevel[1] = true;
 
     } else if (intLevel == 6 && intPlayerY < 16) {
 
@@ -1273,11 +1292,13 @@ public class escape_room extends PApplet{
 
       intLevel += 2;
       intPlayerX = 664;
+      blnLeftLevel[2] = true;
 
     } else if (intLevel == 10 && intPlayerY > 664 && blnNextLevel[4] == true) {
 
       intLevel += 1;
       intPlayerY = 16;
+      blnLeftLevel[3] = true;
 
     }
 
