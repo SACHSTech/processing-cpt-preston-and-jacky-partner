@@ -233,10 +233,14 @@ public class escape_room extends PApplet {
       drawCollisionMaps();
       playerMovementAndCollisions();
       try {
+
         playerInteractions();
+
       } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+       
         // TODO Auto-generated catch block
         e.printStackTrace();
+        
       }
       drawMaps();
       oxygenMeter();
