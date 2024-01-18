@@ -40,8 +40,8 @@ public class escape_room extends PApplet {
 
   // level 5 variable 
   String strPassword = "";
-  boolean blnDesk = false;
-  File file = new File("");
+  static boolean blnDesk = false;
+  File file = new File("escape_room/AudioFiles/Music2.wav");
   Scanner scanner = new Scanner(System.in);
 
   // level 7 variables                            
@@ -244,7 +244,7 @@ public class escape_room extends PApplet {
         AudioPlayer();
 
       } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
-       
+
         // TODO Auto-generated catch block
         e.printStackTrace();
 
@@ -1727,9 +1727,9 @@ public class escape_room extends PApplet {
 
   /**
    * 
-   * @throws LineUnavailableException indicates that the file can't be opened because the code does not have permission to access it 
-   * @throws UnsupportedAudioFileException indicates that the audio file type is able to be used 
-   * @throws IOException indicates that the fiel that you are trying to access does not exsist
+   * @throws LineUnavailableException indicates if this method does not have permission to open the file 
+   * @throws UnsupportedAudioFileException indicates if the audio file is not supported 
+   * @throws IOException indicates if the the audio file is missing 
    */
   public void AudioPlayer() throws LineUnavailableException, UnsupportedAudioFileException, IOException {
 
@@ -1740,17 +1740,16 @@ public class escape_room extends PApplet {
       Clip clip = AudioSystem.getClip();
       clip.open(audioStream);
       clip.start();
-      
+
+       // turns off the audio and allows the player to restart it once it ends 
+       blnDesk = false;
+
       String strStart = scanner.next();
       scanner.close();
 
-      // turns off the audio and allows the player to restart it once it ends 
-      blnDesk = false;
-
     }
-
   }
-
+  
   /**
    * sees which direction the player is currently moving in 
    * @return a boolean value as true that corresponds to the last direction that player as moving in 
