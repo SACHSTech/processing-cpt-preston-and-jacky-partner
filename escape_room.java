@@ -1,11 +1,10 @@
 import processing.core.PApplet;
 import processing.core.PImage;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
-public class escape_room extends PApplet {
+public class escape_room extends PApplet{
 
   // level image variable 
   PImage[] imgLevel;
@@ -16,6 +15,13 @@ public class escape_room extends PApplet {
   PImage[] imgPlayerRight;
   PImage[] imgPlayerUp;
   PImage[] imgPlayerDown;
+
+  // starting screen variables
+  PImage imgStartingScreen;
+  boolean blnStartButtonPressed = false;
+  boolean blnEasy = false;
+  boolean blnMedium = false;
+  boolean blnHard = false;
 
   // level 2 and 3 variables 
   PImage[] imgPage;
@@ -33,32 +39,35 @@ public class escape_room extends PApplet {
 
   // level 9 variables
   PImage[] imgCards;
+  PImage imgCrowBar;
+  PImage imgStairs;
+  boolean[] blnFound = {false,false,false,false,false,false,false,false};
+  boolean blnCrowBar,blnStairs, blnTable, blnFirstTimeEntered = false;
   int[] intCardLocations = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
   int[] intCardStatus = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-  boolean[] blnFound = {false,false,false,false,false,false,false,false};
   int[] intX = {264,307,350,393,264,307,350,393,264,307,350,393,264,307,350,393};
   int[] intY = {249,249,249,249,302,302,302,302,355,355,355,355,408,408,408,408};
-  boolean blnTable = false;
-  boolean blnFirstTimeEntered = true;
   int intCardsFlipped = 0;
+  int intCardDelay = 0;
+  int intCrowBarCount = 0;
   Random intRand = new Random();
 
   // player direction
   String strDirection = "Down";
 
   // game starting and ending variables
-  boolean blnGameStarting = true;
+  boolean blnGameStarting = false;
   boolean blnGameEnding = false;
 
   // game oxygen meter variables
   boolean blnOxygenMeter = false;
-  int intOxygenMeter = 100;
-  int intTotalOxygen;
+  int intOxygenMeter = 1;
+  int intTotalOxygen = 1;
 
   // level variables 
   boolean[] blnNextLevel = {true,false,false,false,false,false};
   int intNumLevels = 10;
-  int intLevel = 8;
+  int intLevel = 0;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -109,18 +118,21 @@ public class escape_room extends PApplet {
     // setting up image variables for cards
     imgCards = new PImage[17];
 
+    // loading in all level images
     for (int i = 0; i < intNumLevels; i++) {
 
       imgLevel[i] = loadImage("escape_room/levels/level" + i + ".png"); 
 
     }
 
+    // loading in all level collision maps
     for (int i = 0; i < intNumLevels; i++) {
 
       imgLevelCollision[i] = loadImage("escape_room/levels/collisions/level" + i + ".png"); 
 
     }
 
+    // loading in all left player animation images
     for (int i = 0; i < intNumFrames; i++) {
       
       imgPlayerLeft[i] = loadImage("escape_room/player/playerLeft" + i + ".png");
@@ -128,6 +140,7 @@ public class escape_room extends PApplet {
 
     }
   
+    // loading in all right player animation images
     for (int i = 0; i < intNumFrames; i++) {
       
       imgPlayerRight[i] = loadImage("escape_room/player/playerRight" + i + ".png");
@@ -135,6 +148,7 @@ public class escape_room extends PApplet {
 
     }
       
+    // loading in all up player animation images
     for (int i = 0; i < intNumFrames; i++) {
       
       imgPlayerUp[i] = loadImage("escape_room/player/playerUp" + i + ".png");
@@ -142,6 +156,7 @@ public class escape_room extends PApplet {
 
     }
   
+    // loading in all down player animation images
     for (int i = 0; i < intNumFrames; i++) {
       
       imgPlayerDown[i] = loadImage("escape_room/player/playerDown" + i + ".png");
@@ -149,16 +164,31 @@ public class escape_room extends PApplet {
 
     }
 
+    // loading page 1 of the stack of papers found on level 3
     imgPage[0] = loadImage("escape_room/popups/page" + 0 + ".png");
+
+    // loading in page 2 of the stack of papers found on level 3
     imgPage[1] = loadImage("escape_room/popups/page" + 1 + ".png");
 
+    // loading in safe pop up for the safe in level 3
+    imgSafe = loadImage("escape_room/popups/safe.png");
+
+    // loading in cards for the level 8 matching card game
     for (int i = 0; i <= 16; i++) {
 
       imgCards[i] = loadImage("escape_room/popups/card" + i + ".png");
 
     }
 
-    imgSafe = loadImage("escape_room/popups/safe.png");
+    // loading and resized the crowbar image found on level 8
+    imgCrowBar = loadImage("escape_room/popups/crowbar.png");
+    imgCrowBar.resize(60,72);
+
+    // loading in the stairs image found on level 8
+    imgStairs = loadImage("escape_room/popups/stairs.png");
+
+    // loading in the starting screen image 
+    imgStartingScreen = loadImage("escape_room/startScreen.png");
 
   }
 
@@ -167,9 +197,14 @@ public class escape_room extends PApplet {
    */
   public void draw() {
 
-    if (blnGameStarting == true && intOxygenMeter > 0) {
-     
+    // detects if the game has started 
+    if (blnGameStarting == false) {
+
       startingScreen();
+
+    // detects if the game has started and if the user still has oxygen left 
+    } else if (blnGameStarting == true && intOxygenMeter > 0 ) {
+     
       drawCollisionMaps();
       playerMovementAndCollisions();
       playerInteractions();
@@ -191,7 +226,7 @@ public class escape_room extends PApplet {
     } else {
 
       background(0);
-      textSize(50);
+      textSize(20);
       fill(255);
       text("mission failed sucessfully, we'll get'em next time", width / 2, height / 2);
 
@@ -202,7 +237,134 @@ public class escape_room extends PApplet {
    * draws a starting screen for the game and will allow the player to decide difficulty before starting 
    */
   public void startingScreen() {
-  
+
+    // detects if the game has started
+    if (blnGameStarting == false) {
+
+      // draws the starting screen image
+      image(imgStartingScreen,CENTER,CENTER);
+
+      // changes the text colour of the exit button if they are hovering over the button
+      if ((mouseX > 20 && mouseX < 75) && (mouseY > 10 && mouseY < 35)) {
+
+        fill(255);
+        stroke(0);
+        rect(20,10,55,25);
+        fill(100,0,0);
+        strokeWeight(5);
+        textSize(20);
+        text("EXIT",25,30);
+
+      } else {
+
+        fill(255);
+        stroke(0);
+        rect(20,10,55,25);
+        fill(0);
+        strokeWeight(5);
+        textSize(20);
+        text("EXIT",25,30);
+
+      }
+
+      // detects if the start button has been pressed 
+      if (blnStartButtonPressed == false) {  
+
+        // detects if the player is hovering over the button, and changes the text colour accordingly 
+        if ((mouseX > 240 && mouseX < 445) && (mouseY > 290 && mouseY < 365)) {
+
+          fill(255);
+          stroke(0,0,100);
+          rect(240,290,205,75);
+          fill(0,0,100);
+          strokeWeight(5);
+          textSize(60);
+          text("START",250,350);
+
+        } else {
+
+          fill(255);
+          stroke(0);
+          rect(240,290,205,75);
+          fill(0);
+          strokeWeight(5);
+          textSize(60);
+          text("START",250,350);
+
+        }
+
+      } else if (blnStartButtonPressed == true) {
+        
+        // detects if the user has selected the easy difficulty 
+        if ((mouseX > 250 && mouseX < 445) && (mouseY > 200 && mouseY < 275)) {
+
+          fill(255);
+          stroke(0,0,100);
+          rect(250,200,195,75);
+          fill(0,0,100);
+          strokeWeight(5);
+          textSize(60);
+          text("EASY",275,260);
+
+        } else {
+
+          fill(255);
+          stroke(0);
+          rect(250,200,195,75);
+          fill(0);
+          strokeWeight(5);
+          textSize(60);
+          text("EASY",275,260);
+
+        }
+
+        // detets if the player has selected the medium difficulty 
+        if ((mouseX > 220 && mouseX < 470) && (mouseY > 300 && mouseY < 375)) {
+
+          fill(255);
+          stroke(0,0,100);
+          rect(220,300,250,75);
+          fill(0,0,100);
+          strokeWeight(5);
+          textSize(60);
+          text("MEDIUM",225,360);
+
+        } else {
+
+          fill(255);
+          stroke(0);
+          rect(220,300,250,75);
+          fill(0);
+          strokeWeight(5);
+          textSize(60);
+          text("MEDIUM",225,360);
+
+        }
+
+        // detects if the player has selected the hard difficulty 
+        if ((mouseX > 250 && mouseX < 445) && (mouseY > 400 && mouseY < 475)) {
+
+          fill(255);
+          stroke(0,0,100);
+          rect(250,400,195,75);
+          fill(0,0,100);
+          strokeWeight(5);
+          textSize(60);
+          text("HARD",265,460);
+
+        } else {
+
+          fill(255);
+          stroke(0);
+          rect(250,400,195,75);
+          fill(0);
+          strokeWeight(5);
+          textSize(60);
+          text("HARD",265,460);
+
+        }
+      }
+    } 
   }
 
   /**
@@ -237,18 +399,34 @@ public class escape_room extends PApplet {
    */
   public void oxygenMeter() {
 
-    // only starts the meter once they have left the tutorial level 
-    if (blnOxygenMeter == true) {
+    // sets the amount of oxygen higher if the player has selected the medium difficulty and lower if they selected the hard difficulty 
+    if (blnMedium == true) {
+
+      intOxygenMeter = 300;
+      intTotalOxygen = 300;
+      blnMedium = false;
+
+    } else if (blnHard == true) {
+
+      intOxygenMeter = 200;
+      intTotalOxygen = 200;
+      blnHard = false;
+
+    }
+
+    // only starts the meter once they have left the tutorial level and if the player did not select the easy difficulty 
+    if (blnOxygenMeter == true && blnEasy != true) {
 
       fill(173, 216, 230);
       noStroke();
       rect(640,640,20, -intOxygenMeter);
+      strokeWeight(1);
       stroke(0,0,0);
       noFill();
-      rect(640,540,20,100);
+      rect(640,640,20, -intTotalOxygen);
     
       // slowly ticks away at the oxygen meter 
-      if (frameCount % 60 == 0) {
+      if (frameCount % 120 == 0) {
 
         intOxygenMeter -= 1;
 
@@ -269,7 +447,8 @@ public class escape_room extends PApplet {
   public void playerMovementAndCollisions() {
 
     // prevents players from moving if they are interacting with an object
-    if (blnPage == false && blnSafe == false && blnRickPoster == false && blnGundamPoster == false && blnIPoster == false)  {
+    if (blnPage == false && blnSafe == false && blnRickPoster == false && blnGundamPoster == false && blnIPoster == false && blnTable == false)  {
+      
       // left player collision detection
       if (blnLeft == true && (get(intPlayerX - 8, intPlayerY + 54) != -1.6777216E7 && get(intPlayerX - 8, intPlayerY + 54) != -16776961)) {
 
@@ -315,19 +494,18 @@ public class escape_room extends PApplet {
           // detection for the desk
           if (get(intPlayerX, intPlayerY - 8) == -16776961 || get(intPlayerX + 64, intPlayerY) == -16776961) {
 
-              if (blnPage == true) {
-  
-                blnPage = false;
-                delay(300);
-  
-              // allows the player to leave the desk and page pop up if they think they have figured out the correct code for the room 
-              } else if (blnPage == false) {
-  
-                blnPage = true;
-                delay(300);
-  
-              }
+            if (blnPage == true) {
 
+              blnPage = false;
+              delay(300);
+
+            // allows the player to leave the desk and page pop up if they think they have figured out the correct code for the room 
+            } else if (blnPage == false) {
+
+              blnPage = true;
+              delay(300);
+
+            }
           }
 
         } else {
@@ -406,7 +584,12 @@ public class escape_room extends PApplet {
           // coordinates for deletion key
           } else if (intPlayerX > 237 && intPlayerX < 380 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) { 
           
-            strPassword = "";
+            // prevents the player from using the delete key even when there is nothing left in the string 
+            if (strPassword.length() > 0) {
+
+              strPassword = strPassword.substring(0, strPassword.length() - 1);
+
+            }
             delay(300);
 
           // coordinates for the letter H
@@ -525,6 +708,7 @@ public class escape_room extends PApplet {
         } else if (blnTrapDoor == true && (get(intPlayerX, intPlayerY + 56) == -256 || get(intPlayerX + 42, intPlayerY + 56) == -256)) {
 
           intLevel += 1;
+          delay(300);
           blnFirstTimeEntered = true;
 
         }  
@@ -535,26 +719,44 @@ public class escape_room extends PApplet {
         if (get(intPlayerX, intPlayerY + 56) == -256 || get(intPlayerX + 42, intPlayerY + 56) == -256) {
           
           intLevel -= 1;
+          delay(300);
 
         }
 
         // detects if the player is interacting with the table 
         if ((get(intPlayerX,intPlayerY + 56) == -16776961) || (get(intPlayerX + 42,intPlayerY + 56) == -16776961) || (get(intPlayerX + 42, intPlayerY) == -16776961) || (get(intPlayerX,intPlayerY) == -16776961)) {
 
-          if (blnTable == true) {
+          if (intPlayerX < (width / 2) && intPlayerY > (height / 2)) {
+            
+            if (blnTable == true) {
 
-            blnTable = false;
-            delay(300);
+              blnTable = false;
+              delay(300);
 
-          } else if (blnTable == false) {
+            } else if (blnTable == false) {
 
-            blnTable = true;
-            delay(300);
+              blnTable = true;
+              delay(300);
+
+            }
+
+          // box detection
+          } else if (intPlayerX > (width / 2) && intPlayerY < (height / 2)) {
+
+
+          // stairs detection
+          } else if (intPlayerX < (width / 2) && intPlayerY > (height / 2)) {
+
+
 
           }
 
-        }
+        // crowbar detection
+        } else if ((get(intPlayerX,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42, intPlayerY) == -16711936) || (get(intPlayerX,intPlayerY) == -16711936)) {
 
+          blnCrowBar = true;
+
+        } 
       } 
     } 
     
@@ -562,6 +764,14 @@ public class escape_room extends PApplet {
     if (intLevel == 7 &&  (get(intPlayerX, intPlayerY + 64) != -256 || get(intPlayerX + 42, intPlayerY + 64) != -256)) {
 
       blnLockedTrapDoor = false;
+
+    } else if (intLevel == 8 && (get(intPlayerX,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42, intPlayerY) == -16711936) || (get(intPlayerX,intPlayerY) == -16711936)) {
+
+      blnStairs = true;
+
+    } else if (intLevel == 8 && (get(intPlayerX,intPlayerY + 56) != -16711936) && (get(intPlayerX + 42,intPlayerY + 56) != -16711936) && (get(intPlayerX + 42, intPlayerY) != -16711936) && (get(intPlayerX,intPlayerY) != -16711936)) {
+
+      blnStairs = false;
 
     }
   }
@@ -573,7 +783,6 @@ public class escape_room extends PApplet {
 
     // draws out the correct room depending on the level the player is on 
     image(imgLevel[intLevel],0,0);
-
        
   }
 
@@ -581,7 +790,7 @@ public class escape_room extends PApplet {
    * updates the player model depending on the direction that the player is moving 
    */
   public void playerUpdate() {
-
+    
     if (blnUp == true) {
 
       image(imgPlayerUp[intMoveFrames], intPlayerX, intPlayerY);
@@ -665,7 +874,6 @@ public class escape_room extends PApplet {
           intPageNumber = 1;
 
         }
-
       }
 
       // checks if the user has interacted with the safe 
@@ -691,7 +899,6 @@ public class escape_room extends PApplet {
             textSize(130);
             text(strCode, 110, 215);
    
-
           } else {
 
             // changes the variable to WRONG to let the user know they got the code wrong and must try again 
@@ -725,7 +932,6 @@ public class escape_room extends PApplet {
 
           // allows the player to sill use the safe even if they have unlocked it 
           } else if (strCode.equals("OPEN "));
-
         }
       }
 
@@ -774,7 +980,8 @@ public class escape_room extends PApplet {
 
         // gives different more unique text if the player has found the specific key before ineracting with it 
         if (blnKeyI == true) {
-
+          
+          textSize(20);
           text("You put in the ''I'' shaped key that you found.", 120, 550);
           text("Clank, Whirrr, Hummmm, something must of happened", 75, 575);
           blnTrapDoor = true;
@@ -784,6 +991,7 @@ public class escape_room extends PApplet {
       // gives a hint to the player if they are trying to interact with the trap door before performing all the needed steps before it 
       } else if (blnLockedTrapDoor == true) {
 
+        textSize(20);
         text("You pull with all your might, but it seems to be sealed tight",75,500);
 
       }
@@ -794,13 +1002,27 @@ public class escape_room extends PApplet {
 
         for (int i = 0; i < intCardLocations.length; i++) {
 
-          int randomIndexToSwap = intRand.nextInt(intCardLocations.length);
-          int temp = intCardLocations[randomIndexToSwap];
-          intCardLocations[randomIndexToSwap] = intCardLocations[i];
-          intCardLocations[i] = temp;
+          int intRandomSwap = intRand.nextInt(intCardLocations.length);
+          int intTemp = intCardLocations[intRandomSwap];
+          intCardLocations[intRandomSwap] = intCardLocations[i];
+          intCardLocations[i] = intTemp;
 
         }
       } 
+
+      if (blnStairs == true) {
+
+        image(imgStairs,550,353);
+
+      }
+
+      // detects if the user has the crowbar and then prints out the crow bar above the player's head 
+      if (blnCrowBar == true && intCrowBarCount <= 60) {
+
+        image(imgCrowBar,intPlayerX,intPlayerY - 60);
+        intCrowBarCount ++;
+
+      }
 
       // checks if the player is interacting with the table 
       if (blnTable == true) {  
@@ -821,18 +1043,28 @@ public class escape_room extends PApplet {
           } 
         }
 
+        // detects if the player has completed teh card game
+        if ((blnFound[0] && blnFound[1] && blnFound[2] && blnFound[3] && blnFound[4] && blnFound[5] && blnFound[6] && blnFound[7]) == true) {
+
+          blnTable = false;
+          blnNextLevel[3] = true;
+
+        }
+
         // checks if two cards have been flipped, and then checks if any pairs have been found
         if (intCardsFlipped >= 2) {
 
-          // if a pair has been found, it removes them from the grid 
-          if (intCardStatus[0] == 1 && intCardStatus[1] == 1) {
+          intCardDelay += 1;
 
+          // if a pair has been found, it removes them from the grid 
+          if (intCardStatus[0] == 1 && intCardStatus[1] == 1 && intCardDelay >= 30) {
+          
             intCardStatus[0] = 2;
             intCardStatus[1] = 2;
             blnFound[0] = true;
-            intCardsFlipped = 0;;
+            intCardsFlipped = 0;
 
-          } else if (blnFound[0] == false) {
+          } else if (blnFound[0] == false && intCardDelay >= 30) {
 
             intCardStatus[0] = 0;
             intCardStatus[1] = 0;
@@ -840,14 +1072,14 @@ public class escape_room extends PApplet {
 
           }
           
-          if (intCardStatus[2] == 1 && intCardStatus[3] == 1) {
+          if (intCardStatus[2] == 1 && intCardStatus[3] == 1 && intCardDelay >= 30) {
 
             intCardStatus[2] = 2;
             intCardStatus[3] = 2;
             blnFound[1] = true;
             intCardsFlipped = 0;
 
-          } else if (blnFound[1] == false){
+          } else if (blnFound[1] == false && intCardDelay >= 30){
 
             intCardStatus[2] = 0;
             intCardStatus[3] = 0;
@@ -855,14 +1087,14 @@ public class escape_room extends PApplet {
 
           }
           
-          if (intCardStatus[4] == 1 && intCardStatus[5] == 1) {
+          if (intCardStatus[4] == 1 && intCardStatus[5] == 1 && intCardDelay >= 30) {
 
             intCardStatus[4] = 2;
             intCardStatus[5] = 2;
             blnFound[2] = true;
             intCardsFlipped = 0;
 
-          } else if (blnFound[2] == false) {
+          } else if (blnFound[2] == false && intCardDelay >= 30)  {
 
             intCardStatus[4] = 0;
             intCardStatus[5] = 0;
@@ -870,14 +1102,14 @@ public class escape_room extends PApplet {
 
           }
           
-          if (intCardStatus[6] == 1 && intCardStatus[7] == 1) {
+          if (intCardStatus[6] == 1 && intCardStatus[7] == 1 && intCardDelay >= 30) {
 
             intCardStatus[6] = 2;
             intCardStatus[7] = 2;
             blnFound[3] = true;
             intCardsFlipped = 0;
 
-          } else if (blnFound[3] == false) {
+          } else if (blnFound[3] == false && intCardDelay >= 30) {
 
             intCardStatus[6] = 0;
             intCardStatus[7] = 0;
@@ -885,29 +1117,30 @@ public class escape_room extends PApplet {
 
           }
           
-          if (intCardStatus[8] == 1 && intCardStatus[9] == 1) {
+          if (intCardStatus[8] == 1 && intCardStatus[9] == 1 && intCardDelay >= 30) {
 
             intCardStatus[8] = 2;
             intCardStatus[9] = 2;
             blnFound[4] = true;
             intCardsFlipped = 0;
 
-          } else if (blnFound[4] == false) {
+          } else if (blnFound[4] == false && intCardDelay >= 30) {
 
             intCardStatus[8] = 0;
             intCardStatus[9] = 0;
             intCardsFlipped = 0;
-
+   
           }
           
-          if (intCardStatus[10] == 1 && intCardStatus[11] == 1) {
+          if (intCardStatus[10] == 1 && intCardStatus[11] == 1 && intCardDelay >= 30) {
 
             intCardStatus[10] = 2;
             intCardStatus[11]= 2;
             blnFound[5] = true;
             intCardsFlipped = 0;
+      
 
-          } else if (blnFound[5] == false) {
+          } else if (blnFound[5] == false && intCardDelay >= 30) {
 
             intCardStatus[10] = 0;
             intCardStatus[11] = 0;
@@ -915,14 +1148,14 @@ public class escape_room extends PApplet {
 
           }
           
-          if (intCardStatus[12] == 1 && intCardStatus[13] == 1) {
+          if (intCardStatus[12] == 1 && intCardStatus[13] == 1 && intCardDelay >= 30) {
 
             intCardStatus[12] = 2;
             intCardStatus[13] = 2;
             blnFound[6] = true;
             intCardsFlipped = 0;
 
-          } else if (blnFound[6] == false) {
+          } else if (blnFound[6] == false && intCardDelay >= 30) {
 
             intCardStatus[12] = 0;
             intCardStatus[13] = 0;
@@ -930,21 +1163,33 @@ public class escape_room extends PApplet {
 
           }
           
-          if (intCardStatus[14] == 1 && intCardStatus[15] == 1) {
+          if (intCardStatus[14] == 1 && intCardStatus[15] == 1 && intCardDelay >= 30) {
 
             intCardStatus[14] = 2;
             intCardStatus[15] = 2;
             blnFound[7] = true;
             intCardsFlipped = 0;
 
-          } else if (blnFound[7] == false) {
+          } else if (blnFound[7] == false && intCardDelay >= 30)  {
 
             intCardStatus[14] = 0;
             intCardStatus[15] = 0;
             intCardsFlipped = 0;
 
           }
+        
+        // resets the delay 
+        } else if (intCardsFlipped == 0) {
+
+          intCardDelay = 0;
+
         }
+
+      // turns all the cards back once the player has left the table before finishing it 
+      } else if (blnTable == false) {
+
+        Arrays.fill(intCardStatus,0);
+
       }
     }
   }
@@ -1018,14 +1263,18 @@ public class escape_room extends PApplet {
       intLevel -= 1;
       intPlayerY = 16;
 
+    } else if (intLevel == 7 && intPlayerY > 664) {
+
+      intLevel -=1;
+      intPlayerY = 16;
+
     } else if (intLevel == 9 && intPlayerX > 664) {
 
-      // goes down 2 levels becuaes the player enters into the top floor of that room
+      // goes down by 2 so that the player ends up on the top floor and not the botto floor
       intLevel -= 2;
       intPlayerX = 16;
 
-    } 
-
+    }
   }
 
   /**
@@ -1087,19 +1336,27 @@ public class escape_room extends PApplet {
 
       blnLeft = false;
 
-    } if (key == 'd' || key =='D') {
+    } 
+    
+    if (key == 'd' || key =='D') {
       
       blnRight = false;
 
-    } if (key == 'w' || key =='W') {
+    } 
+    
+    if (key == 'w' || key =='W') {
       
       blnUp = false;
 
-    } if (key == 's' || key =='S') {
+    } 
+    
+    if (key == 's' || key =='S') {
       
       blnDown = false;
 
-    } if (key == 'e' || key == 'E') {
+    } 
+    
+    if (key == 'e' || key == 'E') {
 
       blnInteract = false;
 
@@ -1122,6 +1379,44 @@ public class escape_room extends PApplet {
    * detects moues inputs and outputs it 
    */
   public void mousePressed() {
+
+    if (blnGameStarting == false) {
+
+      // detects if the player wants to leave the game
+      if ((mouseX > 20 && mouseX < 75) && (mouseY > 10 && mouseY < 35)) {
+
+        System.exit(0);
+
+      }
+      
+      // detects if the player his hovering over the button on the starting screen 
+      if (blnStartButtonPressed == false) {
+
+        if ((mouseX > 240 && mouseX < 445) && (mouseY > 290 && mouseY < 365)) {
+
+          blnStartButtonPressed = true;
+
+        } 
+      } else if (blnStartButtonPressed == true) {
+
+        if ((mouseX > 250 && mouseX < 445) && (mouseY > 200 && mouseY < 275)) {
+
+          blnEasy = true;
+          blnGameStarting = true;
+
+        } else if ((mouseX > 220 && mouseX < 470) && (mouseY > 300 && mouseY < 375)) {
+
+          blnMedium = true;
+          blnGameStarting = true;
+
+        } else if ((mouseX > 250 && mouseX < 445) && (mouseY > 400 && mouseY < 475)) {
+
+          blnHard = true;
+          blnGameStarting = true;
+
+        }
+      }
+    }
 
     if (blnSafe == true) {
 
@@ -1228,102 +1523,106 @@ public class escape_room extends PApplet {
           }
         }
       }
+      
     } else if (blnTable == true) {
 
-      if (mouseY > 249 && mouseY < 297) {
+      // prevents the plaeyr from flipping more then 2 cards at a time 
+      if (intCardDelay == 0) {
 
-        if (mouseX > 258 && mouseX < 300) {
+        if (mouseY > 249 && mouseY < 297) {
 
-          intCardStatus[intCardLocations[0]] += 1;  
-          intCardsFlipped += 1;          
+          if (mouseX > 258 && mouseX < 300) {
 
-        } else if (mouseX > 305 && mouseX < 343) {
+            intCardStatus[intCardLocations[0]] += 1;  
+            intCardsFlipped += 1;          
 
-          intCardStatus[intCardLocations[1]] += 1;
-          intCardsFlipped += 1; 
+          } else if (mouseX > 305 && mouseX < 343) {
 
-        } else if (mouseX > 344 && mouseX < 386) {
+            intCardStatus[intCardLocations[1]] += 1;
+            intCardsFlipped += 1; 
 
-          intCardStatus[intCardLocations[2]] += 1;
-          intCardsFlipped += 1; 
+          } else if (mouseX > 344 && mouseX < 386) {
 
-        } else if (mouseX > 387 && mouseX < 425) {
+            intCardStatus[intCardLocations[2]] += 1;
+            intCardsFlipped += 1; 
 
-          intCardStatus[intCardLocations[3]] += 1;
-          intCardsFlipped += 1; 
-          
-        }
+          } else if (mouseX > 387 && mouseX < 425) {
 
-      } else if (mouseY > 300 && mouseY < 348) {
+            intCardStatus[intCardLocations[3]] += 1;
+            intCardsFlipped += 1; 
+            
+          }
 
-        if (mouseX > 258 && mouseX < 300) {
+        } else if (mouseY > 300 && mouseY < 348) {
 
-          intCardStatus[intCardLocations[4]] += 1;   
-          intCardsFlipped += 1;          
+          if (mouseX > 258 && mouseX < 300) {
 
-        } else if (mouseX > 305 && mouseX < 343) {
+            intCardStatus[intCardLocations[4]] += 1;   
+            intCardsFlipped += 1;          
 
-          intCardStatus[intCardLocations[5]] += 1;
-          intCardsFlipped += 1; 
+          } else if (mouseX > 305 && mouseX < 343) {
 
-        } else if (mouseX > 344 && mouseX < 386) {
+            intCardStatus[intCardLocations[5]] += 1;
+            intCardsFlipped += 1; 
 
-          intCardStatus[intCardLocations[6]] += 1;
-          intCardsFlipped += 1; 
+          } else if (mouseX > 344 && mouseX < 386) {
 
-        } else if (mouseX > 387 && mouseX < 425) {
+            intCardStatus[intCardLocations[6]] += 1;
+            intCardsFlipped += 1; 
 
-          intCardStatus[intCardLocations[7]] += 1;
-          intCardsFlipped += 1; 
-          
-        }
+          } else if (mouseX > 387 && mouseX < 425) {
 
-      } else if (mouseY > 351 && mouseY < 399) {
+            intCardStatus[intCardLocations[7]] += 1;
+            intCardsFlipped += 1; 
+            
+          }
 
-        if (mouseX > 258 && mouseX < 300) {
+        } else if (mouseY > 351 && mouseY < 399) {
 
-          intCardStatus[intCardLocations[8]] += 1; 
-          intCardsFlipped += 1;            
+          if (mouseX > 258 && mouseX < 300) {
 
-        } else if (mouseX > 305 && mouseX < 343) {
+            intCardStatus[intCardLocations[8]] += 1; 
+            intCardsFlipped += 1;            
 
-          intCardStatus[intCardLocations[9]] += 1;
-          intCardsFlipped += 1; 
+          } else if (mouseX > 305 && mouseX < 343) {
 
-        } else if (mouseX > 344 && mouseX < 386) {
+            intCardStatus[intCardLocations[9]] += 1;
+            intCardsFlipped += 1; 
 
-          intCardStatus[intCardLocations[10]] += 1;
-          intCardsFlipped += 1; 
+          } else if (mouseX > 344 && mouseX < 386) {
 
-        } else if (mouseX > 387 && mouseX < 425) {
+            intCardStatus[intCardLocations[10]] += 1;
+            intCardsFlipped += 1; 
 
-          intCardStatus[intCardLocations[11]] += 1;
-          intCardsFlipped += 1; 
-          
-        }
+          } else if (mouseX > 387 && mouseX < 425) {
 
-      } else if (mouseY > 405 && mouseY < 453) {
+            intCardStatus[intCardLocations[11]] += 1;
+            intCardsFlipped += 1; 
+            
+          }
 
-        if (mouseX > 258 && mouseX < 300) {
+        } else if (mouseY > 405 && mouseY < 453) {
 
-          intCardStatus[intCardLocations[12]] += 1;  
-          intCardsFlipped += 1;           
+          if (mouseX > 258 && mouseX < 300) {
 
-        } else if (mouseX > 305 && mouseX < 343) {
+            intCardStatus[intCardLocations[12]] += 1;  
+            intCardsFlipped += 1;           
 
-          intCardStatus[intCardLocations[13]] += 1;
-          intCardsFlipped += 1; 
+          } else if (mouseX > 305 && mouseX < 343) {
 
-        } else if (mouseX > 344 && mouseX < 386) {
+            intCardStatus[intCardLocations[13]] += 1;
+            intCardsFlipped += 1; 
 
-          intCardStatus[intCardLocations[14]] += 1;
-          intCardsFlipped += 1; 
+          } else if (mouseX > 344 && mouseX < 386) {
 
-        } else if (mouseX > 387 && mouseX < 425) {
+            intCardStatus[intCardLocations[14]] += 1;
+            intCardsFlipped += 1; 
 
-          intCardStatus[intCardLocations[15]] += 1;
-          intCardsFlipped += 1; 
-          
+          } else if (mouseX > 387 && mouseX < 425) {
+
+            intCardStatus[intCardLocations[15]] += 1;
+            intCardsFlipped += 1; 
+          }
         }
       }
     }
