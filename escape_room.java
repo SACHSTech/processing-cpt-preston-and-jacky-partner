@@ -38,6 +38,7 @@ public class escape_room extends PApplet {
   // level 5 variable 
   String strPassword = "";
   boolean blnDesk = false;
+  int intDeskTimer = 0;
 
   // level 7 variables                            
   boolean blnRickPoster, blnGundamPoster, blnIPoster, blnKeyI, blnTrapDoor, blnLockedTrapDoor = false;
@@ -557,8 +558,10 @@ public class escape_room extends PApplet {
 
           blnDesk = true;
 
-        } 
+          // sets the timer back to 0 everyoen the player interacts with the desk so that they can see the hint on the screen again
+          intDeskTimer = 0;
 
+        } 
         // runs even when the password is at max length 
         if ((intPlayerY > 261 && intPlayerY <= 375) && (intPlayerX > 237 && intPlayerX < 380) && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) { 
             
@@ -980,11 +983,7 @@ public class escape_room extends PApplet {
 
     } else if (intLevel == 5) {
 
-      // displays what the user has tyed onto the floor 
-      fill(255);
-;     textSize(40);
-      text(strPassword,65, 125);
-
+      // checks if the password that is put in is the correct one and will allow the player to move onto the next level 
       if (strPassword.equals("fabroa") == true) {
 
         blnNextLevel[2] = true;
@@ -995,11 +994,35 @@ public class escape_room extends PApplet {
 
       }
 
+      // intDeskTimer is used to display the text but then remove it from the screen to allow the user to see what they are typing
+      if (blnDesk == true && intDeskTimer < 150) {
+
+        // prints out the clue for the room onto the wall
+        fill(255);
+        textSize(20);
+        text("Good morning class,",65, 95);
+        text("everyone please sit",65, 115);
+        text("down. By Mr. ",65, 135);
+        
+        // used to remove the text from the screen after a set time as gone by
+        intDeskTimer ++;
+
+      } else {
+
+        // displays what the user has tyed onto the wall, placed in the else statement so that the hint and this don't get printed at the same time
+        fill(255);
+        textSize(40);
+        text(strPassword,65, 125);
+
+      }
+
+      // prints out the keycard above the player's head for a short duration
       if (blnNextLevel[2] == true && intKeyCardTimer[1] <= 100 && blnLeftLevel[1] == false) {
 
         image(imgKeyCard[1],intPlayerX,intPlayerY - 30);
         intKeyCardTimer[1] ++;
 
+      // prints out the keycard onto the desk after the player has left the room and has walked back in 
       } else if (blnNextLevel[2] == true && blnLeftLevel[1] == true) {
 
         image(imgKeyCard[1], 50,555);
