@@ -10,6 +10,10 @@ public class escape_room extends PApplet{
   PImage[] imgLevel;
   PImage[] imgLevelCollision;
 
+  // keycard image variable
+  PImage[] imgKeyCard;
+  int[] intKeyCardTimer = {0,0,0,0};
+
   // player image movement variables 
   PImage[] imgPlayerLeft;
   PImage[] imgPlayerRight;
@@ -67,7 +71,7 @@ public class escape_room extends PApplet{
   // level variables 
   boolean[] blnNextLevel = {true,false,false,false,false,false};
   int intNumLevels = 10;
-  int intLevel = 5;
+  int intLevel = 3;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -117,6 +121,8 @@ public class escape_room extends PApplet{
 
     // setting up image variables for cards
     imgCards = new PImage[17];
+
+    imgKeyCard = new PImage[4];
 
     // loading in all level images
     for (int i = 0; i < intNumLevels; i++) {
@@ -189,6 +195,13 @@ public class escape_room extends PApplet{
 
     // loading in the starting screen image 
     imgStartingScreen = loadImage("escape_room/startScreen.png");
+
+    // loading in the keycard images
+    for (int i = 0; i < 4; i++) {
+
+      imgKeyCard[i] = loadImage("escape_room/popups/keycard" + i + ".png");
+
+    }
 
   }
 
@@ -940,6 +953,13 @@ public class escape_room extends PApplet{
         }
       }
 
+      if (blnNextLevel[1] == true && intKeyCardTimer[0] <= 100) {
+
+        image(imgKeyCard[0],intPlayerX,intPlayerY - 30);
+        intKeyCardTimer[0] ++;
+
+      }
+
     } else if (intLevel == 5) {
 
       // displays what the user has tyed onto the floor 
@@ -954,6 +974,13 @@ public class escape_room extends PApplet{
       } else {
 
         blnNextLevel[2] = false;
+
+      }
+
+      if (blnNextLevel[2] == true && intKeyCardTimer[1] <= 100) {
+
+        image(imgKeyCard[1],intPlayerX,intPlayerY - 30);
+        intKeyCardTimer[1] ++;
 
       }
       
@@ -1026,6 +1053,13 @@ public class escape_room extends PApplet{
 
         image(imgCrowBar,intPlayerX,intPlayerY - 60);
         intCrowBarCount ++;
+
+      }
+
+      if (blnNextLevel[3] == true && intKeyCardTimer[2] <= 100) {
+
+        image(imgKeyCard[2],intPlayerX,intPlayerY - 30);
+        intKeyCardTimer[2] ++;
 
       }
 
