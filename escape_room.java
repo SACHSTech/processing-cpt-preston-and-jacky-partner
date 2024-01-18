@@ -67,7 +67,7 @@ public class escape_room extends PApplet{
   // level variables 
   boolean[] blnNextLevel = {true,false,false,false,false,false};
   int intNumLevels = 10;
-  int intLevel = 0;
+  int intLevel = 5;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -532,113 +532,118 @@ public class escape_room extends PApplet{
       // note, the quote we are using is "good morning everyone, please take your seats"
       } else if (intLevel == 5) {
 
-        // uses position and colour detection to determine the key that the player is standing on top of. It will then print out the specific key onto the screen 
-        if (intPlayerY <= 261) {
-
-          // coordinates for the letter A
-          if (intPlayerX <= 115 && (get(intPlayerX + 30, intPlayerY + 56) == -3584 || get(intPlayerX,intPlayerY + 56) == -3584)) {
+        // runs even when the password is at max length 
+        if ((intPlayerY > 261 && intPlayerY <= 375) && (intPlayerX > 237 && intPlayerX < 380) && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) { 
             
-            strPassword += 'a';
-            delay(300);
+          // prevents the player from using the delete key even when there is nothing left in the string 
+          if (strPassword.length() > 0) {
 
-          // coordinates for the letter D
-          } else if (intPlayerX > 115 && intPlayerX < 237 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
-
-            strPassword += 'd';
-            delay(300);
-            
-          // coordinates for the letter R
-          } else if (intPlayerX > 237 && intPlayerX < 350 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) { 
-          
-            strPassword += "r";
-            delay(300);
-
-          // coordinates for the letter G
-          } else if (intPlayerX > 350 && intPlayerX < 503 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
-
-            strPassword += 'g';
-            delay(300);
-
-          // coordinates for the letter J
-          } else if (intPlayerX > 503 && intPlayerX < 614 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
-
-            strPassword += 'j';
-            delay(300);
+            strPassword = strPassword.substring(0, strPassword.length() - 1);
 
           }
 
-        } else if (intPlayerY > 261 && intPlayerY <= 375) {
+          delay(300);
 
-          // coordinates for the letter B
-          if (intPlayerX < 115 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
+        }
 
-            strPassword += 'b';
-            delay(300);
+        if (strPassword.length() < 8) {
+          // uses position and colour detection to determine the key that the player is standing on top of. It will then print out the specific key onto the screen 
+          if (intPlayerY <= 261) {
 
-          // coordinates for the letter E
-          } else if (intPlayerX > 115 && intPlayerX < 237 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
+            // coordinates for the letter A
+            if (intPlayerX <= 115 && (get(intPlayerX + 30, intPlayerY + 56) == -3584 || get(intPlayerX,intPlayerY + 56) == -3584)) {
+              
+              strPassword += 'a';
+              delay(300);
 
-            strPassword += 'e';
-            delay(300);
+            // coordinates for the letter D
+            } else if (intPlayerX > 115 && intPlayerX < 237 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
 
-          // coordinates for deletion key
-          } else if (intPlayerX > 237 && intPlayerX < 380 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) { 
-          
-            // prevents the player from using the delete key even when there is nothing left in the string 
-            if (strPassword.length() > 0) {
+              strPassword += 'd';
+              delay(300);
+              
+            // coordinates for the letter R
+            } else if (intPlayerX > 237 && intPlayerX < 350 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) { 
+            
+              strPassword += "r";
+              delay(300);
 
-              strPassword = strPassword.substring(0, strPassword.length() - 1);
+            // coordinates for the letter G
+            } else if (intPlayerX > 350 && intPlayerX < 503 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
+
+              strPassword += 'g';
+              delay(300);
+
+            // coordinates for the letter J
+            } else if (intPlayerX > 503 && intPlayerX < 614 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
+
+              strPassword += 'j';
+              delay(300);
 
             }
-            delay(300);
 
-          // coordinates for the letter H
-          } else if (intPlayerX > 237 && intPlayerX < 503 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
+          } else if (intPlayerY > 261 && intPlayerY <= 375) {
 
-            strPassword += 'h';
-            delay(300);
+            // coordinates for the letter B
+            if (intPlayerX < 115 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
 
-          // coordinates for the letter K
-          } else if (intPlayerX > 503 && intPlayerX < 614 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
+              strPassword += 'b';
+              delay(300);
 
-            strPassword += 'k';
-            delay(300);
+            // coordinates for the letter E
+            } else if (intPlayerX > 115 && intPlayerX < 237 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
 
-          }
+              strPassword += 'e';
+              delay(300);
 
-        } else if (intPlayerY > 375 && intPlayerY < 490) {
-   
-          // coordinates for the letter C
-          if (intPlayerX < 115 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
+            // coordinates for the letter H
+            } else if (intPlayerX > 380 && intPlayerX < 503 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
 
-            strPassword += 'c';
-            delay(300);
+              strPassword += 'h';
+              delay(300);
 
-          // coordinates for the letter F
-          } else if (intPlayerX > 115 && intPlayerX < 237 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
+            // coordinates for the letter K
+            } else if (intPlayerX > 503 && intPlayerX < 614 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
 
-            strPassword += 'f';
-            delay(300);
+              strPassword += 'k';
+              delay(300);
 
-          // coordinates for the letter O
-          } else if (intPlayerX > 237 && intPlayerX < 350 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) { 
-          
-            strPassword += "o";
-            delay(300);
+            }
 
+          } else if (intPlayerY > 375 && intPlayerY < 490) {
+    
+            // coordinates for the letter C
+            if (intPlayerX < 115 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
+
+              strPassword += 'c';
+              delay(300);
+
+            // coordinates for the letter F
+            } else if (intPlayerX > 115 && intPlayerX < 237 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
+
+              strPassword += 'f';
+              delay(300);
+
+            // coordinates for the letter O
+            } else if (intPlayerX > 237 && intPlayerX < 350 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) { 
             
-          // coordinates for the letter I
-          } else if (intPlayerX > 237 && intPlayerX < 503 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
+              strPassword += "o";
+              delay(300);
 
-            strPassword += 'i';
-            delay(300);
+              
+            // coordinates for the letter I
+            } else if (intPlayerX > 237 && intPlayerX < 503 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
 
-          // coordinates for the letter L
-          } else if (intPlayerX > 503 && intPlayerX < 614 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
+              strPassword += 'i';
+              delay(300);
 
-            strPassword += 'l';
-            delay(300);
+            // coordinates for the letter L
+            } else if (intPlayerX > 503 && intPlayerX < 614 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) {
 
+              strPassword += 'l';
+              delay(300);
+
+            }
           }
         }
 
@@ -938,9 +943,9 @@ public class escape_room extends PApplet{
     } else if (intLevel == 5) {
 
       // displays what the user has tyed onto the floor 
-      fill(0)
+      fill(255);
 ;     textSize(40);
-      text(strPassword, (width / 2) - 20, height - 50);
+      text(strPassword,65, 125);
 
       if (strPassword.equals("fabroa") == true) {
 
