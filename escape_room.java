@@ -43,13 +43,13 @@ public class escape_room extends PApplet {
   // level 7 variables                            
   boolean blnRickPoster, blnGundamPoster, blnIPoster, blnKeyI, blnTrapDoor, blnLockedTrapDoor = false;
 
-  // level 9 variables
+  // level 8 variables
   PImage[] imgCards;
   PImage imgCrowBar;
   PImage imgStairs;
   PImage imgIKey;
   boolean[] blnFound = {false,false,false,false,false,false,false,false};
-  boolean blnCrowBar,blnStairs, blnTable, blnFirstTimeEntered = false;
+  boolean blnCrowBar,blnStairs, blnTable, blnFirstTimeEntered, blnBox = false;
   int[] intCardLocations = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
   int[] intCardStatus = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
   int[] intX = {264,307,350,393,264,307,350,393,264,307,350,393,264,307,350,393};
@@ -57,7 +57,8 @@ public class escape_room extends PApplet {
   int intCardsFlipped = 0;
   int intCardDelay = 0;
   int intKeyTimer = 0;
-  int intCrowBarCount = 0;
+  int intEasterEggDelay = 0;
+  int intCrowBarTimer = 0;
   Random intRand = new Random();
 
   // player direction
@@ -76,7 +77,7 @@ public class escape_room extends PApplet {
   boolean[] blnNextLevel = {true,false,false,false,false,false};
   boolean[] blnLeftLevel = {false,false,false,false};
   int intNumLevels = 10;
-  int intLevel = 5;
+  int intLevel = 8;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -234,6 +235,8 @@ public class escape_room extends PApplet {
       playerUpdate();
       drawPopUps();
       nextLevel();
+
+      System.out.println(blnBox);
 
     // draws a screen if the player has completed the game without running out of oxygen 
     } else if (blnGameEnding == true) {
@@ -775,14 +778,23 @@ public class escape_room extends PApplet {
 
             }
 
+      
+          }  
+          
           // box detection
-          } else if (intPlayerX > (width / 2) && intPlayerY < (height / 2)) {
+          if (intPlayerX < (width / 2) && intPlayerY < (height / 2)) {
 
+            // the player can only see what is inside the boxes once they've picked up a crowbar
+            if (blnCrowBar == true) {
 
-          // stairs detection
+              blnBox = true;
+
+            }
+
+          // stairs detection, prevents the player from walking throuhg it, while allowing them to walk behind it
           } else if (intPlayerX < (width / 2) && intPlayerY > (height / 2)) {
 
-
+  
 
           }
 
@@ -800,7 +812,11 @@ public class escape_room extends PApplet {
 
       blnLockedTrapDoor = false;
 
-    } else if (intLevel == 8 && (get(intPlayerX,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42, intPlayerY) == -16711936) || (get(intPlayerX,intPlayerY) == -16711936)) {
+    
+    } 
+    
+    // passively detects if the player is walking behind the ladder and will print an image over the player if they are 
+    if (intLevel == 8 && (get(intPlayerX,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42, intPlayerY) == -16711936) || (get(intPlayerX,intPlayerY) == -16711936)) {
 
       blnStairs = true;
 
@@ -1110,17 +1126,26 @@ public class escape_room extends PApplet {
         }
       } 
 
+      // prints out an image of the stairs to cover the player as they it 
       if (blnStairs == true) {
 
         image(imgStairs,550,353);
 
       }
 
+      // checks to see if all the needed actions have been performed before reavling an easter egg, there is a tiemr variable so the easter egg is removed after a set duration
+      if (blnCrowBar == true && blnBox == true && intEasterEggDelay < 60) {
+        
+        
+        intEasterEggDelay ++;
+
+      }
+
       // detects if the user has the crowbar and then prints out the crow bar above the player's head 
-      if (blnCrowBar == true && intCrowBarCount <= 60) {
+      if (blnCrowBar == true && intCrowBarTimer <= 60) {
 
         image(imgCrowBar,intPlayerX,intPlayerY - 60);
-        intCrowBarCount ++;
+        intCrowBarTimer ++;
 
       }
 
