@@ -44,7 +44,7 @@ public class escape_room extends PApplet {
   File file = new File("");
   Scanner scanner = new Scanner(System.in);
 
-  // level 7 variables
+  // level 7 variables                            
   boolean blnRickPoster, blnGundamPoster, blnIPoster, blnKeyI, blnTrapDoor, blnLockedTrapDoor = false;
 
   // level 9 variables
@@ -232,21 +232,23 @@ public class escape_room extends PApplet {
      
       drawCollisionMaps();
       playerMovementAndCollisions();
-      try {
-
-        playerInteractions();
-
-      } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
-       
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-        
-      }
+      playerInteractions();
       drawMaps();
       oxygenMeter();
       playerUpdate();
       drawPopUps();
       nextLevel();
+
+      try {
+
+        AudioPlayer();
+
+      } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+       
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+
+      }
 
     // draws a screen if the player has completed the game without running out of oxygen 
     } else if (blnGameEnding == true) {
@@ -516,7 +518,7 @@ public class escape_room extends PApplet {
   /**
    * player interactions with objects 
    */
-  public void playerInteractions() throws LineUnavailableException, UnsupportedAudioFileException, IOException {
+  public void playerInteractions() {
 
     // detects if the player is trying to interact with an object, everything inside this if statement runs when that key is pressed
     if (blnInteract == true) {
@@ -570,26 +572,6 @@ public class escape_room extends PApplet {
         if (get(intPlayerX, intPlayerY + 64) == -16776961 || get(intPlayerX - 8, intPlayerY) == -16776961 || get(intPlayerX, intPlayerY - 8) == -16776961 ) {
 
           blnDesk = true;
-
-        }
-
-        // only plays the clip when the player is interacting with the table
-        if (blnDesk == true) {
-
-          /*
-
-          AudiioInputStream audioStream = AudioSystem.getAudioInputStream(file);
-          Clip clip = AudioSystem.getClip();
-          clip.open(audiostream);
-          clip.start();
-          
-          String strStart = scanner.next();
-          scanner.close();
-
-          // turns off the audio and allows the player to restart it once it ends 
-          blnDesk = false;
-          
-          */
 
         }
 
@@ -1741,6 +1723,32 @@ public class escape_room extends PApplet {
         }
       }
     }
+  }
+
+  /**
+   * 
+   * @throws LineUnavailableException indicates that the file can't be opened because the code does not have permission to access it 
+   * @throws UnsupportedAudioFileException indicates that the audio file type is able to be used 
+   * @throws IOException indicates that the fiel that you are trying to access does not exsist
+   */
+  public void AudioPlayer() throws LineUnavailableException, UnsupportedAudioFileException, IOException {
+
+     // only plays the clip when the player is interacting with the table
+     if (blnDesk == true) {
+          
+      AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
+      Clip clip = AudioSystem.getClip();
+      clip.open(audioStream);
+      clip.start();
+      
+      String strStart = scanner.next();
+      scanner.close();
+
+      // turns off the audio and allows the player to restart it once it ends 
+      blnDesk = false;
+
+    }
+
   }
 
   /**
