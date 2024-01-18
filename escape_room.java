@@ -235,9 +235,7 @@ public class escape_room extends PApplet {
       playerUpdate();
       drawPopUps();
       nextLevel();
-
-      System.out.println(blnBox);
-
+      
     // draws a screen if the player has completed the game without running out of oxygen 
     } else if (blnGameEnding == true) {
 
