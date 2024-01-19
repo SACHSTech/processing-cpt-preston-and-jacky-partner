@@ -77,7 +77,7 @@ public class escape_room extends PApplet {
   boolean[] blnNextLevel = {true,false,false,false,false,false};
   boolean[] blnLeftLevel = {false,false,false,false};
   int intNumLevels = 10;
-  int intLevel = 8;
+  int intLevel = 0;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -806,11 +806,10 @@ public class escape_room extends PApplet {
     } 
     
     // passively detects if the player is still standing on the trap door even though they can't open it. Does not require the player to hit any keys 
-    if (intLevel == 7 &&  (get(intPlayerX, intPlayerY + 64) != -256 || get(intPlayerX + 42, intPlayerY + 64) != -256)) {
+    if (intLevel == 7 && (get(intPlayerX, intPlayerY + 56) != -256 && get(intPlayerX + 42, intPlayerY + 56) != -256)) {
 
       blnLockedTrapDoor = false;
 
-    
     } 
     
     // passively detects if the player is walking behind the ladder and will print an image over the player if they are 
@@ -1097,8 +1096,10 @@ public class escape_room extends PApplet {
       // gives a hint to the player if they are trying to interact with the trap door before performing all the needed steps before it 
       } else if (blnLockedTrapDoor == true) {
 
+        fill(255);
         textSize(20);
-        text("You pull with all your might, but it seems to be sealed tight",75,500);
+        text("You pull with all your might,",208,500);
+        text("but it seems to be sealed tight",200,525);
 
       }
     } else if (intLevel == 8) {
