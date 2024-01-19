@@ -45,6 +45,7 @@ public class escape_room extends PApplet {
 
   // level 8 variables
   PImage[] imgCards;
+  PImage[] imgEasterEgg;
   PImage imgCrowBar;
   PImage imgStairs;
   PImage imgIKey;
@@ -77,7 +78,7 @@ public class escape_room extends PApplet {
   boolean[] blnNextLevel = {true,false,false,false,false,false};
   boolean[] blnLeftLevel = {false,false,false,false};
   int intNumLevels = 10;
-  int intLevel = 0;
+  int intLevel = 8;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -129,6 +130,8 @@ public class escape_room extends PApplet {
     imgCards = new PImage[17];
 
     imgKeyCard = new PImage[4];
+
+    imgEasterEgg = new PImage[3];
 
     // loading in all level images
     for (int i = 0; i < intNumLevels; i++) {
@@ -211,6 +214,12 @@ public class escape_room extends PApplet {
 
     // loading in the I shaped key
     imgIKey = loadImage("escape_room/popups/iKey.png");
+
+    for (int i = 0; i < 3; i++) {
+
+      imgEasterEgg[i] = loadImage("escape_room/popups/Collection" + i + ".png");
+
+    }
 
   }
 
@@ -786,6 +795,7 @@ public class escape_room extends PApplet {
             if (blnCrowBar == true) {
 
               blnBox = true;
+              intEasterEggDelay = 0;
 
             }
 
@@ -1133,10 +1143,19 @@ public class escape_room extends PApplet {
       }
 
       // checks to see if all the needed actions have been performed before reavling an easter egg, there is a tiemr variable so the easter egg is removed after a set duration
-      if (blnCrowBar == true && blnBox == true && intEasterEggDelay < 60) {
+      if (blnCrowBar == true && blnBox == true && intEasterEggDelay < 200) {
         
+        image(imgEasterEgg[0],65,height / 2);
+        image(imgEasterEgg[1],275,height / 2);
+        image(imgEasterEgg[2],465,height / 2);
         
         intEasterEggDelay ++;
+
+      }
+
+      if (intEasterEggDelay >= 200) {
+
+        blnBox = false;
 
       }
 
