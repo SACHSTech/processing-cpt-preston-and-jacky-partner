@@ -63,7 +63,7 @@ public class escape_room extends PApplet {
   Random intRand = new Random();
 
   // level 10 variables
-  boolean[] blnSteppedOn = {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false};
+  boolean[] blnSteppedOn = new boolean[25];
 
   // player direction
   String strDirection = "Down";
@@ -107,6 +107,9 @@ public class escape_room extends PApplet {
    * loads all images to be drawn for the game
    */
   public void setup() {
+
+    // sets all the booleans in this array to false once
+    Arrays.fill (blnSteppedOn, false);
 
     // setting up image variable for levels
     imgLevel = new PImage[intNumLevels];
@@ -424,6 +427,23 @@ public class escape_room extends PApplet {
 
       fill(0);
       rect(0,0,8,height);
+
+    } else if (intLevel == 10 && blnNextLevel[4] == false) {
+
+      fill(0);
+      rect(0,660,width,8);
+
+      for (int intX = 150; intX < 500; intX+= 75) {
+
+        for (int intY = 225; intY < 600; intY += 75) {
+
+          noStroke();
+          fill(255,255,0);
+          rect(intX,intY,50,50);
+
+        }
+      }
+
 
     }
   }
@@ -844,6 +864,37 @@ public class escape_room extends PApplet {
 
     // draws out the correct room depending on the level the player is on 
     image(imgLevel[intLevel],0,0);
+
+    // draws the gride of lights here so that the player is able to stand over it
+    if (intLevel == 10) {
+
+      // determines the X value
+      for (int intX = 150; intX < 500; intX+= 75) {
+
+        for (int intY = 225; intY < 600; intY += 75) {
+
+          noStroke();
+
+          // changes the colour of the tile if the player has stepped on it 
+          for (int i = 0; i < 25; i ++) {
+
+            if (blnSteppedOn[i] == false) {
+
+              fill(255);
+
+            } else if (blnSteppedOn[i] == true) {
+
+              fill(0);
+
+            }
+          }
+          
+          rect(intX,intY,50,50);
+
+        }
+      }
+
+    }
        
   }
 
@@ -1339,18 +1390,20 @@ public class escape_room extends PApplet {
       }
     } else if (intLevel == 10) {
 
-      for (int i = 100; i < 599; i+= 50) {
+      // Y cord detection for each tile on level 10
+      if (intPlayerY < 300) {
 
-        for (int j = 100; j < 599; j+= 50) {
+        // X cord detection for each tile on level 10
+        if (intPlayerX < 210 && (get(intPlayerX, intPlayerY + 56) == -256 || get(intPlayerX + 30, intPlayerY + 56) == -256)) {
 
-          fill(255);
-          rect(i,j,50,50);
+          blnSteppedOn[0] = true;
+
+        } else if (intPlayerX > 210 && intPlayerX < 360 && (get(intPlayerX, intPlayerY + 56) == -256 || get(intPlayerX + 30, intPlayerY + 56) == -256)) {
+
+          blnSteppedOn[1] = true;
 
         }
-
-
       }
-
     }
   }
 
