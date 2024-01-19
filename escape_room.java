@@ -43,7 +43,7 @@ public class escape_room extends PApplet {
   // level 7 variables                            
   boolean blnRickPoster, blnGundamPoster, blnIPoster, blnKeyI, blnTrapDoor, blnLockedTrapDoor = false;
 
-  // level 8 variables
+  // level 8 variables 
   PImage[] imgCards;
   PImage[] imgEasterEgg;
   PImage imgCrowBar;
