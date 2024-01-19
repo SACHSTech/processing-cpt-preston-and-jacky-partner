@@ -62,6 +62,9 @@ public class escape_room extends PApplet {
   int intCrowBarTimer = 0;
   Random intRand = new Random();
 
+  // level 10 variables
+  boolean[] blnSteppedOn = {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false};
+
   // player direction
   String strDirection = "Down";
 
@@ -77,8 +80,8 @@ public class escape_room extends PApplet {
   // level variables 
   boolean[] blnNextLevel = {true,false,false,false,false,false};
   boolean[] blnLeftLevel = {false,false,false,false};
-  int intNumLevels = 10;
-  int intLevel = 8;
+  int intNumLevels = 11;
+  int intLevel = 10;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -1334,6 +1337,20 @@ public class escape_room extends PApplet {
         Arrays.fill(intCardStatus,0);
 
       }
+    } else if (intLevel == 10) {
+
+      for (int i = 100; i < 599; i+= 50) {
+
+        for (int j = 100; j < 599; j+= 50) {
+
+          fill(255);
+          rect(i,j,50,50);
+
+        }
+
+
+      }
+
     }
   }
 
@@ -1380,6 +1397,11 @@ public class escape_room extends PApplet {
       intLevel += 2;
       intPlayerX = 664;
       blnLeftLevel[2] = true;
+
+    } else if (intLevel == 9 && intPlayerX < 16) {
+
+      intLevel += 1;
+      intPlayerX = 664;
 
     } else if (intLevel == 10 && intPlayerY > 664 && blnNextLevel[4] == true) {
 
