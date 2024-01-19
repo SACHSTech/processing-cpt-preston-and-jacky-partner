@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
-public class escape_room extends PApplet{
+public class escape_room extends PApplet {
 
   // level image variable 
   PImage[] imgLevel;
@@ -37,23 +37,29 @@ public class escape_room extends PApplet{
 
   // level 5 variable 
   String strPassword = "";
+  boolean blnDesk = false;
+  int intDeskTimer = 0;
 
-  // level 7 variables
+  // level 7 variables                            
   boolean blnRickPoster, blnGundamPoster, blnIPoster, blnKeyI, blnTrapDoor, blnLockedTrapDoor = false;
 
-  // level 9 variables
+  // level 8 variables
   PImage[] imgCards;
+  PImage[] imgEasterEgg;
   PImage imgCrowBar;
   PImage imgStairs;
+  PImage imgIKey;
   boolean[] blnFound = {false,false,false,false,false,false,false,false};
-  boolean blnCrowBar,blnStairs, blnTable, blnFirstTimeEntered = false;
+  boolean blnCrowBar,blnStairs, blnTable, blnFirstTimeEntered, blnBox = false;
   int[] intCardLocations = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
   int[] intCardStatus = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
   int[] intX = {264,307,350,393,264,307,350,393,264,307,350,393,264,307,350,393};
   int[] intY = {249,249,249,249,302,302,302,302,355,355,355,355,408,408,408,408};
   int intCardsFlipped = 0;
   int intCardDelay = 0;
-  int intCrowBarCount = 0;
+  int intKeyTimer = 0;
+  int intEasterEggDelay = 0;
+  int intCrowBarTimer = 0;
   Random intRand = new Random();
 
   // player direction
@@ -124,6 +130,8 @@ public class escape_room extends PApplet{
     imgCards = new PImage[17];
 
     imgKeyCard = new PImage[4];
+
+    imgEasterEgg = new PImage[3];
 
     // loading in all level images
     for (int i = 0; i < intNumLevels; i++) {
@@ -204,6 +212,15 @@ public class escape_room extends PApplet{
 
     }
 
+    // loading in the I shaped key
+    imgIKey = loadImage("escape_room/popups/iKey.png");
+
+    for (int i = 0; i < 3; i++) {
+
+      imgEasterEgg[i] = loadImage("escape_room/popups/Collection" + i + ".png");
+
+    }
+
   }
 
   /**
@@ -227,7 +244,7 @@ public class escape_room extends PApplet{
       playerUpdate();
       drawPopUps();
       nextLevel();
-
+      
     // draws a screen if the player has completed the game without running out of oxygen 
     } else if (blnGameEnding == true) {
 
@@ -546,6 +563,15 @@ public class escape_room extends PApplet{
       // note, the quote we are using is "good morning everyone, please take your seats"
       } else if (intLevel == 5) {
 
+        // detects if the player is interacting with the table 
+        if ((get(intPlayerX, intPlayerY + 64) == -16776961 || get(intPlayerX - 8, intPlayerY) == -16776961 || get(intPlayerX, intPlayerY - 8) == -16776961)) {
+
+          blnDesk = true;
+
+          // sets the timer back to 0 everyoen the player interacts with the desk so that they can see the hint on the screen again
+          intDeskTimer = 0;
+
+        } 
         // runs even when the password is at max length 
         if ((intPlayerY > 261 && intPlayerY <= 375) && (intPlayerX > 237 && intPlayerX < 380) && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) { 
             
@@ -759,14 +785,24 @@ public class escape_room extends PApplet{
 
             }
 
+      
+          }  
+          
           // box detection
-          } else if (intPlayerX > (width / 2) && intPlayerY < (height / 2)) {
+          if (intPlayerX < (width / 2) && intPlayerY < (height / 2)) {
 
+            // the player can only see what is inside the boxes once they've picked up a crowbar
+            if (blnCrowBar == true) {
 
-          // stairs detection
+              blnBox = true;
+              intEasterEggDelay = 0;
+
+            }
+
+          // stairs detection, prevents the player from walking throuhg it, while allowing them to walk behind it
           } else if (intPlayerX < (width / 2) && intPlayerY > (height / 2)) {
 
-
+  
 
           }
 
@@ -780,11 +816,14 @@ public class escape_room extends PApplet{
     } 
     
     // passively detects if the player is still standing on the trap door even though they can't open it. Does not require the player to hit any keys 
-    if (intLevel == 7 &&  (get(intPlayerX, intPlayerY + 64) != -256 || get(intPlayerX + 42, intPlayerY + 64) != -256)) {
+    if (intLevel == 7 && (get(intPlayerX, intPlayerY + 56) != -256 && get(intPlayerX + 42, intPlayerY + 56) != -256)) {
 
       blnLockedTrapDoor = false;
 
-    } else if (intLevel == 8 && (get(intPlayerX,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42, intPlayerY) == -16711936) || (get(intPlayerX,intPlayerY) == -16711936)) {
+    } 
+    
+    // passively detects if the player is walking behind the ladder and will print an image over the player if they are 
+    if (intLevel == 8 && (get(intPlayerX,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42, intPlayerY) == -16711936) || (get(intPlayerX,intPlayerY) == -16711936)) {
 
       blnStairs = true;
 
@@ -967,11 +1006,7 @@ public class escape_room extends PApplet{
 
     } else if (intLevel == 5) {
 
-      // displays what the user has tyed onto the floor 
-      fill(255);
-;     textSize(40);
-      text(strPassword,65, 125);
-
+      // checks if the password that is put in is the correct one and will allow the player to move onto the next level 
       if (strPassword.equals("fabroa") == true) {
 
         blnNextLevel[2] = true;
@@ -982,11 +1017,35 @@ public class escape_room extends PApplet{
 
       }
 
+      // intDeskTimer is used to display the text but then remove it from the screen to allow the user to see what they are typing
+      if (blnDesk == true && intDeskTimer < 150) {
+
+        // prints out the clue for the room onto the wall
+        fill(255);
+        textSize(20);
+        text("Good morning class,",65, 95);
+        text("everyone please sit",65, 115);
+        text("down. By Mr. ",65, 135);
+        
+        // used to remove the text from the screen after a set time as gone by
+        intDeskTimer ++;
+
+      } else {
+
+        // displays what the user has tyed onto the wall, placed in the else statement so that the hint and this don't get printed at the same time
+        fill(255);
+        textSize(40);
+        text(strPassword,65, 125);
+
+      }
+
+      // prints out the keycard above the player's head for a short duration
       if (blnNextLevel[2] == true && intKeyCardTimer[1] <= 100 && blnLeftLevel[1] == false) {
 
         image(imgKeyCard[1],intPlayerX,intPlayerY - 30);
         intKeyCardTimer[1] ++;
 
+      // prints out the keycard onto the desk after the player has left the room and has walked back in 
       } else if (blnNextLevel[2] == true && blnLeftLevel[1] == true) {
 
         image(imgKeyCard[1], 50,555);
@@ -999,6 +1058,14 @@ public class escape_room extends PApplet{
       if (blnNextLevel[3] == true && blnLeftLevel[2] == true) {
 
         image(imgKeyCard[2],75,560);
+
+      }
+
+      // prints out a key over the player's head
+      if (blnKeyI == true && intKeyTimer <= 100) {
+
+        image(imgIKey,intPlayerX,intPlayerY - 30);
+        intKeyTimer ++;
 
       }
 
@@ -1039,8 +1106,10 @@ public class escape_room extends PApplet{
       // gives a hint to the player if they are trying to interact with the trap door before performing all the needed steps before it 
       } else if (blnLockedTrapDoor == true) {
 
+        fill(255);
         textSize(20);
-        text("You pull with all your might, but it seems to be sealed tight",75,500);
+        text("You pull with all your might,",208,500);
+        text("but it seems to be sealed tight",200,525);
 
       }
     } else if (intLevel == 8) {
@@ -1066,17 +1135,35 @@ public class escape_room extends PApplet{
         }
       } 
 
+      // prints out an image of the stairs to cover the player as they it 
       if (blnStairs == true) {
 
         image(imgStairs,550,353);
 
       }
 
+      // checks to see if all the needed actions have been performed before reavling an easter egg, there is a tiemr variable so the easter egg is removed after a set duration
+      if (blnCrowBar == true && blnBox == true && intEasterEggDelay < 200) {
+        
+        image(imgEasterEgg[0],65,height / 2);
+        image(imgEasterEgg[1],275,height / 2);
+        image(imgEasterEgg[2],465,height / 2);
+        
+        intEasterEggDelay ++;
+
+      }
+
+      if (intEasterEggDelay >= 200) {
+
+        blnBox = false;
+
+      }
+
       // detects if the user has the crowbar and then prints out the crow bar above the player's head 
-      if (blnCrowBar == true && intCrowBarCount <= 60) {
+      if (blnCrowBar == true && intCrowBarTimer <= 60) {
 
         image(imgCrowBar,intPlayerX,intPlayerY - 60);
-        intCrowBarCount ++;
+        intCrowBarTimer ++;
 
       }
 
@@ -1687,7 +1774,7 @@ public class escape_room extends PApplet{
       }
     }
   }
-
+  
   /**
    * sees which direction the player is currently moving in 
    * @return a boolean value as true that corresponds to the last direction that player as moving in 
