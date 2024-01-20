@@ -1096,8 +1096,8 @@ public class escape_room extends PApplet {
 
         } else if (blnSteppedOn[i] == true){
 
-          fill(0);
-
+          fill(255,255,0);
+          
         }
 
         noStroke();
