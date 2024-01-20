@@ -2,7 +2,6 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import java.util.Arrays;
 import java.util.Random;
-import java.util.Scanner;
 
 public class escape_room extends PApplet {
 
@@ -11,8 +10,8 @@ public class escape_room extends PApplet {
   PImage[] imgLevelCollision;
 
   // keycard image variable
+  int[] intKeyCardTimer = new int[4];
   PImage[] imgKeyCard;
-  int[] intKeyCardTimer = {0,0,0,0};
 
   // player image movement variables 
   PImage[] imgPlayerLeft;
@@ -22,23 +21,19 @@ public class escape_room extends PApplet {
 
   // starting screen variables
   PImage imgStartingScreen;
-  boolean blnStartButtonPressed = false;
-  boolean blnEasy = false;
-  boolean blnMedium = false;
-  boolean blnHard = false;
+  boolean blnStartButtonPressed, blnEasy, blnMedium, blnHard = false;
 
   // level 2 and 3 variables 
   PImage[] imgPage;
   PImage imgSafe;
-  boolean blnVerify = false;
-  boolean blnPage, blnSafe = false;
+  boolean blnVerify, blnPage, blnSafe = false;
   int intPageNumber = 0;
   String strCode = "";
 
-  // level 5 variable 
-  String strPassword = "";
+  // level 5 variable
   boolean blnDesk = false;
   int intDeskTimer = 0;
+  String strPassword = "";
 
   // level 7 variables                            
   boolean blnRickPoster, blnGundamPoster, blnIPoster, blnKeyI, blnTrapDoor, blnLockedTrapDoor = false;
@@ -46,22 +41,14 @@ public class escape_room extends PApplet {
   // level 8 variables 
   PImage[] imgCards;
   PImage[] imgEasterEgg;
-  PImage imgCrowBar;
-  PImage imgStairs;
-  PImage imgIKey;
+  PImage imgCrowBar, imgStairs, imgIKey;
   boolean[] blnFound = new boolean[8];
-  boolean blnCrowBar,blnStairs, blnTable, blnFirstTimeEntered, blnBox = false;
+  boolean blnCrowBar, blnStairs, blnTable, blnFirstTimeEntered, blnBox = false;
   int[] intCardLocations = new int[16];
-  int[] intCardStatus = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+  int[] intCardStatus = new int[16];
   int[] intX = new int[16];
   int[] intY = new int[16];
-  int intCardsFlipped = 0;
-  int intCardDelay = 0;
-  int intKeyTimer = 0;
-  int intEasterEggDelay = 0;
-  int intCrowBarTimer = 0;
-  int intLevel8ArrayXPosition = 0;
-  int intLevel8ArrayYPosition = 0;
+  int intCardsFlipped, intCardDelay, intKeyTimer, intEasterEggDelay, intCrowBarTimer, intLevel8ArrayXPosition, intLevel8ArrayYPosition = 0;
   Random intRand = new Random();
 
   // level 10 variables
@@ -69,16 +56,13 @@ public class escape_room extends PApplet {
   boolean blnReset = false;
   int[] intXTile = new int[25];
   int[] intYTile = new int[25];
-  int intLevel10ArrayXPosition = 0;
-  int intLevel10ArrayYPosition = 0;
-  int intCycles = 0;
+  int intLevel10ArrayXPosition, intLevel10ArrayYPosition, intCycles = 0;
 
   // player direction
   String strDirection = "Down";
 
   // game starting and ending variables
-  boolean blnGameStarting = false;
-  boolean blnGameEnding = false;
+  boolean blnGameStarting, blnGameEnding = false;
 
   // game oxygen meter variables
   boolean blnOxygenMeter = false;
@@ -87,7 +71,7 @@ public class escape_room extends PApplet {
 
   // level variables 
   boolean[] blnNextLevel = {true,false,false,false,false,false};
-  boolean[] blnLeftLevel = {false,false,false,false};
+  boolean[] blnLeftLevel = new boolean[4];
   int intNumLevels = 13;
   int intLevel = 10;
 
@@ -116,9 +100,13 @@ public class escape_room extends PApplet {
    */
   public void setup() {
 
-    // sets all the booleans in this array to false once
-    Arrays.fill (blnSteppedOn, false);
+    // fills each array with one value before the game starts
+    Arrays.fill(intKeyCardTimer,0);
+    Arrays.fill(intCardStatus,0);
     Arrays.fill(blnFound,false);
+    Arrays.fill (blnSteppedOn, false);
+    Arrays.fill(blnLeftLevel,false);
+    
 
     // fills in the array for the card location array
     for (int i = 0; i < 16; i ++) {
@@ -314,6 +302,8 @@ public class escape_room extends PApplet {
       playerUpdate();
       drawPopUps();
       nextLevel();
+
+      System.out.println(blnSteppedOn[11]);
 
     // draws a screen if the player has completed the game without running out of oxygen 
     } else if (blnGameEnding == true) {
@@ -516,7 +506,6 @@ public class escape_room extends PApplet {
     noStroke();
     fill(255,255,0);
     rect(525,575,100,50);
-
 
     }
   }
@@ -925,7 +914,7 @@ public class escape_room extends PApplet {
 
     // detects player interactions that doesn't require them to press e 
     } else {
-    
+
       // passively detects if the player is still standing on the trap door even though they can't open it. Does not require the player to hit any keys 
       if (intLevel == 7 && (get(intPlayerX, intPlayerY + 56) != -256 && get(intPlayerX + 42, intPlayerY + 56) != -256)) {
 
@@ -1626,18 +1615,18 @@ public class escape_room extends PApplet {
           // checks if the left column has been stepped on 
           if (blnSteppedOn[10] == true && blnSteppedOn[15] == true && blnSteppedOn[5]) {
             
-            for (int i = 6; i < 10; i++) {
+            // checks if every other tile has not been stepped on before saying the player has completed the level 
+            if (blnSteppedOn[6] == false && blnSteppedOn[7] == false && blnSteppedOn[8] == false && blnSteppedOn[9] == false
+            && blnSteppedOn[11] == false  && blnSteppedOn[12] == false  && blnSteppedOn[13] == false  && blnSteppedOn[14] == false
+            && blnSteppedOn[16] == false  && blnSteppedOn[17] == false  && blnSteppedOn[18] == false  && blnSteppedOn[19] == false) {
 
-              // checks if every other tile has not been stepped on before saying the player has completed the level 
-              if (blnSteppedOn[i] == false && blnSteppedOn[i + 5] == false && blnSteppedOn[i + 10] == false) {
+              blnNextLevel[4] = true;
 
-                blnNextLevel[4] = true;
+            } else {
 
-              } else {
+              blnNextLevel[4] = false;
 
-                blnNextLevel[4] = false;
-
-              }
+            
             }
           }
         }
