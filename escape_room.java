@@ -89,7 +89,7 @@ public class escape_room extends PApplet {
   boolean[] blnNextLevel = {true,false,false,false,false,false};
   boolean[] blnLeftLevel = {false,false,false,false};
   int intNumLevels = 11;
-  int intLevel = 0;
+  int intLevel = 10;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -1110,8 +1110,8 @@ public class escape_room extends PApplet {
       rect(525,575,100,50);
       fill(0);
       textSize(30);
-      text("Reset",530,608);
-      
+      text("Reset",535,608);
+
     }   
   }
 
