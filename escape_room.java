@@ -49,21 +49,29 @@ public class escape_room extends PApplet {
   PImage imgCrowBar;
   PImage imgStairs;
   PImage imgIKey;
-  boolean[] blnFound = {false,false,false,false,false,false,false,false};
+  boolean[] blnFound = new boolean[8];
   boolean blnCrowBar,blnStairs, blnTable, blnFirstTimeEntered, blnBox = false;
-  int[] intCardLocations = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+  int[] intCardLocations = new int[16];
   int[] intCardStatus = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-  int[] intX = {264,307,350,393,264,307,350,393,264,307,350,393,264,307,350,393};
-  int[] intY = {249,249,249,249,302,302,302,302,355,355,355,355,408,408,408,408};
+  int[] intX = new int[16];
+  int[] intY = new int[16];
   int intCardsFlipped = 0;
   int intCardDelay = 0;
   int intKeyTimer = 0;
   int intEasterEggDelay = 0;
   int intCrowBarTimer = 0;
+  int intLevel8ArrayXPosition = 0;
+  int intLevel8ArrayYPosition = 0;
   Random intRand = new Random();
 
   // level 10 variables
   boolean[] blnSteppedOn = new boolean[25];
+  boolean blnReset = false;
+  int[] intXTile = new int[25];
+  int[] intYTile = new int[25];
+  int intLevel10ArrayXPosition = 0;
+  int intLevel10ArrayYPosition = 0;
+  int intCycles = 0;
 
   // player direction
   String strDirection = "Down";
@@ -81,7 +89,7 @@ public class escape_room extends PApplet {
   boolean[] blnNextLevel = {true,false,false,false,false,false};
   boolean[] blnLeftLevel = {false,false,false,false};
   int intNumLevels = 11;
-  int intLevel = 10;
+  int intLevel = 0;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -110,6 +118,60 @@ public class escape_room extends PApplet {
 
     // sets all the booleans in this array to false once
     Arrays.fill (blnSteppedOn, false);
+    Arrays.fill(blnFound,false);
+
+    // fills in the array for the card location array
+    for (int i = 0; i < 16; i ++) {
+
+      intCardLocations[i] = i;
+
+    }
+  
+    // fills in the array with the Y cordinates for each tile in room 8
+    for (int i = 249; i < 410; i += 53) {
+
+      intY[intLevel8ArrayYPosition] = i;
+      intY[intLevel8ArrayYPosition + 1] = i;
+      intY[intLevel8ArrayYPosition + 2] = i;
+      intY[intLevel8ArrayYPosition + 3] = i;
+      intLevel8ArrayYPosition += 4;
+
+    }
+
+    // fills in the array with the X cordinates for each tile in room 8
+    for (int i = 264; i < 400; i += 43) {
+
+      intX[intLevel8ArrayXPosition] = i;
+      intX[intLevel8ArrayXPosition + 4] = i;
+      intX[intLevel8ArrayXPosition + 8] = i;
+      intX[intLevel8ArrayXPosition + 12] = i;
+      intLevel8ArrayXPosition ++;
+      
+    }
+
+    // fills in the array with the Y cordinates for each tile in room 10
+    for (int intY = 225; intY < 600; intY += 75) {
+
+      intYTile[intLevel10ArrayYPosition] = intY;
+      intYTile[intLevel10ArrayYPosition + 1] = intY;
+      intYTile[intLevel10ArrayYPosition + 2] = intY;
+      intYTile[intLevel10ArrayYPosition + 3] = intY;
+      intYTile[intLevel10ArrayYPosition + 4] = intY;
+      intLevel10ArrayYPosition += 5;
+
+    }
+
+    // fills in the array with the X cordinates for each tile in room 10
+    for (int intX = 150; intX < 500; intX += 75) {
+
+      intXTile[intLevel10ArrayXPosition] = intX;
+      intXTile[intLevel10ArrayXPosition + 5] = intX;
+      intXTile[intLevel10ArrayXPosition + 10] = intX;
+      intXTile[intLevel10ArrayXPosition + 15] = intX;
+      intXTile[intLevel10ArrayXPosition + 20] = intX;
+      intLevel10ArrayXPosition ++;
+      
+    }
 
     // setting up image variable for levels
     imgLevel = new PImage[intNumLevels];
@@ -135,8 +197,10 @@ public class escape_room extends PApplet {
     // setting up image variables for cards
     imgCards = new PImage[17];
 
+    // setting up iamge variable for keycards
     imgKeyCard = new PImage[4];
 
+    // setting up image variable for easter eggs
     imgEasterEgg = new PImage[3];
 
     // loading in all level images
@@ -221,12 +285,12 @@ public class escape_room extends PApplet {
     // loading in the I shaped key
     imgIKey = loadImage("escape_room/popups/iKey.png");
 
+    // loading in the easter egg images
     for (int i = 0; i < 3; i++) {
 
       imgEasterEgg[i] = loadImage("escape_room/popups/Collection" + i + ".png");
 
     }
-
   }
 
   /**
@@ -250,7 +314,7 @@ public class escape_room extends PApplet {
       playerUpdate();
       drawPopUps();
       nextLevel();
-      
+
     // draws a screen if the player has completed the game without running out of oxygen 
     } else if (blnGameEnding == true) {
 
@@ -412,27 +476,32 @@ public class escape_room extends PApplet {
     // draws the collision maps 
     image(imgLevelCollision[intLevel],0,0);
 
-    // draws and invisible barrier for the player so they can not leave the level before finishing it properly 
+    // draws extra barriers in each level or extra shapes that the player will interact with 
     if (intLevel == 3 && blnNextLevel[1] == false) {
 
+      // barrier to prevent the player from leaving early
       fill(0);
       rect(0,0,8,height);
 
     } else if (intLevel == 5 && blnNextLevel[2] == false) {
 
+      // barrier to prevent the player from leaving early
       fill(0);
       rect(0,0,width,8);
 
     } else if (intLevel == 7 && blnNextLevel[3] == false) {
-
+      
+      // barrier to prevent the player from leaving early
       fill(0);
       rect(0,0,8,height);
 
     } else if (intLevel == 10 && blnNextLevel[4] == false) {
-
+      
+      // barrier to prevent the player from leaving early
       fill(0);
       rect(0,660,width,8);
 
+      // draws the grid of tiles that the player will be interacting with 
       for (int intX = 150; intX < 500; intX+= 75) {
 
         for (int intY = 225; intY < 600; intY += 75) {
@@ -443,6 +512,10 @@ public class escape_room extends PApplet {
 
         }
       }
+
+    noStroke();
+    fill(255,255,0);
+    rect(525,575,100,50);
 
 
     }
@@ -807,8 +880,6 @@ public class escape_room extends PApplet {
               delay(300);
 
             }
-
-      
           }  
           
           // box detection
@@ -825,8 +896,6 @@ public class escape_room extends PApplet {
           // stairs detection, prevents the player from walking throuhg it, while allowing them to walk behind it
           } else if (intPlayerX < (width / 2) && intPlayerY > (height / 2)) {
 
-  
-
           }
 
         // crowbar detection
@@ -835,25 +904,175 @@ public class escape_room extends PApplet {
           blnCrowBar = true;
 
         } 
+      } else if (intLevel == 10) {
+
+        // detection for the reset key
+        if (intPlayerX > 500 &&  (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+
+          blnReset = true;
+      
+        }
+
+        // turns all lights off when the player decdies to reset them
+        if (blnReset == true) {
+
+          Arrays.fill(blnSteppedOn,false);
+          blnReset = false;
+
+        }
+      }
+      
+
+    // detects player interactions that doesn't require them to press e 
+    } else {
+    
+      // passively detects if the player is still standing on the trap door even though they can't open it. Does not require the player to hit any keys 
+      if (intLevel == 7 && (get(intPlayerX, intPlayerY + 56) != -256 && get(intPlayerX + 42, intPlayerY + 56) != -256)) {
+
+        blnLockedTrapDoor = false;
+
       } 
-    } 
-    
-    // passively detects if the player is still standing on the trap door even though they can't open it. Does not require the player to hit any keys 
-    if (intLevel == 7 && (get(intPlayerX, intPlayerY + 56) != -256 && get(intPlayerX + 42, intPlayerY + 56) != -256)) {
+      
+      // passively detects if the player is walking behind the ladder and will print an image over the player if they are 
+      if (intLevel == 8 && (get(intPlayerX,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42, intPlayerY) == -16711936) || (get(intPlayerX,intPlayerY) == -16711936)) {
 
-      blnLockedTrapDoor = false;
+        blnStairs = true;
 
-    } 
-    
-    // passively detects if the player is walking behind the ladder and will print an image over the player if they are 
-    if (intLevel == 8 && (get(intPlayerX,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42, intPlayerY) == -16711936) || (get(intPlayerX,intPlayerY) == -16711936)) {
+      } else if (intLevel == 8 && (get(intPlayerX,intPlayerY + 56) != -16711936) && (get(intPlayerX + 42,intPlayerY + 56) != -16711936) && (get(intPlayerX + 42, intPlayerY) != -16711936) && (get(intPlayerX,intPlayerY) != -16711936)) {
 
-      blnStairs = true;
+        blnStairs = false;
 
-    } else if (intLevel == 8 && (get(intPlayerX,intPlayerY + 56) != -16711936) && (get(intPlayerX + 42,intPlayerY + 56) != -16711936) && (get(intPlayerX + 42, intPlayerY) != -16711936) && (get(intPlayerX,intPlayerY) != -16711936)) {
+      }
 
-      blnStairs = false;
+      // detects if the player is walking over the tile  
+      if (intLevel == 10) {
 
+        // Y cord detection for each tile on level 10
+        if (intPlayerY + 54 < 275) {
+
+          // X cord detection for each tile on level 10
+          if (intPlayerX < 200 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+
+            blnSteppedOn[0] = true;
+
+          } else if (intPlayerX > 225 && intPlayerX < 275 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+
+            blnSteppedOn[1] = true;
+
+          } else if (intPlayerX > 300 && intPlayerX < 350 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+
+            blnSteppedOn[2] = true;
+
+          } else if (intPlayerX > 375 && intPlayerX < 425 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+
+            blnSteppedOn[3] = true;
+
+          } else if (intPlayerX > 450 && intPlayerX < 500 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+
+            blnSteppedOn[4] = true;
+
+          } 
+        } else if (intPlayerY + 54 > 300 && intPlayerY + 54 < 350) {
+
+          // X cord detection for each tile on level 10
+          if (intPlayerX < 200 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+
+            blnSteppedOn[5] = true;
+
+          } else if (intPlayerX > 225 && intPlayerX < 275 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+
+            blnSteppedOn[6] = true;
+
+          } else if (intPlayerX > 300 && intPlayerX < 350 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+
+            blnSteppedOn[7] = true;
+
+          } else if (intPlayerX > 375 && intPlayerX < 425 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+
+            blnSteppedOn[8] = true;
+
+          } else if (intPlayerX > 450 && intPlayerX < 500 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+
+            blnSteppedOn[9] = true;
+
+          } 
+
+        } else if (intPlayerY + 54 > 375 && intPlayerY + 54 < 425) {
+
+          // X cord detection for each tile on level 10
+          if (intPlayerX < 200 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+
+            blnSteppedOn[10] = true;
+
+          } else if (intPlayerX > 225 && intPlayerX < 275 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+
+            blnSteppedOn[11] = true;
+
+          } else if (intPlayerX > 300 && intPlayerX < 350 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+
+            blnSteppedOn[12] = true;
+
+          } else if (intPlayerX > 375 && intPlayerX < 425 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+
+            blnSteppedOn[13] = true;
+
+          } else if (intPlayerX > 450 && intPlayerX < 500 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+
+            blnSteppedOn[14] = true;
+
+          } 
+
+        } else if (intPlayerY + 54 > 450 && intPlayerY + 54 < 500) {
+
+          // X cord detection for each tile on level 10
+          if (intPlayerX < 200 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+
+            blnSteppedOn[15] = true;
+
+          } else if (intPlayerX > 225 && intPlayerX < 275 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+
+            blnSteppedOn[16] = true;
+
+          } else if (intPlayerX > 300 && intPlayerX < 350 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+
+            blnSteppedOn[17] = true;
+
+          } else if (intPlayerX > 375 && intPlayerX < 425 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+
+            blnSteppedOn[18] = true;
+
+          } else if (intPlayerX > 450 && intPlayerX < 500 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+
+            blnSteppedOn[19] = true;
+
+          } 
+
+        } else if (intPlayerY + 54 > 525 && intPlayerY + 54 < 575) {
+
+          // X cord detection for each tile on level 10
+          if (intPlayerX < 200 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+
+            blnSteppedOn[20] = true;
+
+          } else if (intPlayerX > 225 && intPlayerX < 275 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+
+            blnSteppedOn[21] = true;
+
+          } else if (intPlayerX > 300 && intPlayerX < 350 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+
+            blnSteppedOn[22] = true;
+
+          } else if (intPlayerX > 375 && intPlayerX < 425 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+
+            blnSteppedOn[23] = true;
+
+          } else if (intPlayerX > 450 && intPlayerX < 500 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+
+            blnSteppedOn[24] = true;
+
+          } 
+        } 
+      }
     }
   }
 
@@ -864,38 +1083,36 @@ public class escape_room extends PApplet {
 
     // draws out the correct room depending on the level the player is on 
     image(imgLevel[intLevel],0,0);
-
+    
     // draws the gride of lights here so that the player is able to stand over it
     if (intLevel == 10) {
 
-      // determines the X value
-      for (int intX = 150; intX < 500; intX+= 75) {
+      for (int i = 0; i < 25; i ++) {
 
-        for (int intY = 225; intY < 600; intY += 75) {
 
-          noStroke();
+        if (blnSteppedOn[i] == false) {
 
-          // changes the colour of the tile if the player has stepped on it 
-          for (int i = 0; i < 25; i ++) {
+          fill(255);
 
-            if (blnSteppedOn[i] == false) {
+        } else if (blnSteppedOn[i] == true){
 
-              fill(255);
-
-            } else if (blnSteppedOn[i] == true) {
-
-              fill(0);
-
-            }
-          }
-          
-          rect(intX,intY,50,50);
+          fill(0);
 
         }
+
+        noStroke();
+        rect(intXTile[i],intYTile[i],50,50);
+
       }
 
-    }
-       
+      noStroke();
+      fill(127,127,127);
+      rect(525,575,100,50);
+      fill(0);
+      textSize(30);
+      text("Reset",530,608);
+      
+    }   
   }
 
   /**
@@ -1047,11 +1264,13 @@ public class escape_room extends PApplet {
         }
       }
 
+      // draws the keycad over the players head once they have solved the level
       if (blnNextLevel[1] == true && intKeyCardTimer[0] <= 100 && blnLeftLevel[0] == false) {
 
         image(imgKeyCard[0],intPlayerX,intPlayerY - 30);
         intKeyCardTimer[0] ++;
 
+      // if the player leaves the level, the keycard will be placed on a table for future reference
       } else if (blnNextLevel[1] == true && blnLeftLevel[0] == true) {
 
         image(imgKeyCard[0],435,200);
@@ -1202,7 +1421,6 @@ public class escape_room extends PApplet {
         image(imgEasterEgg[0],65,height / 2);
         image(imgEasterEgg[1],275,height / 2);
         image(imgEasterEgg[2],465,height / 2);
-        
         intEasterEggDelay ++;
 
       }
@@ -1388,22 +1606,56 @@ public class escape_room extends PApplet {
         Arrays.fill(intCardStatus,0);
 
       }
+
     } else if (intLevel == 10) {
 
-      // Y cord detection for each tile on level 10
-      if (intPlayerY < 300) {
+      // prints out the poem onto the board on the wall
+      fill(255);
+      textSize(15);
+      text("Cerulean curtains close",65,75);
+      text("Creating calm, celestial carousel",65,100);
+      text("Chasing comets, cosmic dreams",65,125);
+      text("Crowned by cosmic candlelight",65,150);
 
-        // X cord detection for each tile on level 10
-        if (intPlayerX < 210 && (get(intPlayerX, intPlayerY + 56) == -256 || get(intPlayerX + 30, intPlayerY + 56) == -256)) {
+      // checks if the entire top row has been stepped on 
+      if (blnSteppedOn[0] == true && blnSteppedOn[1] == true && blnSteppedOn[2] == true && blnSteppedOn[3] == true && blnSteppedOn[4] == true) {
 
-          blnSteppedOn[0] = true;
+        // checks if the bottom row has been stepped on 
+        if (blnSteppedOn[20] == true && blnSteppedOn[21] == true && blnSteppedOn[22] == true && blnSteppedOn[23] == true && blnSteppedOn[24] == true) {
 
-        } else if (intPlayerX > 210 && intPlayerX < 360 && (get(intPlayerX, intPlayerY + 56) == -256 || get(intPlayerX + 30, intPlayerY + 56) == -256)) {
+          // checks if the left column has been stepped on 
+          if (blnSteppedOn[10] == true && blnSteppedOn[15] == true && blnSteppedOn[5]) {
+            
+            for (int i = 6; i < 10; i++) {
 
-          blnSteppedOn[1] = true;
+              // checks if every other tile has not been stepped on before saying the player has completed the level 
+              if (blnSteppedOn[i] == false && blnSteppedOn[i + 5] == false && blnSteppedOn[i + 10] == false) {
 
+                blnNextLevel[4] = true;
+
+              } else {
+
+                blnNextLevel[4] = false;
+
+              }
+            }
+          }
         }
+      } 
+
+      // prints out a keycard over the players head once they have solved the level 
+      if (blnNextLevel[4] == true && intKeyCardTimer[3] <= 100 && blnLeftLevel[3] == false) {
+
+        image(imgKeyCard[3],intPlayerX,intPlayerY - 30);
+        intKeyCardTimer[3] ++;
+
+      // prints out the keycard on the table once the player has left for future reference
+      } else if (blnNextLevel[4] == true && blnNextLevel[3] == true) {
+
+        // image(imgKeyCard[3],intPlayerX,intPlayerY - 30);
+
       }
+      
     }
   }
 
@@ -1751,8 +2003,10 @@ public class escape_room extends PApplet {
       // prevents the plaeyr from flipping more then 2 cards at a time 
       if (intCardDelay == 0) {
 
+        // Y boundaires for the cards
         if (mouseY > 249 && mouseY < 297) {
 
+          // X boundaires for the cards
           if (mouseX > 258 && mouseX < 300) {
 
             intCardStatus[intCardLocations[0]] += 1;  
@@ -1777,6 +2031,7 @@ public class escape_room extends PApplet {
 
         } else if (mouseY > 300 && mouseY < 348) {
 
+          // X boundaires for the cards
           if (mouseX > 258 && mouseX < 300) {
 
             intCardStatus[intCardLocations[4]] += 1;   
@@ -1801,6 +2056,7 @@ public class escape_room extends PApplet {
 
         } else if (mouseY > 351 && mouseY < 399) {
 
+          // X boundaires for the cards
           if (mouseX > 258 && mouseX < 300) {
 
             intCardStatus[intCardLocations[8]] += 1; 
@@ -1825,6 +2081,7 @@ public class escape_room extends PApplet {
 
         } else if (mouseY > 405 && mouseY < 453) {
 
+          // X boundaries for the cards
           if (mouseX > 258 && mouseX < 300) {
 
             intCardStatus[intCardLocations[12]] += 1;  
