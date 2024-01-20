@@ -88,7 +88,7 @@ public class escape_room extends PApplet {
   // level variables 
   boolean[] blnNextLevel = {true,false,false,false,false,false};
   boolean[] blnLeftLevel = {false,false,false,false};
-  int intNumLevels = 11;
+  int intNumLevels = 13;
   int intLevel = 10;
 
   // number of frames for each player animation 
@@ -857,7 +857,7 @@ public class escape_room extends PApplet {
       // allows the player to go back through the trap door to the uppper floor 
       } else if (intLevel == 8) {
 
-        if (get(intPlayerX, intPlayerY + 56) == -256 || get(intPlayerX + 42, intPlayerY + 56) == -256) {
+        if (get(intPlayerX, intPlayerY + 64) == -256 || get(intPlayerX + 42, intPlayerY + 64) == -256) {
           
           intLevel -= 1;
           delay(300);
@@ -865,7 +865,7 @@ public class escape_room extends PApplet {
         }
 
         // detects if the player is interacting with the table 
-        if ((get(intPlayerX,intPlayerY + 56) == -16776961) || (get(intPlayerX + 42,intPlayerY + 56) == -16776961) || (get(intPlayerX + 42, intPlayerY) == -16776961) || (get(intPlayerX,intPlayerY) == -16776961)) {
+        if ((get(intPlayerX,intPlayerY + 64) == -16776961) || (get(intPlayerX + 42,intPlayerY + 64) == -16776961) || (get(intPlayerX + 42, intPlayerY) == -16776961) || (get(intPlayerX,intPlayerY) == -16776961)) {
 
           if (intPlayerX < (width / 2) && intPlayerY > (height / 2)) {
             
@@ -899,7 +899,7 @@ public class escape_room extends PApplet {
           }
 
         // crowbar detection
-        } else if ((get(intPlayerX,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42, intPlayerY) == -16711936) || (get(intPlayerX,intPlayerY) == -16711936)) {
+        } else if ((get(intPlayerX,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42, intPlayerY - 8) == -16711936) || (get(intPlayerX,intPlayerY - 8) == -16711936)) {
 
           blnCrowBar = true;
 
@@ -1650,9 +1650,9 @@ public class escape_room extends PApplet {
         intKeyCardTimer[3] ++;
 
       // prints out the keycard on the table once the player has left for future reference
-      } else if (blnNextLevel[4] == true && blnNextLevel[3] == true) {
+      } else if (blnNextLevel[4] == true && blnLeftLevel[3] == true) {
 
-        // image(imgKeyCard[3],intPlayerX,intPlayerY - 30);
+        image(imgKeyCard[3],100,200);
 
       }
       
@@ -1714,6 +1714,11 @@ public class escape_room extends PApplet {
       intPlayerY = 16;
       blnLeftLevel[3] = true;
 
+    } else if (intLevel == 11  && intPlayerY > 664) {
+
+      intLevel += 1;
+      intPlayerY = 16;
+
     }
 
     // detects if players are trying to leave that level, and it will move them down a level if they want to 
@@ -1747,6 +1752,16 @@ public class escape_room extends PApplet {
       // goes down by 2 so that the player ends up on the top floor and not the botto floor
       intLevel -= 2;
       intPlayerX = 16;
+
+    } else if (intLevel == 10 && intPlayerX > 664) {
+
+      intLevel -=1;
+      intPlayerX = 16;
+
+    } else if (intLevel == 11 && intPlayerY < 16) {
+
+      intLevel -=1;
+      intPlayerY = 664;
 
     }
   }
