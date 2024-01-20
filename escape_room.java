@@ -1112,25 +1112,25 @@ public class escape_room extends PApplet {
     if (blnUp == true) {
 
       image(imgPlayerUp[intMoveFrames], intPlayerX, intPlayerY);
-
+      // sets players direction to "Up"
       strDirection = "Up";
 
     } else if (blnDown == true) {
 
       image(imgPlayerDown[intMoveFrames], intPlayerX, intPlayerY);
-
+      // sets players direction to "Down"
       strDirection = "Down";
 
     } else if (blnLeft == true) {
 
       image(imgPlayerLeft[intMoveFrames], intPlayerX, intPlayerY);
-
+      // sets players direction to "Left"
       strDirection = "Left";
 
     } else if (blnRight == true) {
 
       image(imgPlayerRight[intMoveFrames], intPlayerX, intPlayerY);
-
+      // sets players direction to "Right"
       strDirection = "Right";
 
     }
