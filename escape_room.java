@@ -76,7 +76,7 @@ public class escape_room extends PApplet {
   boolean[] blnNextLevel = {true,false,false,false,false,false,false,false};
   boolean[] blnLeftLevel = new boolean[4];
   int intNumLevels = 15;
-  int intLevel = 0;
+  int intLevel = 10;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -564,7 +564,7 @@ public class escape_room extends PApplet {
   public void playerMovementAndCollisions() {
 
     // prevents players from moving if they are interacting with an object
-    if (blnPage == false && blnSafe == false && blnRickPoster == false && blnGundamPoster == false && blnIPoster == false && blnTable == false)  {
+    if (blnPage == false && blnSafe == false && blnTable == false)  {
       
       // left player collision detection
       if (blnLeft == true && (get(intPlayerX - 8, intPlayerY + 54) != -1.6777216E7 && get(intPlayerX - 8, intPlayerY + 54) != -16776961)) {
@@ -783,49 +783,18 @@ public class escape_room extends PApplet {
           // detection for the Rick Poster
           if ((intPlayerX > 50 && intPlayerX < 156) && (get(intPlayerX, intPlayerY - 8) == -16776961)) {
 
-            if (blnRickPoster == false) {
-
-              blnRickPoster = true;
-              delay(300);
-
-            } else if (blnRickPoster == true) {
-
-              blnRickPoster = false;
-              delay(300);
-
-            }
+            blnRickPoster = true; 
 
           // detection for the Gundam Poster 
           } else if ((intPlayerX > 170 && intPlayerX < 240) && (get(intPlayerX,intPlayerY - 16) == -16776961)) {
 
-            if (blnGundamPoster == false) {
-
-              blnGundamPoster = true;
-              delay(300);
-
-
-            } else if (blnGundamPoster == true) {
-
-              blnGundamPoster = false;
-              delay(300);
-
-            }
+            blnGundamPoster = true;
 
           // detection for the Robotic Poster
           } else if ((intPlayerX > 300 && intPlayerX < 380) && (get(intPlayerX,intPlayerY - 8) == -16776961)) {
 
-            if (blnIPoster == false) {
-
-              blnIPoster = true;
-              delay(300);
+            blnIPoster = true;
             
-            } else if (blnIPoster == true) {
-
-              blnIPoster = false;
-              delay(300);
-
-            } 
-
           } 
 
         // detection for the shelf that is in the room
@@ -943,10 +912,22 @@ public class escape_room extends PApplet {
     } else {
 
       // passively detects if the player is still standing on the trap door even though they can't open it. Does not require the player to hit any keys 
-      if (intLevel == 7 && (get(intPlayerX, intPlayerY + 56) != -256 && get(intPlayerX + 42, intPlayerY + 56) != -256)) {
+      if (intLevel == 7) {
+      
+        if (get(intPlayerX, intPlayerY + 56) != -256 && get(intPlayerX + 42, intPlayerY + 56) != -256) {
 
-        blnLockedTrapDoor = false;
+          blnLockedTrapDoor = false;
 
+        } 
+
+        // passively detects if the player walks away from the poster 
+        if ((get(intPlayerX, intPlayerY - 8) != -16776961)) {
+
+          blnRickPoster = false;
+          blnGundamPoster = false;
+          blnIPoster = false;
+
+        }
       } 
       
       // passively detects if the player is walking behind the ladder and will print an image over the player if they are 
@@ -967,23 +948,23 @@ public class escape_room extends PApplet {
         if (intPlayerY + 54 < 275) {
 
           // X cord detection for each tile on level 10
-          if (intPlayerX < 200 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+          if (intPlayerX < 200 && (get(intPlayerX, intPlayerY + 48) == -256 || get(intPlayerX + 35, intPlayerY + 48) == -256)) {
 
             blnSteppedOn[0] = true;
 
-          } else if (intPlayerX > 225 && intPlayerX < 275 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+          } else if (intPlayerX > 200 && intPlayerX < 275 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
 
             blnSteppedOn[1] = true;
 
-          } else if (intPlayerX > 300 && intPlayerX < 350 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+          } else if (intPlayerX > 275 && intPlayerX < 350 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
 
             blnSteppedOn[2] = true;
 
-          } else if (intPlayerX > 375 && intPlayerX < 425 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+          } else if (intPlayerX > 350 && intPlayerX < 425 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
 
             blnSteppedOn[3] = true;
 
-          } else if (intPlayerX > 450 && intPlayerX < 500 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+          } else if (intPlayerX > 425 && intPlayerX < 500 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
 
             blnSteppedOn[4] = true;
 
@@ -992,23 +973,23 @@ public class escape_room extends PApplet {
         } else if (intPlayerY + 54 > 300 && intPlayerY + 54 < 350) {
 
           // X cord detection for each tile on level 10
-          if (intPlayerX < 200 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+          if (intPlayerX < 200 && (get(intPlayerX, intPlayerY + 48) == -256 || get(intPlayerX + 35, intPlayerY + 48) == -256)) {
 
             blnSteppedOn[5] = true;
 
-          } else if (intPlayerX > 225 && intPlayerX < 275 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+          } else if (intPlayerX > 200 && intPlayerX < 275 && (get(intPlayerX, intPlayerY + 48) == -256 || get(intPlayerX + 35, intPlayerY + 48) == -256)) {
 
             blnSteppedOn[6] = true;
 
-          } else if (intPlayerX > 300 && intPlayerX < 350 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+          } else if (intPlayerX > 275 && intPlayerX < 350 && (get(intPlayerX, intPlayerY + 48) == -256 || get(intPlayerX + 35, intPlayerY + 48) == -256)) {
 
             blnSteppedOn[7] = true;
 
-          } else if (intPlayerX > 375 && intPlayerX < 425 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+          } else if (intPlayerX > 350 && intPlayerX < 425 && (get(intPlayerX, intPlayerY + 48) == -256 || get(intPlayerX + 35, intPlayerY + 48) == -256)) {
 
             blnSteppedOn[8] = true;
 
-          } else if (intPlayerX > 450 && intPlayerX < 500 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+          } else if (intPlayerX > 425 && intPlayerX < 500 && (get(intPlayerX, intPlayerY + 48) == -256 || get(intPlayerX + 35, intPlayerY + 48) == -256)) {
 
             blnSteppedOn[9] = true;
 
@@ -1017,23 +998,23 @@ public class escape_room extends PApplet {
         } else if (intPlayerY + 54 > 375 && intPlayerY + 54 < 425) {
 
           // X cord detection for each tile on level 10
-          if (intPlayerX < 200 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+          if (intPlayerX < 200 && (get(intPlayerX, intPlayerY + 48) == -256 || get(intPlayerX + 35, intPlayerY + 48) == -256)) {
 
             blnSteppedOn[10] = true;
 
-          } else if (intPlayerX > 225 && intPlayerX < 275 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+          } else if (intPlayerX > 200 && intPlayerX < 275 && (get(intPlayerX, intPlayerY + 48) == -256 || get(intPlayerX + 35, intPlayerY + 48) == -256)) {
 
             blnSteppedOn[11] = true;
 
-          } else if (intPlayerX > 300 && intPlayerX < 350 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+          } else if (intPlayerX > 275 && intPlayerX < 350 && (get(intPlayerX, intPlayerY + 48) == -256 || get(intPlayerX + 35, intPlayerY + 48) == -256)) {
 
             blnSteppedOn[12] = true;
 
-          } else if (intPlayerX > 375 && intPlayerX < 425 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+          } else if (intPlayerX > 350 && intPlayerX < 425 && (get(intPlayerX, intPlayerY + 48) == -256 || get(intPlayerX + 35, intPlayerY + 48) == -256)) {
 
             blnSteppedOn[13] = true;
 
-          } else if (intPlayerX > 450 && intPlayerX < 500 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+          } else if (intPlayerX > 425 && intPlayerX < 500 && (get(intPlayerX, intPlayerY + 48) == -256 || get(intPlayerX + 35, intPlayerY + 48) == -256)) {
 
             blnSteppedOn[14] = true;
 
@@ -1042,23 +1023,23 @@ public class escape_room extends PApplet {
         } else if (intPlayerY + 54 > 450 && intPlayerY + 54 < 500) {
 
           // X cord detection for each tile on level 10
-          if (intPlayerX < 200 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+          if (intPlayerX < 200 && (get(intPlayerX, intPlayerY + 48) == -256 || get(intPlayerX + 35, intPlayerY + 48) == -256)) {
 
             blnSteppedOn[15] = true;
 
-          } else if (intPlayerX > 225 && intPlayerX < 275 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+          } else if (intPlayerX > 200 && intPlayerX < 275 && (get(intPlayerX, intPlayerY + 48) == -256 || get(intPlayerX + 35, intPlayerY + 48) == -256)) {
 
             blnSteppedOn[16] = true;
 
-          } else if (intPlayerX > 300 && intPlayerX < 350 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+          } else if (intPlayerX > 275 && intPlayerX < 350 && (get(intPlayerX, intPlayerY + 48) == -256 || get(intPlayerX + 35, intPlayerY + 48) == -256)) {
 
             blnSteppedOn[17] = true;
 
-          } else if (intPlayerX > 375 && intPlayerX < 425 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+          } else if (intPlayerX > 350 && intPlayerX < 425 && (get(intPlayerX, intPlayerY + 48) == -256 || get(intPlayerX + 35, intPlayerY + 48) == -256)) {
 
             blnSteppedOn[18] = true;
 
-          } else if (intPlayerX > 450 && intPlayerX < 500 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+          } else if (intPlayerX > 425 && intPlayerX < 500 && (get(intPlayerX, intPlayerY + 48) == -256 || get(intPlayerX + 35, intPlayerY + 48) == -256)) {
 
             blnSteppedOn[19] = true;
 
@@ -1067,23 +1048,23 @@ public class escape_room extends PApplet {
         } else if (intPlayerY + 54 > 525 && intPlayerY + 54 < 575) {
 
           // X cord detection for each tile on level 10
-          if (intPlayerX < 200 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+          if (intPlayerX < 200 && (get(intPlayerX, intPlayerY + 48) == -256 || get(intPlayerX + 35, intPlayerY + 48) == -256)) {
 
             blnSteppedOn[20] = true;
 
-          } else if (intPlayerX > 225 && intPlayerX < 275 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+          } else if (intPlayerX > 200 && intPlayerX < 275 && (get(intPlayerX, intPlayerY + 48) == -256 || get(intPlayerX + 35, intPlayerY + 48) == -256)) {
 
             blnSteppedOn[21] = true;
 
-          } else if (intPlayerX > 300 && intPlayerX < 350 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+          } else if (intPlayerX > 275 && intPlayerX < 350 && (get(intPlayerX, intPlayerY + 48) == -256 || get(intPlayerX + 35, intPlayerY + 48) == -256)) {
 
             blnSteppedOn[22] = true;
 
-          } else if (intPlayerX > 375 && intPlayerX < 425 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+          } else if (intPlayerX > 350 && intPlayerX < 425 && (get(intPlayerX, intPlayerY + 48) == -256 || get(intPlayerX + 35, intPlayerY + 48) == -256)) {
 
             blnSteppedOn[23] = true;
 
-          } else if (intPlayerX > 450 && intPlayerX < 500 && (get(intPlayerX, intPlayerY + 54) == -256 || get(intPlayerX + 42, intPlayerY + 54) == -256)) {
+          } else if (intPlayerX > 425 && intPlayerX < 500 && (get(intPlayerX, intPlayerY + 48) == -256 || get(intPlayerX + 35, intPlayerY + 48) == -256)) {
 
             blnSteppedOn[24] = true;
 
@@ -1185,6 +1166,13 @@ public class escape_room extends PApplet {
         image(imgPlayerRight[0], intPlayerX, intPlayerY);
 
       }
+    }
+
+    // forces the player to face up while going up the ladder 
+    if (intLevel == 15) {
+
+      strDirection = "Up";
+
     }
   }
 
@@ -1737,15 +1725,15 @@ public class escape_room extends PApplet {
       intLevel += 1;
       intPlayerY = 16;
 
-    } else if (intLevel == 12 && blnNextLevel[5] == true) {
+    } else if (intLevel > 11 && blnNextLevel[5] == true && blnNextLevel[6] == false) {
 
-      intLevel += 1;
+      intLevel = 13;
 
-    } else if (intLevel == 13 && blnNextLevel[6] == true) {
+    } else if (intLevel > 11 && blnNextLevel[5] == true & blnNextLevel[6] == true && blnNextLevel[7] == false) {
 
-      intLevel += 1;
+      intLevel = 14;
 
-    } else if (intLevel == 14 && blnNextLevel[7] == true) {
+    } else if (intLevel > 11 && blnNextLevel[5] == true && blnNextLevel[6] == true && blnNextLevel[7] == true) {
 
       blnGameStarting = false;
       blnGameEnding = true;
@@ -1792,6 +1780,24 @@ public class escape_room extends PApplet {
     } else if (intLevel == 11 && intPlayerY < 16) {
 
       intLevel -=1;
+      intPlayerY = 664;
+
+    } else if (intLevel == 12 && intPlayerY < 16) {
+
+      // forces them to the hallway 
+      intLevel = 11;
+      intPlayerY = 664;
+
+    } else if (intLevel == 13 && intPlayerY < 16) {
+
+      // forces them to the hallway 
+      intLevel = 11;
+      intPlayerY = 664;
+
+    } else if (intLevel == 14 && intPlayerY < 16) {
+
+      // forces them to the hallway 
+      intLevel = 11;
       intPlayerY = 664;
 
     }
