@@ -1,6 +1,7 @@
-# Escape Room "mr. fabroa edition" By JP Game Productions
-You've fallen into a trap door on your way home and you wake up to find yourself in an abanoned classroom, there is limited oxygen, and you will slowly run out and die. The only way out of this place is completing the puzzles that were setup for you and getting keys to move to the next rooms and to finally escape.
+# Escape Room "Mr. Fabroa edition" By JP Game Productions
 
-Players will go through the game interacting with objects using 'e' which will bring up clues or puzzles in order to figure out what to do to get out of this place. The players will also be able to input names for required puzzles.
+Erik, an 18-year-old young adult was wandering around the city at midnight when he all of a sudden fell into a trap door on his way home from the bar. He woke up to find himself trapped underground with a blackboard next to him with no easy way out. Erik must explore the room, solve intricate puzzles, and persevere through challenging mini-games to make his way out before it's too late for him. 
 
-The player will be timed and the one to come out the fast will be victorious. 
+There are three difficulty modes, easy, medium, and hard. Easy gives the player infinite oxygen to solve each puzzle with medium allocating them limited oxygen, and hard with even less. If the player decides to choose the medium or hard modes, they must complete all the levels before their oxygen meter runs out, or they will suffocate to death. Players will have to interact with various posters, tables, and boxes to find clues as to how they should complete the level with the final level requiring a clue from each room to solve it. At the end of each run, a score will be presented that will be calculated with the amount of time remaining, along with any easter eggs picked up and difficulty mode selected 
+	
+There are various easter eggs hidden throughout the level that the player can find, and while they are not a mandatory requirement to beat the game, those who spend time looking for them will be rewarded with more points. But do you have time to spend investigating each room for these easter eggs?  
