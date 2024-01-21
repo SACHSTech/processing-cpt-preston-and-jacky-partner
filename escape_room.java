@@ -340,21 +340,21 @@ public class escape_room extends PApplet {
 
         fill(255);
         stroke(0);
+        strokeWeight(3);
         rect(20,10,55,25);
         fill(100,0,0);
-        strokeWeight(5);
         textSize(20);
-        text("EXIT",25,30);
+        text("EXIT", 27, 30);
 
       } else {
 
         fill(255);
         stroke(0);
+        strokeWeight(3);
         rect(20,10,55,25);
         fill(0);
-        strokeWeight(5);
         textSize(20);
-        text("EXIT",25,30);
+        text("EXIT",27,30);
 
       }
 
@@ -393,7 +393,7 @@ public class escape_room extends PApplet {
           stroke(0,0,100);
           rect(250,200,195,75);
           fill(0,0,100);
-          strokeWeight(5);
+          strokeWeight(3);
           textSize(60);
           text("EASY",275,260);
 
@@ -403,7 +403,7 @@ public class escape_room extends PApplet {
           stroke(0);
           rect(250,200,195,75);
           fill(0);
-          strokeWeight(5);
+          strokeWeight(3);
           textSize(60);
           text("EASY",275,260);
 
@@ -416,7 +416,7 @@ public class escape_room extends PApplet {
           stroke(0,0,100);
           rect(220,300,250,75);
           fill(0,0,100);
-          strokeWeight(5);
+          strokeWeight(3);
           textSize(60);
           text("MEDIUM",225,360);
 
@@ -426,7 +426,7 @@ public class escape_room extends PApplet {
           stroke(0);
           rect(220,300,250,75);
           fill(0);
-          strokeWeight(5);
+          strokeWeight(3);
           textSize(60);
           text("MEDIUM",225,360);
 
@@ -439,7 +439,7 @@ public class escape_room extends PApplet {
           stroke(0,0,100);
           rect(250,400,195,75);
           fill(0,0,100);
-          strokeWeight(5);
+          strokeWeight(3);
           textSize(60);
           text("HARD",265,460);
 
@@ -449,7 +449,7 @@ public class escape_room extends PApplet {
           stroke(0);
           rect(250,400,195,75);
           fill(0);
-          strokeWeight(5);
+          strokeWeight(3);
           textSize(60);
           text("HARD",265,460);
 
