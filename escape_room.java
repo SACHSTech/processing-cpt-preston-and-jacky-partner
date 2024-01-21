@@ -72,8 +72,8 @@ public class escape_room extends PApplet {
   // level variables 
   boolean[] blnNextLevel = {true,false,false,false,false,false};
   boolean[] blnLeftLevel = new boolean[4];
-  int intNumLevels = 13;
-  int intLevel = 0;
+  int intNumLevels = 15;
+  int intLevel = 12;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -81,7 +81,7 @@ public class escape_room extends PApplet {
 
   // player position 
   int intPlayerX = 300;
-  int intPlayerY = 300;
+  int intPlayerY = 100;
 
   // player booleans 
   boolean blnUp, blnDown, blnLeft, blnRight, blnInteract, blnLeftArrow, blnRightArrow;
@@ -303,7 +303,6 @@ public class escape_room extends PApplet {
       drawPopUps();
       nextLevel();
 
-      System.out.println(blnSteppedOn[11]);
 
     // draws a screen if the player has completed the game without running out of oxygen 
     } else if (blnGameEnding == true) {
@@ -518,14 +517,14 @@ public class escape_room extends PApplet {
     // sets the amount of oxygen higher if the player has selected the medium difficulty and lower if they selected the hard difficulty 
     if (blnMedium == true) {
 
-      intOxygenMeter = 300;
-      intTotalOxygen = 300;
+      intOxygenMeter = 150;
+      intTotalOxygen = 150;
       blnMedium = false;
 
     } else if (blnHard == true) {
 
-      intOxygenMeter = 200;
-      intTotalOxygen = 200;
+      intOxygenMeter = 100;
+      intTotalOxygen = 100;
       blnHard = false;
 
     }
@@ -542,7 +541,7 @@ public class escape_room extends PApplet {
       rect(640,640,20, -intTotalOxygen);
     
       // slowly ticks away at the oxygen meter 
-      if (frameCount % 120 == 0) {
+      if (frameCount % 240 == 0) {
 
         intOxygenMeter -= 1;
 
@@ -923,11 +922,11 @@ public class escape_room extends PApplet {
       } 
       
       // passively detects if the player is walking behind the ladder and will print an image over the player if they are 
-      if (intLevel == 8 && (get(intPlayerX,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42, intPlayerY) == -16711936) || (get(intPlayerX,intPlayerY) == -16711936)) {
+      if (intLevel == 8 && (get(intPlayerX,intPlayerY + 54) == -16711936) || (get(intPlayerX + 42,intPlayerY + 54) == -16711936) || (get(intPlayerX + 42, intPlayerY) == -16711936) || (get(intPlayerX,intPlayerY) == -16711936)) {
 
         blnStairs = true;
 
-      } else if (intLevel == 8 && (get(intPlayerX,intPlayerY + 56) != -16711936) && (get(intPlayerX + 42,intPlayerY + 56) != -16711936) && (get(intPlayerX + 42, intPlayerY) != -16711936) && (get(intPlayerX,intPlayerY) != -16711936)) {
+      } else if (intLevel == 8) {
 
         blnStairs = false;
 
@@ -1712,7 +1711,7 @@ public class escape_room extends PApplet {
     }
 
     // detects if players are trying to leave that level, and it will move them down a level if they want to 
-     if ((intLevel == 1 || intLevel == 0) && intPlayerX > 664) {
+     if ((intLevel == 2 || intLevel == 1 || intLevel == 0) && intPlayerX > 664) {
 
       intLevel -= 1;
       intPlayerX = 16;
@@ -1909,7 +1908,7 @@ public class escape_room extends PApplet {
         }
       }
 
-      // verification key is placed here becuaes it needs to run even when the code has hit its max length 
+      // verification key is placed here because it needs to run even when the code has hit its max length 
       if ((mouseX > 96 && mouseX < 175) && (mouseY > 506 && mouseY < 592)) {
 
         blnVerify = true;
@@ -2114,7 +2113,8 @@ public class escape_room extends PApplet {
   
   /**
    * sees which direction the player is currently moving in 
-   * @return a boolean value as true that corresponds to the last direction that player as moving in 
+   * 
+   * @return a boolean value as true if player is not moving
    */
   public boolean blnMoving() {
     return blnUp || blnDown || blnLeft || blnRight;
