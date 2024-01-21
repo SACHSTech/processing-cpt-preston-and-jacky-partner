@@ -73,7 +73,7 @@ public class escape_room extends PApplet {
   boolean[] blnNextLevel = {true,false,false,false,false,false};
   boolean[] blnLeftLevel = new boolean[4];
   int intNumLevels = 15;
-  int intLevel = 12;
+  int intLevel = 0;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -81,7 +81,7 @@ public class escape_room extends PApplet {
 
   // player position 
   int intPlayerX = 300;
-  int intPlayerY = 100;
+  int intPlayerY = 300;
 
   // player booleans 
   boolean blnUp, blnDown, blnLeft, blnRight, blnInteract, blnLeftArrow, blnRightArrow;
@@ -1898,106 +1898,109 @@ public class escape_room extends PApplet {
 
     if (blnSafe == true) {
 
-      // deletion key is placed here because it needs to run even when the code has hit its max length 
-      if ((mouseX > 261 && mouseX < 335) && (mouseY > 506 && mouseY < 592)) {
+      if (blnNextLevel[1] == false) {
 
-        if (strCode.length() > 0) {
+        // deletion key is placed here because it needs to run even when the code has hit its max length 
+        if ((mouseX > 261 && mouseX < 335) && (mouseY > 506 && mouseY < 592)) {
 
-          strCode = strCode.substring(0, strCode.length() - 1);
+          if (strCode.length() > 0) {
+
+            strCode = strCode.substring(0, strCode.length() - 1);
+
+          }
+        }
+
+        // verification key is placed here because it needs to run even when the code has hit its max length 
+        if ((mouseX > 96 && mouseX < 175) && (mouseY > 506 && mouseY < 592)) {
+
+          blnVerify = true;
 
         }
-      }
 
-      // verification key is placed here because it needs to run even when the code has hit its max length 
-      if ((mouseX > 96 && mouseX < 175) && (mouseY > 506 && mouseY < 592)) {
+        // makes the max digit password length to 6
+        if (strCode.length() < 6) {
+            
+          // used to check for the y value of the first 3 keys in the first row 
+          if (mouseY > 250 && mouseY < 340) {
+            
+            // x boundaries for the number 1 key
+            if (mouseX > 96 && mouseX < 175) {
 
-        blnVerify = true;
+              strCode += '1';
 
-      }
+            }
 
-      // makes the max digit password length to 6
-      if (strCode.length() < 6) {
-          
-        // used to check for the y value of the first 3 keys in the first row 
-        if (mouseY > 250 && mouseY < 340) {
-          
-          // x boundaries for the number 1 key
-          if (mouseX > 96 && mouseX < 175) {
+            // x boundaries for the number 2 key
+            if (mouseX > 176 && mouseX < 260) {
 
-            strCode += '1';
+              strCode += '2';
 
-          }
+            }
 
-          // x boundaries for the number 2 key
-          if (mouseX > 176 && mouseX < 260) {
+            // x boundaries for the number 3 key
+            if (mouseX > 261 && mouseX < 335) {
 
-            strCode += '2';
+              strCode += '3';
 
-          }
+            }
 
-          // x boundaries for the number 3 key
-          if (mouseX > 261 && mouseX < 335) {
+          // checks the y boundaries for the second row of keys 
+          } else if (mouseY > 341 && mouseY < 420) {
 
-            strCode += '3';
+            // x boundaries for the number 4 key
+            if (mouseX > 96 && mouseX < 175) {
 
-          }
+              strCode += '4';
 
-        // checks the y boundaries for the second row of keys 
-        } else if (mouseY > 341 && mouseY < 420) {
+            }
 
-          // x boundaries for the number 4 key
-          if (mouseX > 96 && mouseX < 175) {
+            // x boundaries for the number 5 key
+            if (mouseX > 176 && mouseX < 260) {
 
-            strCode += '4';
+              strCode += '5';
 
-          }
+            }
 
-          // x boundaries for the number 5 key
-          if (mouseX > 176 && mouseX < 260) {
+            // x boundaries for the number 6 key
+            if (mouseX > 261 && mouseX < 335) {
 
-            strCode += '5';
+              strCode += '6';
 
-          }
+            }
 
-          // x boundaries for the number 6 key
-          if (mouseX > 261 && mouseX < 335) {
+          // checks the y boundaries for the third row of keys 
+          } else if (mouseY > 421 && mouseY < 505) {
 
-            strCode += '6';
+            // x boundaries for the number 7 key
+            if (mouseX > 96 && mouseX < 175) {
 
-          }
+              strCode += '7';
 
-        // checks the y boundaries for the third row of keys 
-        } else if (mouseY > 421 && mouseY < 505) {
+            }
 
-          // x boundaries for the number 7 key
-          if (mouseX > 96 && mouseX < 175) {
+            // x boundaries for the number 8 key
+            if (mouseX > 176 && mouseX < 260) {
 
-            strCode += '7';
+              strCode += '8';
 
-          }
+            }
 
-          // x boundaries for the number 8 key
-          if (mouseX > 176 && mouseX < 260) {
+            // x boundaries for the number 9 key
+            if (mouseX > 261 && mouseX < 335) {
 
-            strCode += '8';
+              strCode += '9';
 
-          }
+            }
 
-          // x boundaries for the number 9 key
-          if (mouseX > 261 && mouseX < 335) {
+          // checks the boundary for the 0 key 
+          } else if (mouseY > 506 && mouseY < 592) {
 
-            strCode += '9';
+            // x boundaries for the number 0 key
+            if (mouseX > 176 && mouseX < 260) {
 
-          }
+              strCode += '0';
 
-        // checks the boundary for the 0 key 
-        } else if (mouseY > 506 && mouseY < 592) {
-
-          // x boundaries for the number 0 key
-          if (mouseX > 176 && mouseX < 260) {
-
-            strCode += '0';
-
+            }
           }
         }
       }
