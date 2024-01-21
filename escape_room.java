@@ -59,11 +59,14 @@ public class escape_room extends PApplet {
   int intLevel10ArrayXPosition, intLevel10ArrayYPosition, intCycles = 0;
 
   // level 12 - 14 variables
+  PImage[] imgPuzzle;
   boolean blnArrowSwitch, blnColourSwitch, blnLetterSwitch = false;
+  String[] strArrows = {"", "LEFT ", "RIGHT ", "UP ", "DOWN "};
+  String strArrowCode = "";
 
   // player direction
   String strDirection = "Down";
-
+  
   // game starting and ending variables
   boolean blnGameStarting, blnGameEnding = false;
 
@@ -76,7 +79,7 @@ public class escape_room extends PApplet {
   boolean[] blnNextLevel = {true,false,false,false,false,false,false,false};
   boolean[] blnLeftLevel = new boolean[4];
   int intNumLevels = 15;
-  int intLevel = 10;
+  int intLevel = 7;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -194,6 +197,9 @@ public class escape_room extends PApplet {
     // setting up image variable for easter eggs
     imgEasterEgg = new PImage[3];
 
+    // setting up image variables for final puzzle pop ups
+    imgPuzzle = new PImage[3];
+
     // loading in all level images
     for (int i = 0; i < intNumLevels; i++) {
 
@@ -282,6 +288,15 @@ public class escape_room extends PApplet {
       imgEasterEgg[i] = loadImage("escape_room/popups/Collection" + i + ".png");
 
     }
+
+    // loading in the final puzzle images
+    for (int i = 0; i < 3; i++) {
+
+      imgPuzzle[i] = loadImage("escape_room/popups/puzzle" + i + ".png");
+
+    }
+
+
   }
 
   /**
@@ -295,7 +310,7 @@ public class escape_room extends PApplet {
       startingScreen();
 
     // detects if the game has started and if the user still has oxygen left 
-    } else if (blnGameStarting == true && intOxygenMeter > 0 ) {
+    } else if (blnGameStarting == true && intOxygenMeter > 0) {
      
       drawCollisionMaps();
       playerMovementAndCollisions();
@@ -1662,6 +1677,32 @@ public class escape_room extends PApplet {
 
       }
       
+    // displays the arrow keypad for the level 12 puzzle
+    } else if (intLevel == 12) {
+
+      if (blnArrowSwitch == true) {
+
+        image(imgPuzzle[0],110,90);
+
+      } 
+
+    // prints out a colour selector
+    } else if (intLevel == 13) {
+
+      if (blnColourSwitch == true) {
+
+        image(imgPuzzle[1],CENTER,CENTER);
+      
+      }
+
+    // prints out a letter selector 
+    } else if (intLevel == 14) {
+
+      if (blnLetterSwitch) {
+
+        image(imgPuzzle[2],CENTER,CENTER);
+      
+      }
     }
   }
 
@@ -2159,12 +2200,37 @@ public class escape_room extends PApplet {
           }
         }
       }
+    } else if (blnArrowSwitch == true) {
+
+      if (strArrowCode.length() < 25) {
+
+        if (mouseX > 190 && mouseX < 287 && mouseY > 344 && mouseY < 440) {
+
+          strArrowCode += strArrows[1];
+
+        } else if (mouseX > 287 && mouseX < 383 && mouseY > 344 && mouseY < 440) {
+
+          strArrowCode = strArrowCode.substring(0,strArrowCode.length() - 1);
+
+        } else if (mouseX > 383 && mouseX < 479 && mouseY > 344 && mouseY < 440) {
+
+          strArrowCode += strArrows[2];
+
+        } else if (mouseX > 287 && mouseX < 383 && mouseY > 248 && mouseY < 344) {
+
+          strArrowCode += strArrows[3];
+
+        } else if (mouseX > 190 && mouseX < 287 && mouseY > 440 && mouseY < 536) {
+
+          strArrowCode += strArrows[4];
+
+        }
+      }
     }
   }
   
   /**
    * sees which direction the player is currently moving in 
-   * 
    * @return a boolean value as true if player is not moving
    */
   public boolean blnMoving() {
