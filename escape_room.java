@@ -76,7 +76,7 @@ public class escape_room extends PApplet {
   boolean[] blnNextLevel = {true,false,false,false,false,false,false,false};
   boolean[] blnLeftLevel = new boolean[4];
   int intNumLevels = 15;
-  int intLevel = 0;
+  int intLevel = 14;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -564,7 +564,7 @@ public class escape_room extends PApplet {
   public void playerMovementAndCollisions() {
 
     // prevents players from moving if they are interacting with an object
-    if (blnPage == false && blnSafe == false && blnRickPoster == false && blnGundamPoster == false && blnIPoster == false && blnTable == false)  {
+    if (blnPage == false && blnSafe == false && blnTable == false)  {
       
       // left player collision detection
       if (blnLeft == true && (get(intPlayerX - 8, intPlayerY + 54) != -1.6777216E7 && get(intPlayerX - 8, intPlayerY + 54) != -16776961)) {
@@ -783,49 +783,18 @@ public class escape_room extends PApplet {
           // detection for the Rick Poster
           if ((intPlayerX > 50 && intPlayerX < 156) && (get(intPlayerX, intPlayerY - 8) == -16776961)) {
 
-            if (blnRickPoster == false) {
-
-              blnRickPoster = true;
-              delay(300);
-
-            } else if (blnRickPoster == true) {
-
-              blnRickPoster = false;
-              delay(300);
-
-            }
+            blnRickPoster = true; 
 
           // detection for the Gundam Poster 
           } else if ((intPlayerX > 170 && intPlayerX < 240) && (get(intPlayerX,intPlayerY - 16) == -16776961)) {
 
-            if (blnGundamPoster == false) {
-
-              blnGundamPoster = true;
-              delay(300);
-
-
-            } else if (blnGundamPoster == true) {
-
-              blnGundamPoster = false;
-              delay(300);
-
-            }
+            blnGundamPoster = true;
 
           // detection for the Robotic Poster
           } else if ((intPlayerX > 300 && intPlayerX < 380) && (get(intPlayerX,intPlayerY - 8) == -16776961)) {
 
-            if (blnIPoster == false) {
-
-              blnIPoster = true;
-              delay(300);
+            blnIPoster = true;
             
-            } else if (blnIPoster == true) {
-
-              blnIPoster = false;
-              delay(300);
-
-            } 
-
           } 
 
         // detection for the shelf that is in the room
@@ -943,10 +912,22 @@ public class escape_room extends PApplet {
     } else {
 
       // passively detects if the player is still standing on the trap door even though they can't open it. Does not require the player to hit any keys 
-      if (intLevel == 7 && (get(intPlayerX, intPlayerY + 56) != -256 && get(intPlayerX + 42, intPlayerY + 56) != -256)) {
+      if (intLevel == 7) {
+      
+        if (get(intPlayerX, intPlayerY + 56) != -256 && get(intPlayerX + 42, intPlayerY + 56) != -256) {
 
-        blnLockedTrapDoor = false;
+          blnLockedTrapDoor = false;
 
+        } 
+
+        // passively detects if the player walks away from the poster 
+        if ((get(intPlayerX, intPlayerY - 8) != -16776961)) {
+
+          blnRickPoster = false;
+          blnGundamPoster = false;
+          blnIPoster = false;
+
+        }
       } 
       
       // passively detects if the player is walking behind the ladder and will print an image over the player if they are 
@@ -1185,6 +1166,13 @@ public class escape_room extends PApplet {
         image(imgPlayerRight[0], intPlayerX, intPlayerY);
 
       }
+    }
+
+    // forces the player to face up while going up the ladder 
+    if (intLevel == 15) {
+
+      strDirection = "Up";
+
     }
   }
 
@@ -1737,15 +1725,15 @@ public class escape_room extends PApplet {
       intLevel += 1;
       intPlayerY = 16;
 
-    } else if (intLevel == 12 && blnNextLevel[5] == true) {
+    } else if (intLevel > 11 && blnNextLevel[5] == true && blnNextLevel[6] == false) {
 
-      intLevel += 1;
+      intLevel = 13;
 
-    } else if (intLevel == 13 && blnNextLevel[6] == true) {
+    } else if (intLevel > 11 && blnNextLevel[5] == true & blnNextLevel[6] == true && blnNextLevel[7] == false) {
 
-      intLevel += 1;
+      intLevel = 14;
 
-    } else if (intLevel == 14 && blnNextLevel[7] == true) {
+    } else if (intLevel > 11 && blnNextLevel[5] == true && blnNextLevel[6] == true && blnNextLevel[7] == true) {
 
       blnGameStarting = false;
       blnGameEnding = true;
@@ -1792,6 +1780,21 @@ public class escape_room extends PApplet {
     } else if (intLevel == 11 && intPlayerY < 16) {
 
       intLevel -=1;
+      intPlayerY = 664;
+
+    } else if (intLevel == 12 && intPlayerY < 16) {
+
+      intLevel = 11;
+      intPlayerY = 664;
+
+    } else if (intLevel == 13 && intPlayerY < 16) {
+
+      intLevel = 11;
+      intPlayerY = 664;
+
+    } else if (intLevel == 14 && intPlayerY < 16) {
+
+      intLevel = 11;
       intPlayerY = 664;
 
     }
