@@ -58,6 +58,9 @@ public class escape_room extends PApplet {
   int[] intYTile = new int[25];
   int intLevel10ArrayXPosition, intLevel10ArrayYPosition, intCycles = 0;
 
+  // level 12 - 14 variables
+  boolean blnArrowSwitch, blnColourSwitch, blnLetterSwitch = false;
+
   // player direction
   String strDirection = "Down";
 
@@ -70,10 +73,10 @@ public class escape_room extends PApplet {
   int intTotalOxygen = 1;
 
   // level variables 
-  boolean[] blnNextLevel = {true,false,false,false,false,false};
+  boolean[] blnNextLevel = {true,false,false,false,false,false,false,false,false};
   boolean[] blnLeftLevel = new boolean[4];
   int intNumLevels = 15;
-  int intLevel = 0;
+  int intLevel = 12;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -81,7 +84,7 @@ public class escape_room extends PApplet {
 
   // player position 
   int intPlayerX = 300;
-  int intPlayerY = 300;
+  int intPlayerY = 100;
 
   // player booleans 
   boolean blnUp, blnDown, blnLeft, blnRight, blnInteract, blnLeftArrow, blnRightArrow;
@@ -302,7 +305,6 @@ public class escape_room extends PApplet {
       playerUpdate();
       drawPopUps();
       nextLevel();
-
 
     // draws a screen if the player has completed the game without running out of oxygen 
     } else if (blnGameEnding == true) {
@@ -887,7 +889,7 @@ public class escape_room extends PApplet {
           }
 
         // crowbar detection
-        } else if ((get(intPlayerX,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42, intPlayerY - 8) == -16711936) || (get(intPlayerX,intPlayerY - 8) == -16711936)) {
+        } else if ((get(intPlayerX, intPlayerY + 56) == -16711936) || (get(intPlayerX + 42,intPlayerY + 56) == -16711936) || (get(intPlayerX + 42, intPlayerY - 8) == -16711936) || (get(intPlayerX,intPlayerY - 8) == -16711936)) {
 
           blnCrowBar = true;
 
@@ -908,6 +910,31 @@ public class escape_room extends PApplet {
           blnReset = false;
 
         }
+
+      } else if (intLevel == 12) {
+
+        if (get(intPlayerX,intPlayerY + 64) == -16776961 || get(intPlayerX + 42, intPlayerY + 64) == -16776961) {
+
+          blnArrowSwitch = true;
+
+        } 
+
+      } else if (intLevel == 13) {
+
+        if (get(intPlayerX,intPlayerY + 64) == -16776961 || get(intPlayerX + 42, intPlayerY + 64) == -16776961) {
+
+          blnColourSwitch = true;
+
+        } 
+
+      } else if (intLevel == 14) {
+
+        if (get(intPlayerX,intPlayerY + 64) == -16776961 || get(intPlayerX + 42, intPlayerY + 64) == -16776961) {
+
+          blnLetterSwitch = true;
+
+        } 
+
       }
       
 
