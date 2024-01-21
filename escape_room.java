@@ -79,7 +79,7 @@ public class escape_room extends PApplet {
   boolean[] blnNextLevel = {true,false,false,false,false,false,false,false};
   boolean[] blnLeftLevel = new boolean[4];
   int intNumLevels = 15;
-  int intLevel = 11;
+  int intLevel = 7;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -581,7 +581,7 @@ public class escape_room extends PApplet {
   public void playerMovementAndCollisions() {
 
     // prevents players from moving if they are interacting with an object
-    if (blnPage == false && blnSafe == false && blnRickPoster == false && blnGundamPoster == false && blnIPoster == false && blnTable == false)  {
+    if (blnPage == false && blnSafe == false && blnTable == false)  {
       
       // left player collision detection
       if (blnLeft == true && (get(intPlayerX - 8, intPlayerY + 54) != -1.6777216E7 && get(intPlayerX - 8, intPlayerY + 54) != -16776961)) {
@@ -800,48 +800,18 @@ public class escape_room extends PApplet {
           // detection for the Rick Poster
           if ((intPlayerX > 50 && intPlayerX < 156) && (get(intPlayerX, intPlayerY - 8) == -16776961)) {
 
-            if (blnRickPoster == false) {
-
-              blnRickPoster = true;
-              delay(300);
-
-            } else if (blnRickPoster == true) {
-
-              blnRickPoster = false;
-              delay(300);
-
-            }
+            blnRickPoster = true;
 
           // detection for the Gundam Poster 
           } else if ((intPlayerX > 170 && intPlayerX < 240) && (get(intPlayerX,intPlayerY - 16) == -16776961)) {
 
-            if (blnGundamPoster == false) {
 
-              blnGundamPoster = true;
-              delay(300);
-
-
-            } else if (blnGundamPoster == true) {
-
-              blnGundamPoster = false;
-              delay(300);
-
-            }
+            blnGundamPoster = true;
 
           // detection for the Robotic Poster
           } else if ((intPlayerX > 300 && intPlayerX < 380) && (get(intPlayerX,intPlayerY - 8) == -16776961)) {
-
-            if (blnIPoster == false) {
-
-              blnIPoster = true;
-              delay(300);
-            
-            } else if (blnIPoster == true) {
-
-              blnIPoster = false;
-              delay(300);
-
-            } 
+             
+            blnIPoster = true;
 
           } 
 
@@ -963,6 +933,13 @@ public class escape_room extends PApplet {
       if (intLevel == 7 && (get(intPlayerX, intPlayerY + 56) != -256 && get(intPlayerX + 42, intPlayerY + 56) != -256)) {
 
         blnLockedTrapDoor = false;
+
+      } // detection for the Rick Poster
+      if ((get(intPlayerX, intPlayerY - 8) != -16776961)) {
+
+        blnRickPoster = false;
+        blnGundamPoster = false;
+        blnIPoster = false;
 
       } 
       
