@@ -79,7 +79,7 @@ public class escape_room extends PApplet {
   boolean[] blnNextLevel = {true,false,false,false,false,false,false,false};
   boolean[] blnLeftLevel = new boolean[4];
   int intNumLevels = 15;
-  int intLevel = 7;
+  int intLevel = 11;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -320,6 +320,8 @@ public class escape_room extends PApplet {
       playerUpdate();
       drawPopUps();
       nextLevel();
+
+      System.out.println(strArrowCode);
 
     // draws a screen if the player has completed the game without running out of oxygen 
     } else if (blnGameEnding == true) {
@@ -2200,17 +2202,21 @@ public class escape_room extends PApplet {
           }
         }
       }
+
     } else if (blnArrowSwitch == true) {
 
-      if (strArrowCode.length() < 25) {
+      // placed outside the if statement below so that the key works even when the code has hit its max length
+      if (mouseX > 287 && mouseX < 383 && mouseY > 344 && mouseY < 440) {
+
+        strArrowCode = strArrows[0];
+
+      }
+
+      if (strArrowCode.length() < 30) {
 
         if (mouseX > 190 && mouseX < 287 && mouseY > 344 && mouseY < 440) {
 
           strArrowCode += strArrows[1];
-
-        } else if (mouseX > 287 && mouseX < 383 && mouseY > 344 && mouseY < 440) {
-
-          strArrowCode = strArrowCode.substring(0,strArrowCode.length() - 1);
 
         } else if (mouseX > 383 && mouseX < 479 && mouseY > 344 && mouseY < 440) {
 
@@ -2220,7 +2226,7 @@ public class escape_room extends PApplet {
 
           strArrowCode += strArrows[3];
 
-        } else if (mouseX > 190 && mouseX < 287 && mouseY > 440 && mouseY < 536) {
+        } else if (mouseX > 287 && mouseX < 383 && mouseY > 440 && mouseY < 536) {
 
           strArrowCode += strArrows[4];
 
