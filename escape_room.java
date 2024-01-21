@@ -10,8 +10,8 @@ public class escape_room extends PApplet {
   PImage[] imgLevelCollision;
 
   // keycard image variable
-  int[] intKeyCardTimer = new int[4];
   PImage[] imgKeyCard;
+  int[] intKeyCardTimer = new int[4];
 
   // player image movement variables 
   PImage[] imgPlayerLeft;
@@ -73,10 +73,10 @@ public class escape_room extends PApplet {
   int intTotalOxygen = 1;
 
   // level variables 
-  boolean[] blnNextLevel = {true,false,false,false,false,false,false,false,false};
+  boolean[] blnNextLevel = {true,false,false,false,false,false,false,false};
   boolean[] blnLeftLevel = new boolean[4];
   int intNumLevels = 15;
-  int intLevel = 12;
+  int intLevel = 0;
 
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -84,7 +84,7 @@ public class escape_room extends PApplet {
 
   // player position 
   int intPlayerX = 300;
-  int intPlayerY = 100;
+  int intPlayerY = 300;
 
   // player booleans 
   boolean blnUp, blnDown, blnLeft, blnRight, blnInteract, blnLeftArrow, blnRightArrow;
@@ -118,7 +118,7 @@ public class escape_room extends PApplet {
 
     }
   
-    // fills in the array with the Y cordinates for each tile in room 8
+    // fills in the array with the Y cordinates for each card in room 8
     for (int i = 249; i < 410; i += 53) {
 
       intY[intLevel8ArrayYPosition] = i;
@@ -129,7 +129,7 @@ public class escape_room extends PApplet {
 
     }
 
-    // fills in the array with the X cordinates for each tile in room 8
+    // fills in the array with the X cordinates for each card in room 8
     for (int i = 264; i < 400; i += 43) {
 
       intX[intLevel8ArrayXPosition] = i;
@@ -290,7 +290,7 @@ public class escape_room extends PApplet {
   public void draw() {
 
     // detects if the game has started 
-    if (blnGameStarting == false) {
+    if (blnGameStarting == false && blnGameEnding == false) {
 
       startingScreen();
 
@@ -654,10 +654,11 @@ public class escape_room extends PApplet {
 
           blnDesk = true;
 
-          // sets the timer back to 0 everyoen the player interacts with the desk so that they can see the hint on the screen again
+          // sets the timer back to 0 so the player can interact with the desk again
           intDeskTimer = 0;
 
         } 
+
         // runs even when the password is at max length 
         if ((intPlayerY > 261 && intPlayerY <= 375) && (intPlayerX > 237 && intPlayerX < 380) && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) { 
             
@@ -672,7 +673,9 @@ public class escape_room extends PApplet {
 
         }
 
+        // sets a max length for the password
         if (strPassword.length() < 8) {
+
           // uses position and colour detection to determine the key that the player is standing on top of. It will then print out the specific key onto the screen 
           if (intPlayerY <= 261) {
 
@@ -811,17 +814,17 @@ public class escape_room extends PApplet {
           // detection for the Robotic Poster
           } else if ((intPlayerX > 300 && intPlayerX < 380) && (get(intPlayerX,intPlayerY - 8) == -16776961)) {
 
-          if (blnIPoster == false) {
+            if (blnIPoster == false) {
 
-            blnIPoster = true;
-            delay(300);
-          
-          } else if (blnIPoster == true) {
+              blnIPoster = true;
+              delay(300);
+            
+            } else if (blnIPoster == true) {
 
-            blnIPoster = false;
-            delay(300);
+              blnIPoster = false;
+              delay(300);
 
-          } 
+            } 
 
           } 
 
@@ -929,15 +932,13 @@ public class escape_room extends PApplet {
 
       } else if (intLevel == 14) {
 
-        if (get(intPlayerX,intPlayerY + 64) == -16776961 || get(intPlayerX + 42, intPlayerY + 64) == -16776961) {
+        if (get(intPlayerX,intPlayerY + 64) == -16776961 || get(intPlayerX + 42, intPlayerY + 64) == -16776961 || get(intPlayerX + 50, intPlayerY + 54) == -16776961 || get(intPlayerX - 8, intPlayerY + 54) == -16776961 ) {
 
           blnLetterSwitch = true;
 
         } 
-
       }
       
-
     // detects player interactions that doesn't require them to press e 
     } else {
 
@@ -987,6 +988,7 @@ public class escape_room extends PApplet {
             blnSteppedOn[4] = true;
 
           } 
+
         } else if (intPlayerY + 54 > 300 && intPlayerY + 54 < 350) {
 
           // X cord detection for each tile on level 10
@@ -1734,6 +1736,19 @@ public class escape_room extends PApplet {
 
       intLevel += 1;
       intPlayerY = 16;
+
+    } else if (intLevel == 12 && blnNextLevel[5] == true) {
+
+      intLevel += 1;
+
+    } else if (intLevel == 13 && blnNextLevel[6] == true) {
+
+      intLevel += 1;
+
+    } else if (intLevel == 14 && blnNextLevel[7] == true) {
+
+      blnGameStarting = false;
+      blnGameEnding = true;
 
     }
 
