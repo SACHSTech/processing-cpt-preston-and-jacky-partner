@@ -94,7 +94,7 @@ public class escape_room extends PApplet {
   boolean[] blnNextLevel = new boolean[8];
   boolean[] blnLeftLevel = new boolean[4];
   int intNumLevels = 16;
-  int intLevel = 0;
+  int intLevel = 14;
   
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -572,7 +572,7 @@ public class escape_room extends PApplet {
 
     image(imgEndingScreen,CENTER,CENTER);
 
-    if (blnPatrickEasterEgg == true && intPatrickEasterEggTimer < 60) {
+    if (blnPatrickEasterEgg == true && blnScoreScreen == false && intPatrickEasterEggTimer < 60) {
 
       intPatrickEasterEggTimer ++;
       image(imgEasterEgg[3],CENTER,CENTER);
@@ -2300,7 +2300,7 @@ public class escape_room extends PApplet {
    */
   public void mousePressed() {
 
-    if (blnGameStarting == false) {
+    if (blnGameStarting == false && blnScoreScreen == false) {
 
       // detects if the player wants to leave the game
       if ((mouseX > 20 && mouseX < 75) && (mouseY > 10 && mouseY < 35)) {
