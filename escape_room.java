@@ -21,6 +21,7 @@ public class escape_room extends PApplet {
 
   // starting screen variables
   PImage imgStartingScreen;
+  PImage imgEndingScreen;
   boolean blnStartButtonPressed, blnEasy, blnMedium, blnHard = false;
 
   // level 2 and 3 variables 
@@ -61,18 +62,23 @@ public class escape_room extends PApplet {
   // level 12 - 14 variables
   PImage[] imgPuzzle;
   boolean blnArrowSwitch, blnColourSwitch, blnLetterSwitch = false;
+  char[][] charLetterSelection = {{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'},{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}, {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}, {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}};
   int[] intColourSelection = new int[4];
-  int intArrowSwitchTimer = 0;
-  int intColourSwitchDelay = 0;
+  int[] intLetterIndex = new int[4];
+  int intArrowSwitchTimer, intColourSwitchDelay = 0;
   String[] strArrows = {"", "LEFT ", "RIGHT ", "UP ", "DOWN "};
   String strArrowCode = "";
-
 
   // player direction
   String strDirection = "Down";
   
   // game starting and ending variables
-  boolean blnGameStarting, blnGameEnding = false;
+  boolean blnGameStarting = false;
+  boolean blnEndingAnimation = false;
+  boolean blnGameEnding  = true;
+  boolean blnScoreScreen = false;
+  boolean blnPatrickEasterEgg = false;
+  int intPatrickEasterEggTimer = 0;
 
   // game oxygen meter variables
   boolean blnOxygenMeter = false;
@@ -83,7 +89,7 @@ public class escape_room extends PApplet {
   boolean[] blnNextLevel = {true,false,false,false,false,false,false,false};
   boolean[] blnLeftLevel = new boolean[4];
   int intNumLevels = 15;
-  int intLevel = 10;
+  int intLevel = 11;
   
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -117,6 +123,7 @@ public class escape_room extends PApplet {
     Arrays.fill (blnSteppedOn, false);
     Arrays.fill(blnLeftLevel,false);
     Arrays.fill(intColourSelection,0);
+    Arrays.fill(intLetterIndex,0);
     
 
     // fills in the array for the card location array
@@ -301,6 +308,8 @@ public class escape_room extends PApplet {
 
     }
 
+    // loading in the end screen
+    imgEndingScreen = loadImage("escape_room/endScreen.png");
 
   }
 
@@ -329,10 +338,9 @@ public class escape_room extends PApplet {
     // draws a screen if the player has completed the game without running out of oxygen 
     } else if (blnGameEnding == true) {
 
-      background(0);
-      textSize(50);
-      fill(255);
-      text("ggs wp",width / 2,height / 2);
+      EndingScreen();
+      drawPopUps();
+      playerUpdate();
 
     // to draw the end screen once the player has died 
     } else {
@@ -477,6 +485,27 @@ public class escape_room extends PApplet {
         }
       }
     } 
+  }
+
+  /**
+   * Draws the ending animation for when the player finishes the game
+   */
+  public void EndingScreen() {
+
+    image(imgEndingScreen,CENTER,CENTER);
+
+    if (blnEndingAnimation == false) {
+
+      intPlayerX = 290;
+      intPlayerY = 495;
+      blnEndingAnimation = true;
+
+    }
+
+    blnRight = true;
+    strDirection = "Right";
+    intPlayerX += 4;
+
   }
 
   /**
@@ -1733,19 +1762,32 @@ public class escape_room extends PApplet {
 
       }
 
-    // prints out a colour selector
+    // prints out a letter selector 
     } else if (intLevel == 13) {
 
       if (blnLetterSwitch== true) {
 
-        image(imgPuzzle[1],CENTER,CENTER);
+        image(imgPuzzle[1],110,90);
+
+        fill(0);
+        textSize(90);
+        text(charLetterSelection[0][intLetterIndex[0]],158,355);
+        text(charLetterSelection[1][intLetterIndex[1]],258,355);
+        text(charLetterSelection[2][intLetterIndex[2]],355,355);
+        text(charLetterSelection[3][intLetterIndex[3]],453,355);
       
+        if (intLetterIndex[0] == 4 && intLetterIndex[1] == 17 && intLetterIndex[2] == 8 && intLetterIndex[3] == 2) {
+
+          blnNextLevel[6] = true;
+
+        }
+
       }
 
     // prints out a letter selector 
     } else if (intLevel == 14) {
 
-      // checks if the player is interacting with taht switch
+      // checks if the player is interacting with that switch
       if (blnColourSwitch == true) {
 
         image(imgPuzzle[2],110, 90);
@@ -1848,6 +1890,11 @@ public class escape_room extends PApplet {
 
         }
       }
+
+    } else if (blnPatrickEasterEgg == true) {
+
+      //image();
+
     }
   }
 
@@ -1966,6 +2013,21 @@ public class escape_room extends PApplet {
     } else if (intLevel == 11 && intPlayerY < 16) {
 
       intLevel -=1;
+      intPlayerY = 664;
+
+    } else if (intLevel == 12 && intPlayerY < 16) {
+
+      intLevel = 11;
+      intPlayerY = 664;
+
+    } else if (intLevel == 13 && intPlayerY < 16) {
+
+      intLevel = 11;
+      intPlayerY = 664;
+
+    } else if (intLevel == 14 && intPlayerY < 16) {
+
+      intLevel = 11;
       intPlayerY = 664;
 
     }
@@ -2361,7 +2423,7 @@ public class escape_room extends PApplet {
     // sees if the player is interacting with the colour switch 
     } else if (blnColourSwitch == true) {
         
-      // checks how high the mouse is 
+      // checks how high the mouse is high enough 
       if (mouseY < 300) {
 
         // checks the x cord of the mouse to determine which button the player is clicking
@@ -2374,7 +2436,7 @@ public class escape_room extends PApplet {
 
             if (intColourSelection[0] > 3) {
 
-              intColourSelection[0] = 3;
+              intColourSelection[0] = 0;
 
             }
           }
@@ -2388,7 +2450,7 @@ public class escape_room extends PApplet {
             
             if (intColourSelection[1] > 3) {
 
-              intColourSelection[1] = 3;
+              intColourSelection[1] = 0;
 
             }
           }
@@ -2402,7 +2464,7 @@ public class escape_room extends PApplet {
             
             if (intColourSelection[2] > 3) {
 
-              intColourSelection[2] = 3;
+              intColourSelection[2] = 0;
 
             }
           }
@@ -2416,7 +2478,7 @@ public class escape_room extends PApplet {
           
             if (intColourSelection[3] > 3) {
 
-              intColourSelection[3] = 3;
+              intColourSelection[3] = 0;
 
             }
           }
@@ -2424,7 +2486,7 @@ public class escape_room extends PApplet {
 
       } else if (mouseY > 390 && mouseY < 415) {
 
-        // ues the X cord of the mouse to determine which button the player is clicking 
+        // use the X cord of the mouse to determine which button the player is clicking 
         if (mouseX > 180 && mouseX < 200) {
 
            // uses the colour of the button to determine if the player clicked it or not
@@ -2434,7 +2496,7 @@ public class escape_room extends PApplet {
           
             if (intColourSelection[0] < 0) {
 
-              intColourSelection[0] = 0;
+              intColourSelection[0] = 3;
 
             }
           }
@@ -2448,7 +2510,7 @@ public class escape_room extends PApplet {
 
             if (intColourSelection[1] < 0) {
 
-              intColourSelection[1] = 0;
+              intColourSelection[1] = 3;
 
             }
           }
@@ -2462,7 +2524,7 @@ public class escape_room extends PApplet {
 
             if (intColourSelection[2] < 0) {
 
-              intColourSelection[2] = 0;
+              intColourSelection[2] = 3;
 
             }
           }
@@ -2476,11 +2538,141 @@ public class escape_room extends PApplet {
 
             if (intColourSelection[3] < 0) {
 
-              intColourSelection[3] = 0;
+              intColourSelection[3] = 3;
 
             }
           }
         }
+      }
+    } else if (blnLetterSwitch == true) {
+      
+      // checks how high the mouse is high enough 
+      if (mouseY < 300) {
+
+        // checks the x cord of the mouse to determine which button the player is clicking
+        if (mouseX > 170 && mouseX < 200) {
+
+          // uses the colour of the button to determine if the player clicked it or not
+          if (get(mouseX,mouseY) == -16777216) {
+
+            intLetterIndex[0] += 1;
+
+            if (intLetterIndex[0] > 25) {
+
+              intLetterIndex[0] = 0;
+
+            }
+          }
+
+        } else if (mouseX > 280 && mouseX < 300) {
+          
+          // uses the colour of the button to determine if the player clicked it or not
+          if (get(mouseX,mouseY) == -16777216) {
+
+            intLetterIndex[1] += 1;
+            
+            if (intLetterIndex[1] > 25) {
+
+              intLetterIndex[1] = 0;
+
+            }
+          }
+
+        } else if (mouseX > 370 && mouseX < 400) {
+
+          // uses the colour of the button to determine if the player clicked it or not
+          if (get(mouseX,mouseY) == -16777216) {
+            
+            intLetterIndex[2] += 1;
+            
+            if (intLetterIndex[2]  > 25) {
+
+              intLetterIndex[2]  = 0;
+
+            }
+          }
+
+        } else if (mouseX > 470 && mouseX < 500) {
+
+          // uses the colour of the button to determine if the player clicked it or not
+          if (get(mouseX,mouseY) == -16777216) {
+          
+            intLetterIndex[3]  += 1;
+          
+            if (intLetterIndex[3]  > 25) {
+
+              intLetterIndex[3] = 0;
+
+            }
+          }
+        }
+
+      } else if (mouseY > 390 && mouseY < 415) {
+
+        // ues the X cord of the mouse to determine which button the player is clicking 
+        if (mouseX > 180 && mouseX < 200) {
+
+          // uses the colour of the button to determine if the player clicked it or not
+          if (get(mouseX,mouseY) == -16777216) {
+            
+            intLetterIndex[0]  -= 1;
+          
+            if (intLetterIndex[0]  < 0) {
+              
+              intLetterIndex[0]  = 25;
+
+            }
+          }
+
+        } else if (mouseX > 270 && mouseX < 300) {
+
+          // uses the colour of the button to determine if the player clicked it or not
+          if (get(mouseX,mouseY) == -16777216) {
+
+            intLetterIndex[1]  -= 1;
+
+            if (intLetterIndex[1]  < 0) {
+
+              intLetterIndex[1]  = 25;
+
+            }
+          }
+
+        } else if (mouseX > 370 && mouseX < 400) {
+
+          // uses the colour of the button to determine if the player clicked it or not
+          if (get(mouseX,mouseY) == -16777216) {
+
+            intLetterIndex[2]  -= 1;
+
+            if (intLetterIndex[2] < 0) {
+
+              intLetterIndex[2]  = 25;
+
+            }
+          }
+
+        } else if (mouseX > 470 && mouseX < 500) {
+
+          // uses the colour of the button to determine if the player clicked it or not
+          if (get(mouseX,mouseY) == -16777216) {
+
+            intLetterIndex[3] -= 1;
+
+            if (intLetterIndex[3]  < 0) {
+
+              intLetterIndex[3] = 25;
+
+            }
+          }
+        }
+      }
+    } else if (blnGameEnding == true) {
+
+      if (get(mouseX,mouseY) == -5214583 || get(mouseX,mouseY) == -16735512) {
+
+        blnPatrickEasterEgg = true;
+        
       }
     }
   }
