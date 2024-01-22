@@ -61,9 +61,12 @@ public class escape_room extends PApplet {
   // level 12 - 14 variables
   PImage[] imgPuzzle;
   boolean blnArrowSwitch, blnColourSwitch, blnLetterSwitch = false;
+  int[] intColourSelection = new int[4];
   int intArrowSwitchTimer = 0;
+  int intColourSwitchDelay = 0;
   String[] strArrows = {"", "LEFT ", "RIGHT ", "UP ", "DOWN "};
   String strArrowCode = "";
+
 
   // player direction
   String strDirection = "Down";
@@ -81,7 +84,7 @@ public class escape_room extends PApplet {
   boolean[] blnLeftLevel = new boolean[4];
   int intNumLevels = 15;
   int intLevel = 11;
-
+  
   // number of frames for each player animation 
   int intNumFrames = 4;
   int intMoveFrames = 0;
@@ -113,6 +116,7 @@ public class escape_room extends PApplet {
     Arrays.fill(blnFound,false);
     Arrays.fill (blnSteppedOn, false);
     Arrays.fill(blnLeftLevel,false);
+    Arrays.fill(intColourSelection,0);
     
 
     // fills in the array for the card location array
@@ -321,7 +325,7 @@ public class escape_room extends PApplet {
       playerUpdate();
       drawPopUps();
       nextLevel();
-
+    
     // draws a screen if the player has completed the game without running out of oxygen 
     } else if (blnGameEnding == true) {
 
@@ -520,9 +524,11 @@ public class escape_room extends PApplet {
         }
       }
 
-    noStroke();
-    fill(255,255,0);
-    rect(525,575,100,50);
+      noStroke();
+      fill(255,255,0);
+      rect(525,575,100,50);
+
+    } else if (intLevel == 14) {
 
     }
   }
@@ -913,7 +919,7 @@ public class escape_room extends PApplet {
 
         if (get(intPlayerX,intPlayerY + 64) == -16776961 || get(intPlayerX + 42, intPlayerY + 64) == -16776961) {
 
-          blnColourSwitch = true;
+          blnLetterSwitch = true;
 
         } 
 
@@ -921,7 +927,7 @@ public class escape_room extends PApplet {
 
         if (get(intPlayerX,intPlayerY + 64) == -16776961 || get(intPlayerX + 42, intPlayerY + 64) == -16776961 || get(intPlayerX + 50, intPlayerY + 54) == -16776961 || get(intPlayerX - 8, intPlayerY + 54) == -16776961 ) {
 
-          blnLetterSwitch = true;
+          blnColourSwitch = true;
 
         } 
       }
@@ -1083,8 +1089,32 @@ public class escape_room extends PApplet {
 
           } 
         } 
+
+      } else if (intLevel == 12) {
+
+        if (get(intPlayerX,intPlayerY + 64) != -16776961 && get(intPlayerX + 42, intPlayerY + 64) != -16776961) {
+
+          blnArrowSwitch = false;
+
+        } 
+
+      } else if (intLevel == 13) {
+
+        if (get(intPlayerX,intPlayerY + 64) != -16776961 && get(intPlayerX + 42, intPlayerY + 64) != -16776961) {
+
+          blnLetterSwitch = false;
+
+        } 
+
+      } else if (intLevel == 14) {
+
+        if (get(intPlayerX,intPlayerY + 64) != -16776961 && get(intPlayerX + 42, intPlayerY + 64) != -16776961 && get(intPlayerX + 50, intPlayerY + 54) != -16776961 && get(intPlayerX - 8, intPlayerY + 54) != -16776961 ) {
+
+          blnColourSwitch = false;
+
+        } 
       }
-    }
+    } 
   }
 
   /**
@@ -1700,7 +1730,7 @@ public class escape_room extends PApplet {
     // prints out a colour selector
     } else if (intLevel == 13) {
 
-      if (blnColourSwitch == true) {
+      if (blnLetterSwitch== true) {
 
         image(imgPuzzle[1],CENTER,CENTER);
       
@@ -1709,10 +1739,108 @@ public class escape_room extends PApplet {
     // prints out a letter selector 
     } else if (intLevel == 14) {
 
-      if (blnLetterSwitch) {
+      // checks if the player is interacting with taht switch
+      if (blnColourSwitch == true) {
 
-        image(imgPuzzle[2],CENTER,CENTER);
-      
+        image(imgPuzzle[2],110, 90);
+        
+        // displays the colour on the keypad in the first slot
+        if (intColourSelection[0] == 0) {
+
+          fill(255,0,0);
+          rect(145,283,95,90);
+        
+        } else if (intColourSelection[0] == 1) {
+
+          fill(0,255,0);
+          rect(145,283,95,90);
+          
+        } else if (intColourSelection[0] == 2) {
+
+          fill(0,0,255);
+          rect(145,283,95,90);
+          
+        } else if (intColourSelection[0] == 3) {
+
+          fill(255,255,0);
+          rect(145,283,95,90);
+
+        } 
+        
+        // displays the colour on the keypad in the second slot
+        if (intColourSelection[1] == 0) {
+
+          fill(255,0,0);
+          rect(240,283,95,90);
+        
+        } else if (intColourSelection[1] == 1) {
+
+          fill(0,255,0);
+          rect(240,283,95,90);
+          
+        } else if (intColourSelection[1] == 2) {
+
+          fill(0,0,255);
+          rect(240,283,95,90);
+          
+        } else if (intColourSelection[1] == 3) {
+
+          fill(255,255,0);
+          rect(240,283,95,90);
+
+        } 
+
+        // displays the colour on the keypad in the thrid slot
+        if (intColourSelection[2] == 0) {
+
+          fill(255,0,0);
+          rect(335,283,95,90);
+        
+        } else if (intColourSelection[2] == 1) {
+
+          fill(0,255,0);
+          rect(335,283,95,90);
+          
+        } else if (intColourSelection[2] == 2) {
+
+          fill(0,0,255);
+          rect(335,283,95,90);
+          
+        } else if (intColourSelection[2] == 3) {
+
+          fill(255,255,0);
+          rect(335,283,95,90);
+
+        } 
+        
+        // displays the colour on the keypad in the forth slot
+        if (intColourSelection[3] == 0) {
+
+          fill(255,0,0);
+          rect(430,283,95,90);
+        
+        } else if (intColourSelection[3] == 1) {
+
+          fill(0,255,0);
+          rect(430,283,95,90);
+          
+        } else if (intColourSelection[3] == 2) {
+
+          fill(0,0,255);
+          rect(430,283,95,90);
+          
+        } else if (intColourSelection[3] == 3) {
+
+          fill(255,255,0);
+          rect(430,283,95,90);
+
+        }   
+        
+        if (intColourSelection[0] == 0 && intColourSelection[1] == 1 && intColourSelection[2] == 2 && intColourSelection[3] == 3) {
+
+          blnNextLevel[7] = true;
+
+        }
       }
     }
   }
@@ -2223,9 +2351,134 @@ public class escape_room extends PApplet {
 
         }
       }
+
+    // sees if the player is interacting with the colour switch 
+    } else if (blnColourSwitch == true) {
+        
+      // checks how high the mouse is 
+      if (mouseY < 300) {
+
+        // checks the x cord of the mouse to determine which button the player is clicking
+        if (mouseX > 170 && mouseX < 200) {
+
+          // uses the colour of the button to determine if the player clicked it or not
+          if (get(mouseX,mouseY) == -16777216) {
+
+            intColourSelection[0] += 1;
+
+            if (intColourSelection[0] > 3) {
+
+              intColourSelection[0] = 3;
+
+            }
+          }
+
+        } else if (mouseX > 280 && mouseX < 300) {
+          
+           // uses the colour of the button to determine if the player clicked it or not
+          if (get(mouseX,mouseY) == -16777216) {
+
+            intColourSelection[1] += 1;
+            
+            if (intColourSelection[1] > 3) {
+
+              intColourSelection[1] = 3;
+
+            }
+          }
+
+        } else if (mouseX > 370 && mouseX < 400) {
+
+           // uses the colour of the button to determine if the player clicked it or not
+          if (get(mouseX,mouseY) == -16777216) {
+            
+            intColourSelection[2] += 1;
+            
+            if (intColourSelection[2] > 3) {
+
+              intColourSelection[2] = 3;
+
+            }
+          }
+
+        } else if (mouseX > 470 && mouseX < 500) {
+
+           // uses the colour of the button to determine if the player clicked it or not
+          if (get(mouseX,mouseY) == -16777216) {
+          
+            intColourSelection[3] += 1;
+          
+            if (intColourSelection[3] > 3) {
+
+              intColourSelection[3] = 3;
+
+            }
+          }
+        }
+
+      } else if (mouseY > 390 && mouseY < 415) {
+
+        // ues the X cord of the mouse to determine which button the player is clicking 
+        if (mouseX > 180 && mouseX < 200) {
+
+           // uses the colour of the button to determine if the player clicked it or not
+          if (get(mouseX,mouseY) == -16777216) {
+            
+            intColourSelection[0] -= 1;
+          
+            if (intColourSelection[0] < 0) {
+
+              intColourSelection[0] = 0;
+
+            }
+          }
+
+        } else if (mouseX > 270 && mouseX < 300) {
+
+           // uses the colour of the button to determine if the player clicked it or not
+          if (get(mouseX,mouseY) == -16777216) {
+
+            intColourSelection[1] -= 1;
+
+            if (intColourSelection[1] < 0) {
+
+              intColourSelection[1] = 0;
+
+            }
+          }
+
+        } else if (mouseX > 370 && mouseX < 400) {
+
+           // uses the colour of the button to determine if the player clicked it or not
+          if (get(mouseX,mouseY) == -16777216) {
+
+            intColourSelection[2] -= 1;
+
+            if (intColourSelection[2] < 0) {
+
+              intColourSelection[2] = 0;
+
+            }
+          }
+
+        } else if (mouseX > 470 && mouseX < 500) {
+
+           // uses the colour of the button to determine if the player clicked it or not
+          if (get(mouseX,mouseY) == -16777216) {
+
+            intColourSelection[3] -= 1;
+
+            if (intColourSelection[3] < 0) {
+
+              intColourSelection[3] = 0;
+
+            }
+          }
+        }
+      }
     }
   }
-  
+
   /**
    * sees which direction the player is currently moving in 
    * @return a boolean value as true if player is not moving
