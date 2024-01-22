@@ -2036,6 +2036,7 @@ public class escape_room extends PApplet {
 
       intLevel += 1;
       intPlayerX = 664;
+      intPlayerY = (height / 2);
 
     // checks to see if the player is proceeding to the next level and if they are able to, if they are it will change the map and change their location as well
     } else if (intLevel == 2 && intPlayerX < 600) {
@@ -2048,43 +2049,51 @@ public class escape_room extends PApplet {
       intLevel += 1;
       blnLeftLevel[0] = true;
       intPlayerX = 664;
+      intPlayerY = (height / 2);
       
     } else if (intLevel == 4 && intPlayerX < 16) {
 
       intLevel += 1;
       intPlayerX = 664;
+      intPlayerY = (height / 2);
 
     } else if (intLevel == 5 && intPlayerY <= 16 && blnNextLevel[2] == true) {
 
       intLevel += 1;
       intPlayerY = 664;
+      intPlayerX = (width / 2);
       blnLeftLevel[1] = true;
 
     } else if (intLevel == 6 && intPlayerY < 16) {
 
       intLevel += 1;
+      intPlayerX = (width / 2);
       intPlayerY = 664;
 
     } else if (intLevel == 7 && intPlayerX < 16 && blnNextLevel[3] == true) {
 
       intLevel += 2;
       intPlayerX = 664;
+      intPlayerY = (height / 2);
       blnLeftLevel[2] = true;
 
     } else if (intLevel == 9 && intPlayerX < 16) {
 
       intLevel += 1;
       intPlayerX = 664;
+      intPlayerY = (height / 2);
 
     } else if (intLevel == 10 && intPlayerY > 664 && blnNextLevel[4] == true) {
 
       intLevel += 1;
       intPlayerY = 16;
+      intPlayerX = (width / 2);
       blnLeftLevel[3] = true;
 
     } else if (intLevel == 11 && intPlayerY > 664) {
 
       intLevel += 1;
+      intPlayerX = (width / 2);
       intPlayerY = 16;
 
     } else if (intLevel == 12 && blnNextLevel[5] == true) {
@@ -2106,62 +2115,74 @@ public class escape_room extends PApplet {
      if ((intLevel == 2 || intLevel == 1 || intLevel == 0) && intPlayerX > 664) {
 
       intLevel -= 1;
+      intPlayerY = (height / 2);
       intPlayerX = 16;
 
     } else if (intLevel == 4 && intPlayerX > 664) {
       
       intLevel -= 1;
+      intPlayerY = (height / 2);
       intPlayerX = 16;
 
     } else if (intLevel == 5 && intPlayerX > 664) {
 
       intLevel -= 1;
+      intPlayerY = (height / 2);
       intPlayerX = 16;
 
     } else if (intLevel == 6 && intPlayerY > 664) {
 
       intLevel -= 1;
+      intPlayerX = (width / 2);
       intPlayerY = 16;
 
     } else if (intLevel == 7 && intPlayerY > 664) {
 
       intLevel -=1;
+      intPlayerX = (width / 2);
       intPlayerY = 16;
 
     } else if (intLevel == 9 && intPlayerX > 664) {
 
       // goes down by 2 so that the player ends up on the top floor and not the botto floor
       intLevel -= 2;
+      intPlayerY = (height / 2);
       intPlayerX = 16;
 
     } else if (intLevel == 10 && intPlayerX > 664) {
 
       intLevel -=1;
+      intPlayerY = (height / 2);
       intPlayerX = 16;
 
     } else if (intLevel == 11 && intPlayerY < 16) {
 
       intLevel -=1;
+      intPlayerX = (width / 2);
       intPlayerY = 664;
 
     } else if (intLevel == 12 && intPlayerY < 16) {
 
       intLevel = 11;
+      intPlayerX = (width / 2);
       intPlayerY = 664;
 
     } else if (intLevel == 13 && intPlayerY < 16) {
 
       intLevel = 11;
+      intPlayerX = (width / 2);
       intPlayerY = 664;
 
     } else if (intLevel == 14 && intPlayerY < 16) {
 
       intLevel = 11;
+      intPlayerX = (width / 2);
       intPlayerY = 664;
 
     } else if (intLevel == 15 && intPlayerY > 664) {
 
       intLevel -= 1;
+      intPlayerX = (width / 2);
       intPlayerY = 500;
 
     }
