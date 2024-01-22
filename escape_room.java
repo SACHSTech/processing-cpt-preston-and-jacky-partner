@@ -69,13 +69,18 @@ public class escape_room extends PApplet {
   String[] strArrows = {"", "LEFT ", "RIGHT ", "UP ", "DOWN "};
   String strArrowCode = "";
 
+
+  // level 15 variables
+  boolean blnRatEasterEgg = false;
+  int intRatEasterEggTimer = 0;
+
   // player direction
   String strDirection = "Down";
   
   // game starting and ending variables
   boolean blnGameStarting = false;
   boolean blnEndingAnimation = false;
-  boolean blnGameEnding  = true;
+  boolean blnGameEnding  = false;
   boolean blnScoreScreen = false;
   boolean blnPatrickEasterEgg = false;
   int intPatrickEasterEggTimer = 0;
@@ -88,8 +93,8 @@ public class escape_room extends PApplet {
   // level variables 
   boolean[] blnNextLevel = {true,false,false,false,false,false,false,false};
   boolean[] blnLeftLevel = new boolean[4];
-  int intNumLevels = 15;
-  int intLevel = 11;
+  int intNumLevels = 16;
+  int intLevel = 15;
   
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -207,7 +212,7 @@ public class escape_room extends PApplet {
     imgKeyCard = new PImage[4];
 
     // setting up image variable for easter eggs
-    imgEasterEgg = new PImage[3];
+    imgEasterEgg = new PImage[5];
 
     // setting up image variables for final puzzle pop ups
     imgPuzzle = new PImage[3];
@@ -295,7 +300,7 @@ public class escape_room extends PApplet {
     imgIKey = loadImage("escape_room/popups/iKey.png");
 
     // loading in the easter egg images
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 5; i++) {
 
       imgEasterEgg[i] = loadImage("escape_room/popups/Collection" + i + ".png");
 
@@ -324,7 +329,7 @@ public class escape_room extends PApplet {
       startingScreen();
 
     // detects if the game has started and if the user still has oxygen left 
-    } else if (blnGameStarting == true && intOxygenMeter > 0) {
+    } else if (blnGameStarting == true && intOxygenMeter > 0 && blnGameEnding == false) {
      
       drawCollisionMaps();
       playerMovementAndCollisions();
@@ -334,15 +339,21 @@ public class escape_room extends PApplet {
       playerUpdate();
       drawPopUps();
       nextLevel();
-    
+
     // draws a screen if the player has completed the game without running out of oxygen 
     } else if (blnGameEnding == true) {
 
       EndingScreen();
-      drawPopUps();
       playerUpdate();
 
     // to draw the end screen once the player has died 
+    } else if (blnGameEnding == false && blnScoreScreen == true){
+
+      /*
+       * text
+       * text
+       */
+
     } else {
 
       background(0);
@@ -492,7 +503,16 @@ public class escape_room extends PApplet {
    */
   public void EndingScreen() {
 
+    blnColourSwitch = false;
+
     image(imgEndingScreen,CENTER,CENTER);
+
+    if (blnPatrickEasterEgg == true && intPatrickEasterEggTimer < 60) {
+
+      intPatrickEasterEggTimer ++;
+      image(imgEasterEgg[3],CENTER,CENTER);
+
+    }
 
     if (blnEndingAnimation == false) {
 
@@ -504,7 +524,14 @@ public class escape_room extends PApplet {
 
     blnRight = true;
     strDirection = "Right";
-    intPlayerX += 4;
+    intPlayerX += 1;
+
+    if (intPlayerX > width) {
+
+      blnGameEnding = false;
+      blnScoreScreen = true;
+
+    }
 
   }
 
@@ -952,9 +979,18 @@ public class escape_room extends PApplet {
 
         } 
 
+      } else if (intLevel == 14) {
+        
+        if (get(intPlayerX,intPlayerY + 64) == -16776961 || get(intPlayerX + 42, intPlayerY + 64) == -16776961 || get(intPlayerX + 50, intPlayerY + 54) == -16776961 || get(intPlayerX - 8, intPlayerY + 54) == -16776961) {
+
+          intPlayerY = 664;
+          intLevel += 1;
+
+        }
+
       } else if (intLevel == 15) {
 
-        if (get(intPlayerX,intPlayerY + 64) == -16776961 || get(intPlayerX + 42, intPlayerY + 64) == -16776961 || get(intPlayerX + 50, intPlayerY + 54) == -16776961 || get(intPlayerX - 8, intPlayerY + 54) == -16776961 ) {
+        if (get(intPlayerX, intPlayerY - 8) == -16776961 || get(intPlayerX + 40, intPlayerY - 8) == -16776961) {
 
           blnColourSwitch = true;
 
@@ -1135,9 +1171,9 @@ public class escape_room extends PApplet {
 
         } 
 
-      } else if (intLevel == 14) {
+      } else if (intLevel == 15) {
 
-        if (get(intPlayerX,intPlayerY + 64) != -16776961 && get(intPlayerX + 42, intPlayerY + 64) != -16776961 && get(intPlayerX + 50, intPlayerY + 54) != -16776961 && get(intPlayerX - 8, intPlayerY + 54) != -16776961 ) {
+        if (get(intPlayerX,intPlayerY - 8) != -16776961 && get(intPlayerX + 42, intPlayerY - 8) != -16776961) {
 
           blnColourSwitch = false;
 
@@ -1221,6 +1257,13 @@ public class escape_room extends PApplet {
     // checks if the player is moving otherwise, the player will the face the last direction
     if (blnMoving() == false) {
 
+      if (intLevel == 15 && blnColourSwitch == false) {
+
+        strDirection = "Up";
+        image(imgPlayerUp[0], intPlayerX, intPlayerY);
+  
+      }
+
       if (strDirection.equals("Up")) {
 
         image(imgPlayerUp[0], intPlayerX, intPlayerY);
@@ -1238,12 +1281,6 @@ public class escape_room extends PApplet {
         image(imgPlayerRight[0], intPlayerX, intPlayerY);
 
       }
-    }
-
-    if (intLevel == 15) {
-
-      strDirection = "Up";
-
     }
   }
 
@@ -1765,7 +1802,7 @@ public class escape_room extends PApplet {
     // prints out a letter selector 
     } else if (intLevel == 13) {
 
-      if (blnLetterSwitch== true) {
+      if (blnLetterSwitch == true) {
 
         image(imgPuzzle[1],110,90);
 
@@ -1785,7 +1822,7 @@ public class escape_room extends PApplet {
       }
 
     // prints out a letter selector 
-    } else if (intLevel == 14) {
+    } else if (intLevel == 15) {
 
       // checks if the player is interacting with that switch
       if (blnColourSwitch == true) {
@@ -1889,11 +1926,14 @@ public class escape_room extends PApplet {
           blnNextLevel[7] = true;
 
         }
+      } 
+
+      if (blnRatEasterEgg == true && intRatEasterEggTimer < 60) {
+
+        intRatEasterEggTimer ++;
+        image(imgEasterEgg[4],CENTER,CENTER);
+  
       }
-
-    } else if (blnPatrickEasterEgg == true) {
-
-      //image();
 
     }
   }
@@ -1966,7 +2006,7 @@ public class escape_room extends PApplet {
 
       intLevel += 1;
 
-    } else if (intLevel == 14 && blnNextLevel[7] == true) {
+    } else if (intLevel == 15 && blnNextLevel[7] == true) {
 
       blnGameStarting = false;
       blnGameEnding = true;
@@ -2029,6 +2069,11 @@ public class escape_room extends PApplet {
 
       intLevel = 11;
       intPlayerY = 664;
+
+    } else if (intLevel == 15 && intPlayerY > 664) {
+
+      intLevel -= 1;
+      intPlayerY = 500;
 
     }
   }
@@ -2667,7 +2712,18 @@ public class escape_room extends PApplet {
           }
         }
       }
-    } else if (blnGameEnding == true) {
+
+    } else if (intLevel == 15) {
+
+      if (get(mouseX,mouseY) == -8421504) {
+
+        blnRatEasterEgg = true;
+
+      }
+
+    } 
+    
+    if (blnGameEnding == true) {
 
       if (get(mouseX,mouseY) == -5214583 || get(mouseX,mouseY) == -16735512) {
 
