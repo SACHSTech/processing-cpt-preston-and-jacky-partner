@@ -21,6 +21,7 @@ public class escape_room extends PApplet {
 
   // starting screen variables
   PImage imgStartingScreen;
+  PImage imgEndingScreen;
   boolean blnStartButtonPressed, blnEasy, blnMedium, blnHard = false;
 
   // level 2 and 3 variables 
@@ -64,17 +65,19 @@ public class escape_room extends PApplet {
   char[][] charLetterSelection = {{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'},{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}, {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}, {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}};
   int[] intColourSelection = new int[4];
   int[] intLetterIndex = new int[4];
-  int intArrowSwitchTimer = 0;
-  int intColourSwitchDelay = 0;
+  int intArrowSwitchTimer, intColourSwitchDelay = 0;
   String[] strArrows = {"", "LEFT ", "RIGHT ", "UP ", "DOWN "};
   String strArrowCode = "";
-
 
   // player direction
   String strDirection = "Down";
   
   // game starting and ending variables
-  boolean blnGameStarting, blnGameEnding = false;
+  boolean blnGameStarting = false;
+  boolean blnEndingAnimation = false;
+  boolean blnGameEnding  = true;
+  boolean blnPatrickEasterEgg = false;
+  int intPatrickEasterEggTimer = 0;
 
   // game oxygen meter variables
   boolean blnOxygenMeter = false;
@@ -304,6 +307,8 @@ public class escape_room extends PApplet {
 
     }
 
+    // loading in the end screen
+    imgEndingScreen = loadImage("escape_room/endScreen.png");
 
   }
 
@@ -332,10 +337,9 @@ public class escape_room extends PApplet {
     // draws a screen if the player has completed the game without running out of oxygen 
     } else if (blnGameEnding == true) {
 
-      background(0);
-      textSize(50);
-      fill(255);
-      text("ggs wp",width / 2,height / 2);
+      EndingScreen();
+      drawPopUps();
+      playerUpdate();
 
     // to draw the end screen once the player has died 
     } else {
@@ -480,6 +484,27 @@ public class escape_room extends PApplet {
         }
       }
     } 
+  }
+
+  /**
+   * Draws the ending animation for when the player finishes the game
+   */
+  public void EndingScreen() {
+
+    image(imgEndingScreen,CENTER,CENTER);
+
+    if (blnEndingAnimation == false) {
+
+      intPlayerX = 290;
+      intPlayerY = 495;
+      blnEndingAnimation = true;
+
+    }
+
+    blnRight = true;
+    strDirection = "Right";
+    intPlayerX += 4;
+
   }
 
   /**
@@ -1864,6 +1889,11 @@ public class escape_room extends PApplet {
 
         }
       }
+      
+    } else if (blnPatrickEasterEgg == true) {
+
+      //image();
+
     }
   }
 
@@ -2636,7 +2666,14 @@ public class escape_room extends PApplet {
           }
         }
       }
-    } 
+    } else if (blnGameEnding == true) {
+
+      if (get(mouseX,mouseY) == -5214583 || get(mouseX,mouseY) == -16735512) {
+
+        blnPatrickEasterEgg = true;
+        
+      }
+    }
   }
 
   /**
