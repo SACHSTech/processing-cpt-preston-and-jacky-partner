@@ -87,10 +87,10 @@ public class escape_room extends PApplet {
   int intTotalOxygen = 1;
 
   // level variables 
-  boolean[] blnNextLevel = {true,false,false,false,false,false,false,false};
+  boolean[] blnNextLevel = new boolean[8];
   boolean[] blnLeftLevel = new boolean[4];
   int intNumLevels = 16;
-  int intLevel = 15;
+  int intLevel = 0;
   
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -125,7 +125,10 @@ public class escape_room extends PApplet {
     Arrays.fill(blnLeftLevel,false);
     Arrays.fill(intColourSelection,0);
     Arrays.fill(intLetterIndex,0);
+    Arrays.fill(blnNextLevel,false);
     
+    // sets the tutorial level to true so that the player can leave whenever they want
+    blnNextLevel[0] = true;
 
     // fills in the array for the card location array
     for (int i = 0; i < 16; i ++) {
