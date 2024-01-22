@@ -76,6 +76,7 @@ public class escape_room extends PApplet {
   boolean blnGameStarting = false;
   boolean blnEndingAnimation = false;
   boolean blnGameEnding  = true;
+  boolean blnScoreScreen = false;
   boolean blnPatrickEasterEgg = false;
   int intPatrickEasterEggTimer = 0;
 
@@ -1889,7 +1890,7 @@ public class escape_room extends PApplet {
 
         }
       }
-      
+
     } else if (blnPatrickEasterEgg == true) {
 
       //image();
