@@ -49,7 +49,7 @@ public class escape_room extends PApplet {
   int[] intCardStatus = new int[16];
   int[] intX = new int[16];
   int[] intY = new int[16];
-  int intCardsFlipped, intCardDelay, intKeyTimer, intEasterEggDelay, intCrowBarTimer, intLevel8ArrayXPosition, intLevel8ArrayYPosition = 0;
+  int intCardsFlipped, intCardDelay, intKeyTimer, intEasterEggDelay, intCrowBarTimer, intLevel8ArrayXIndex, intLevel8ArrayYIndex = 0;
   Random intRand = new Random();
 
   // level 10 variables
@@ -57,7 +57,7 @@ public class escape_room extends PApplet {
   boolean blnReset = false;
   int[] intXTile = new int[25];
   int[] intYTile = new int[25];
-  int intLevel10ArrayXPosition, intLevel10ArrayYPosition, intCycles = 0;
+  int intLevel10ArrayXIndex, intLevel10ArrayYIndex, intCycles = 0;
 
   // level 12 - 14 variables
   PImage[] imgPuzzle;
@@ -137,46 +137,46 @@ public class escape_room extends PApplet {
     // fills in the array with the Y cordinates for each card in room 8
     for (int i = 249; i < 410; i += 53) {
 
-      intY[intLevel8ArrayYPosition] = i;
-      intY[intLevel8ArrayYPosition + 1] = i;
-      intY[intLevel8ArrayYPosition + 2] = i;
-      intY[intLevel8ArrayYPosition + 3] = i;
-      intLevel8ArrayYPosition += 4;
+      intY[intLevel8ArrayYIndex] = i;
+      intY[intLevel8ArrayYIndex + 1] = i;
+      intY[intLevel8ArrayYIndex + 2] = i;
+      intY[intLevel8ArrayYIndex + 3] = i;
+      intLevel8ArrayYIndex += 4;
 
     }
 
     // fills in the array with the X cordinates for each card in room 8
     for (int i = 264; i < 400; i += 43) {
 
-      intX[intLevel8ArrayXPosition] = i;
-      intX[intLevel8ArrayXPosition + 4] = i;
-      intX[intLevel8ArrayXPosition + 8] = i;
-      intX[intLevel8ArrayXPosition + 12] = i;
-      intLevel8ArrayXPosition ++;
+      intX[intLevel8ArrayXIndex] = i;
+      intX[intLevel8ArrayXIndex + 4] = i;
+      intX[intLevel8ArrayXIndex + 8] = i;
+      intX[intLevel8ArrayXIndex + 12] = i;
+      intLevel8ArrayXIndex ++;
       
     }
 
     // fills in the array with the Y cordinates for each tile in room 10
     for (int intY = 225; intY < 600; intY += 75) {
 
-      intYTile[intLevel10ArrayYPosition] = intY;
-      intYTile[intLevel10ArrayYPosition + 1] = intY;
-      intYTile[intLevel10ArrayYPosition + 2] = intY;
-      intYTile[intLevel10ArrayYPosition + 3] = intY;
-      intYTile[intLevel10ArrayYPosition + 4] = intY;
-      intLevel10ArrayYPosition += 5;
+      intYTile[intLevel10ArrayYIndex] = intY;
+      intYTile[intLevel10ArrayYIndex + 1] = intY;
+      intYTile[intLevel10ArrayYIndex + 2] = intY;
+      intYTile[intLevel10ArrayYIndex + 3] = intY;
+      intYTile[intLevel10ArrayYIndex + 4] = intY;
+      intLevel10ArrayYIndex += 5;
 
     }
 
     // fills in the array with the X cordinates for each tile in room 10
     for (int intX = 150; intX < 500; intX += 75) {
 
-      intXTile[intLevel10ArrayXPosition] = intX;
-      intXTile[intLevel10ArrayXPosition + 5] = intX;
-      intXTile[intLevel10ArrayXPosition + 10] = intX;
-      intXTile[intLevel10ArrayXPosition + 15] = intX;
-      intXTile[intLevel10ArrayXPosition + 20] = intX;
-      intLevel10ArrayXPosition ++;
+      intXTile[intLevel10ArrayXIndex] = intX;
+      intXTile[intLevel10ArrayXIndex + 5] = intX;
+      intXTile[intLevel10ArrayXIndex + 10] = intX;
+      intXTile[intLevel10ArrayXIndex + 15] = intX;
+      intXTile[intLevel10ArrayXIndex + 20] = intX;
+      intLevel10ArrayXIndex ++;
       
     }
 
@@ -964,7 +964,7 @@ public class escape_room extends PApplet {
         // detects if the player is interacting with the table 
         if ((get(intPlayerX,intPlayerY + 64) == -16776961) || (get(intPlayerX + 42,intPlayerY + 64) == -16776961) || (get(intPlayerX + 42, intPlayerY) == -16776961) || (get(intPlayerX,intPlayerY) == -16776961)) {
 
-          if (intPlayerX < (width / 2) && intPlayerY > (height / 2)) {
+          if (intPlayerX < (width / 2) && intPlayerY > (height / 2) && blnNextLevel[3] == false) {
             
             if (blnTable == true) {
 
@@ -1588,7 +1588,7 @@ public class escape_room extends PApplet {
       }
     } else if (intLevel == 8) {
 
-      // pritns out the keycard once the level is completed
+      // prints out the keycard once the level is completed
       if (blnNextLevel[3] == true && intKeyCardTimer[2] <= 100 && blnLeftLevel[2] == false) {
 
         image(imgKeyCard[2],intPlayerX,intPlayerY - 30);
@@ -1641,7 +1641,7 @@ public class escape_room extends PApplet {
       }
 
       // checks if the player is interacting with the table 
-      if (blnTable == true) {  
+      if (blnTable == true && blnNextLevel[3] == false) {  
         
         // draws a grid of cards that will lie on the table
         for (int i = 0; i < 16; i++) {
@@ -1914,7 +1914,8 @@ public class escape_room extends PApplet {
       if (blnColourSwitch == true) {
 
         image(imgPuzzle[2],110, 90);
-        
+        stroke(0);
+
         // displays the colour on the keypad in the first slot
         if (intColourSelection[0] == 0) {
 
