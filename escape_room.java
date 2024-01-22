@@ -365,8 +365,7 @@ public class escape_room extends PApplet {
       if (blnEasterEggFound == true) {
 
         intEasterEggsFound += 1;
-        blnBox = false;
-        blnCrowBar = false;
+        blnEasterEggFound = false;
 
       }
 
