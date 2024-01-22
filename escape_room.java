@@ -3,6 +3,10 @@ import processing.core.PImage;
 import java.util.Arrays;
 import java.util.Random;
 
+/**
+ * Runs a escape room game that the player must navigate through in order to escape 
+ * @author Preston and Jacky
+ */
 public class escape_room extends PApplet {
 
   // level image variable 
