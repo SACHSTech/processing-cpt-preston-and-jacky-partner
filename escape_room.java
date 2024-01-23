@@ -91,7 +91,7 @@ public class escape_room extends PApplet {
   boolean[] blnNextLevel = new boolean[8];
   boolean[] blnLeftLevel = new boolean[4];
   int intNumLevels = 16;
-  int intLevel = 15;
+  int intLevel = 0;
   
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -127,9 +127,6 @@ public class escape_room extends PApplet {
     Arrays.fill(intColourSelection,0);
     Arrays.fill(intLetterIndex,0);
     Arrays.fill(blnNextLevel,false);
-    
-    // sets the tutorial level to true so that the player can leave whenever they want
-    blnNextLevel[0] = true;
 
     // fills in the array for the card location array
     for (int i = 0; i < 16; i ++) {
@@ -138,7 +135,7 @@ public class escape_room extends PApplet {
 
     }
   
-    // fills in the array with the Y cordinates for each card in room 8
+    // fills in the array with the Y coordinates for each card in room 8
     for (int i = 249; i < 410; i += 53) {
 
       intY[intLevel8ArrayYIndex] = i;
@@ -149,7 +146,7 @@ public class escape_room extends PApplet {
 
     }
 
-    // fills in the array with the X cordinates for each card in room 8
+    // fills in the array with the X coordinates for each card in room 8
     for (int i = 264; i < 400; i += 43) {
 
       intX[intLevel8ArrayXIndex] = i;
@@ -160,7 +157,7 @@ public class escape_room extends PApplet {
       
     }
 
-    // fills in the array with the Y cordinates for each tile in room 10
+    // fills in the array with the Y coordinates for each tile in room 10
     for (int intY = 225; intY < 600; intY += 75) {
 
       intYTile[intLevel10ArrayYIndex] = intY;
@@ -172,7 +169,7 @@ public class escape_room extends PApplet {
 
     }
 
-    // fills in the array with the X cordinates for each tile in room 10
+    // fills in the array with the X coordinates for each tile in room 10
     for (int intX = 150; intX < 500; intX += 75) {
 
       intXTile[intLevel10ArrayXIndex] = intX;
@@ -202,13 +199,13 @@ public class escape_room extends PApplet {
     // setting up image variable for up movement animation 
     imgPlayerUp = new PImage[intNumFrames];
 
-    // settiing up image variables for pages
+    // setting up image variables for pages
     imgPage = new PImage[2];
 
     // setting up image variables for cards
     imgCards = new PImage[17];
 
-    // setting up iamge variable for keycards
+    // setting up image  variable for keycards
     imgKeyCard = new PImage[4];
 
     // setting up image variable for easter eggs
@@ -515,7 +512,7 @@ public class escape_room extends PApplet {
 
         }
 
-        // detets if the player has selected the medium difficulty 
+        // detects if the player has selected the medium difficulty 
         if ((mouseX > 220 && mouseX < 470) && (mouseY > 300 && mouseY < 375)) {
 
           fill(255);
@@ -792,7 +789,6 @@ public class escape_room extends PApplet {
           }
         }
 
-      // note, the quote we are using is "good morning everyone, please take your seats"
       } else if (intLevel == 5) {
 
         // detects if the player is interacting with the table 
@@ -949,12 +945,12 @@ public class escape_room extends PApplet {
           
           blnKeyI = true;
 
-        // detects if the player is trying to interact with the trap door before doing all the needed steps before it 
+        // detects if the player is trying to interact with the trapdoor before doing all the needed steps before it 
         }  else if (blnTrapDoor == false && (get(intPlayerX, intPlayerY + 56) == -256 || get(intPlayerX + 42, intPlayerY + 56) == -256)) {
 
           blnLockedTrapDoor = true; 
             
-        // detects if the player is trying to interact with the trap door after performing all the needed tasks, this will also allow the player to move down a floor in that room 
+        // detects if the player is trying to interact with the trapdoor after performing all the needed tasks, this will also allow the player to move down a floor in that room 
         } else if (blnTrapDoor == true && (get(intPlayerX, intPlayerY + 56) == -256 || get(intPlayerX + 42, intPlayerY + 56) == -256)) {
 
           intLevel += 1;
@@ -963,7 +959,7 @@ public class escape_room extends PApplet {
 
         }  
 
-      // allows the player to go back through the trap door to the uppper floor 
+      // allows the player to go back through the trapdoor to the upper floor 
       } else if (intLevel == 8) {
 
         if (get(intPlayerX, intPlayerY + 64) == -256 || get(intPlayerX + 42, intPlayerY + 64) == -256) {
@@ -1002,7 +998,7 @@ public class escape_room extends PApplet {
 
             }
 
-          // stairs detection, prevents the player from walking throuhg it, while allowing them to walk behind it
+          // stairs detection, prevents the player from walking through it, while allowing them to walk behind it
           } else if (intPlayerX < (width / 2) && intPlayerY > (height / 2)) {
 
           }
@@ -1022,7 +1018,7 @@ public class escape_room extends PApplet {
       
         }
 
-        // turns all lights off when the player decdies to reset them
+        // turns all lights off when the player decides to reset them
         if (blnReset == true) {
 
           Arrays.fill(blnSteppedOn,false);
@@ -1068,12 +1064,12 @@ public class escape_room extends PApplet {
     // detects player interactions that doesn't require them to press e 
     } else {
 
-      // passively detects if the player is still standing on the trap door even though they can't open it. Does not require the player to hit any keys 
+      // passively detects if the player is still standing on the trapdoor even though they can't open it. Does not require the player to hit any keys 
       if (intLevel == 7 && (get(intPlayerX, intPlayerY + 56) != -256 && get(intPlayerX + 42, intPlayerY + 56) != -256)) {
 
         blnLockedTrapDoor = false;
 
-      } // detection for the Rick Poster
+      } // detection for the posters
       if ((get(intPlayerX, intPlayerY - 8) != -16776961)) {
 
         blnRickPoster = false;
@@ -1251,14 +1247,14 @@ public class escape_room extends PApplet {
   }
 
   /**
-   * draws the nescessary maps for the level that the player is on 
+   * draws the necessary maps for the level that the player is on 
    */
   public void DrawMaps() {
 
     // draws out the correct room depending on the level the player is on 
     image(imgLevel[intLevel],0,0);
     
-    // draws the gride of lights here so that the player is able to stand over it
+    // draws the grid of lights here so that the player is able to stand over it
     if (intLevel == 10) {
 
       for (int i = 0; i < 25; i ++) {
@@ -1391,13 +1387,13 @@ public class escape_room extends PApplet {
     // checks to see if the level has been completed or not 
     if (intLevel == 1 || intLevel == 0) {
 
-      // during the tutorial level, the player will always be able to go through the doors, however, once they entre the first room, they are no logner allowed to go back 
+      // during the tutorial level, the player will always be able to go through the doors, however, once they enter the first room, they are no longer allowed to go back 
       blnNextLevel[0] = true;
 
     
     } else if (intLevel == 3) {
 
-      // draws the keycad over the players head once they have solved the level
+      // draws the keypad over the players head once they have solved the level
       if (blnNextLevel[1] == true && intKeyCardTimer[0] <= 100 && blnLeftLevel[0] == false) {
 
         image(imgKeyCard[0],intPlayerX,intPlayerY - 30);
@@ -1449,7 +1445,7 @@ public class escape_room extends PApplet {
             blnVerify = false;
             blnNextLevel[1] = true;   
             
-            // displasy the new message
+            // displays the new message
             fill(173, 216, 230);       
             textSize(130);
             text(strCode, 110, 215);
@@ -1485,7 +1481,7 @@ public class escape_room extends PApplet {
             strCode = "OPEN ";
             blnSafe = false;
 
-          // allows the player to sill use the safe even if they have unlocked it 
+          // allows the player to still use the safe even if they have unlocked it 
           } else if (strCode.equals("OPEN "));
         }
       }
@@ -1518,7 +1514,7 @@ public class escape_room extends PApplet {
 
       } else {
 
-        // displays what the user has tyed onto the wall, placed in the else statement so that the hint and this don't get printed at the same time
+        // displays what the user has typed onto the wall, placed in the else statement so that the hint and this don't get printed at the same time
         fill(255);
         textSize(40);
         text(strPassword,65, 125);
@@ -1579,7 +1575,7 @@ public class escape_room extends PApplet {
         text("You see a bent corner and decide", 150, 500);
         text("to pull on it revealing a I shaped hole in the wall", 100, 525);
 
-        // gives different more unique text if the player has found the specific key before ineracting with it 
+        // gives different more unique text if the player has found the specific key before interacting with it 
         if (blnKeyI == true) {
           
           textSize(20);
@@ -1589,7 +1585,7 @@ public class escape_room extends PApplet {
 
         }
 
-      // gives a hint to the player if they are trying to interact with the trap door before performing all the needed steps before it 
+      // gives a hint to the player if they are trying to interact with the trapdoor before performing all the needed steps before it 
       } else if (blnLockedTrapDoor == true) {
 
         fill(255);
@@ -1628,7 +1624,7 @@ public class escape_room extends PApplet {
 
       }
 
-      // checks to see if all the needed actions have been performed before reavling an easter egg, there is a tiemr variable so the easter egg is removed after a set duration
+      // checks to see if all the needed actions have been performed before revealing an easter egg, there is a timer variable so the easter egg is removed after a set duration
       if (blnCrowBar == true && blnBox == true && intEasterEggDelay < 200) {
         
         image(imgEasterEgg[0],65,height / 2);
@@ -1672,7 +1668,7 @@ public class escape_room extends PApplet {
           } 
         }
 
-        // detects if the player has completed teh card game
+        // detects if the player has completed the card game
         if ((blnFound[0] && blnFound[1] && blnFound[2] && blnFound[3] && blnFound[4] && blnFound[5] && blnFound[6] && blnFound[7]) == true) {
 
           blnTable = false;
@@ -1975,7 +1971,7 @@ public class escape_room extends PApplet {
 
         } 
 
-        // displays the colour on the keypad in the thrid slot
+        // displays the colour on the keypad in the third slot
         if (intColourSelection[2] == 0) {
 
           fill(255,0,0);
@@ -1998,7 +1994,7 @@ public class escape_room extends PApplet {
 
         } 
         
-        // displays the colour on the keypad in the forth slot
+        // displays the colour on the keypad in the fourth slot
         if (intColourSelection[3] == 0) {
 
           fill(255,0,0);
@@ -2156,7 +2152,7 @@ public class escape_room extends PApplet {
 
       intPlayerY = (height / 2);
       intPlayerX = 16;
-      // goes down by 2 so that the player ends up on the top floor and not the botto floor
+      // goes down by 2 so that the player ends up on the top floor and not the bottom floor
       intLevel -= 2;
 
     } else if (intLevel == 10 && intPlayerX > 657) {
@@ -2297,7 +2293,7 @@ public class escape_room extends PApplet {
   }
 
   /**
-   * detects moues inputs and outputs it 
+   * detects mouse inputs  
    */
   public void mousePressed() {
 
@@ -2450,13 +2446,13 @@ public class escape_room extends PApplet {
       
     } else if (blnTable == true) {
 
-      // prevents the plaeyr from flipping more then 2 cards at a time 
+      // prevents the player from flipping more then 2 cards at a time 
       if (intCardDelay == 0) {
 
-        // Y boundaires for the cards
+        // Y boundaries for the cards
         if (mouseY > 249 && mouseY < 297) {
 
-          // X boundaires for the cards
+          // X boundaries for the cards
           if (mouseX > 258 && mouseX < 300) {
 
             intCardStatus[intCardLocations[0]] += 1;  
@@ -2481,7 +2477,7 @@ public class escape_room extends PApplet {
 
         } else if (mouseY > 300 && mouseY < 348) {
 
-          // X boundaires for the cards
+          // X boundaries for the cards
           if (mouseX > 258 && mouseX < 300) {
 
             intCardStatus[intCardLocations[4]] += 1;   
@@ -2506,7 +2502,7 @@ public class escape_room extends PApplet {
 
         } else if (mouseY > 351 && mouseY < 399) {
 
-          // X boundaires for the cards
+          // X boundaries for the cards
           if (mouseX > 258 && mouseX < 300) {
 
             intCardStatus[intCardLocations[8]] += 1; 
