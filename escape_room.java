@@ -91,7 +91,7 @@ public class escape_room extends PApplet {
   boolean[] blnNextLevel = new boolean[8];
   boolean[] blnLeftLevel = new boolean[4];
   int intNumLevels = 16;
-  int intLevel = 0;
+  int intLevel = 14;
   
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -1047,6 +1047,7 @@ public class escape_room extends PApplet {
         
         if (get(intPlayerX,intPlayerY + 64) == -16776961 || get(intPlayerX + 42, intPlayerY + 64) == -16776961 || get(intPlayerX + 50, intPlayerY + 54) == -16776961 || get(intPlayerX - 8, intPlayerY + 54) == -16776961) {
 
+          intPlayerX = 325;
           intPlayerY = 603;
           intLevel += 1;
 
@@ -2187,7 +2188,7 @@ public class escape_room extends PApplet {
 
     } else if (intLevel == 15 && intPlayerY > 603) {
 
-      intPlayerX = (width / 2);
+      intPlayerX = 350;
       intPlayerY = 500;
       intLevel -= 1;
 
