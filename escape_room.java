@@ -23,10 +23,12 @@ public class escape_room extends PApplet {
   PImage[] imgPlayerUp;
   PImage[] imgPlayerDown;
 
-  // starting screen variables
+  // game starting and ending variables
   PImage imgStartingScreen;
   PImage imgEndingScreen;
-  boolean blnStartButtonPressed, blnEasy, blnMedium, blnHard, blnMediumSelected, blnHardSelected = false;
+  PImage imgDeathScreen;
+  boolean blnGameStarting, blnEndingAnimation, blnGameEnding, blnScoreScreen, blnPatrickEasterEgg,  blnStartButtonPressed, blnEasy, blnMedium, blnHard, blnMediumSelected, blnHardSelected = false;
+  int intEasterEggsFound, intPatrickEasterEggTimer, intTotalScore = 0;
 
   // level 2 and 3 variables 
   PImage[] imgPage;
@@ -73,7 +75,6 @@ public class escape_room extends PApplet {
   String[] strArrows = {"", "LEFT ", "RIGHT ", "UP ", "DOWN "};
   String strArrowCode = "";
 
-
   // level 15 variables
   boolean blnRatEasterEgg = false;
   int intRatEasterEggTimer = 0;
@@ -81,10 +82,6 @@ public class escape_room extends PApplet {
   // player direction
   String strDirection = "Down";
   
-  // game starting and ending variables
-  boolean blnGameStarting, blnEndingAnimation, blnGameEnding, blnScoreScreen, blnPatrickEasterEgg = false;
-  int intEasterEggsFound, intPatrickEasterEggTimer, intTotalScore = 0;
-
   // game oxygen meter variables
   boolean blnOxygenMeter = false;
   int intOxygenMeter = 1;
@@ -94,7 +91,7 @@ public class escape_room extends PApplet {
   boolean[] blnNextLevel = new boolean[8];
   boolean[] blnLeftLevel = new boolean[4];
   int intNumLevels = 16;
-  int intLevel = 14;
+  int intLevel = 0;
   
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -319,6 +316,9 @@ public class escape_room extends PApplet {
     // loading in the end screen
     imgEndingScreen = loadImage("escape_room/endScreen.png");
 
+    // loading in the death screen
+    imgDeathScreen = loadImage("escape_room/deathScreen.png");
+
   }
 
   /**
@@ -422,9 +422,10 @@ public class escape_room extends PApplet {
 
       }
 
-    } else if (blnGameEnding == false && blnGameStarting == false && intOxygenMeter < 0) {
-
-      //image
+    } else if (intOxygenMeter <= 0) {
+      
+      clear();
+      image(imgDeathScreen,0,0);
 
     }
   }
