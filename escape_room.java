@@ -3,6 +3,10 @@ import processing.core.PImage;
 import java.util.Arrays;
 import java.util.Random;
 
+/**
+ * Runs a escape room game that the player must navigate through in order to escape 
+ * @author Preston and Jacky
+ */
 public class escape_room extends PApplet {
 
   // level image variable 
@@ -44,7 +48,7 @@ public class escape_room extends PApplet {
   PImage[] imgEasterEgg;
   PImage imgCrowBar, imgStairs, imgIKey;
   boolean[] blnFound = new boolean[8];
-  boolean blnCrowBar, blnStairs, blnTable, blnFirstTimeEntered, blnBox = false;
+  boolean blnCrowBar, blnStairs, blnTable, blnFirstTimeEntered, blnBox, blnEasterEggFound = false;
   int[] intCardLocations = new int[16];
   int[] intCardStatus = new int[16];
   int[] intX = new int[16];
@@ -90,7 +94,7 @@ public class escape_room extends PApplet {
   boolean[] blnNextLevel = new boolean[8];
   boolean[] blnLeftLevel = new boolean[4];
   int intNumLevels = 16;
-  int intLevel = 0;
+  int intLevel = 14;
   
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -362,11 +366,10 @@ public class escape_room extends PApplet {
 
       }
 
-      if (blnBox == true && blnCrowBar == true) {
+      if (blnEasterEggFound == true) {
 
         intEasterEggsFound += 1;
-        blnBox = false;
-        blnCrowBar = false;
+        blnEasterEggFound = false;
 
       }
 
@@ -375,7 +378,7 @@ public class escape_room extends PApplet {
         background(0);
         textSize(40);
         fill(255);
-        text("Scoreing", 250, 150);
+        text("Scoring", 250, 150);
         text("Base Points: 1000", 150, 250);
         text("Easter Eggs: " + intEasterEggsFound * 25, 150, 300);
 
@@ -391,10 +394,10 @@ public class escape_room extends PApplet {
         background(0);
         textSize(40);
         fill(255);
-        text("Scoreing", 250, 150);
+        text("Scoring", 250, 150);
         text("Base Points: 2000", 150, 250);
         text("Easter Eggs: " + intEasterEggsFound * 50, 150, 300);
-        text("Oxygen Left: " + intOxygenMeter * 1.5,150,350);
+        text("Oxygen Left: " + intOxygenMeter * 2,150,350);
 
         intTotalScore = (int) ((intEasterEggsFound * 25) + (intOxygenMeter * 1.5) + 2000);
 
@@ -408,16 +411,21 @@ public class escape_room extends PApplet {
         background(0);
         textSize(40);
         fill(255);
-        text("Scoreing", 250, 150);
+        text("Scoring", 250, 150);
         text("Base Points: 3000", 150, 250);
         text("Easter Eggs: " + intEasterEggsFound * 100, 150, 300);
-        text("Oxygen Left: " + intOxygenMeter * 3,150,350);
+        text("Oxygen Left: " + intOxygenMeter * 4,150,350);
         
         intTotalScore = (int) (intEasterEggsFound * 100) + (intOxygenMeter * 3) + (3000);
 
         text("Total: " + intTotalScore, 150, 400);
 
       }
+
+    } else if (blnGameEnding == false && blnGameStarting == false && intOxygenMeter < 0) {
+
+      //image
+
     }
   }
 
@@ -564,7 +572,7 @@ public class escape_room extends PApplet {
 
     image(imgEndingScreen,CENTER,CENTER);
 
-    if (blnPatrickEasterEgg == true && intPatrickEasterEggTimer < 60) {
+    if (blnPatrickEasterEgg == true && blnScoreScreen == false && intPatrickEasterEggTimer < 60) {
 
       intPatrickEasterEggTimer ++;
       image(imgEasterEgg[3],CENTER,CENTER);
@@ -1042,7 +1050,7 @@ public class escape_room extends PApplet {
         
         if (get(intPlayerX,intPlayerY + 64) == -16776961 || get(intPlayerX + 42, intPlayerY + 64) == -16776961 || get(intPlayerX + 50, intPlayerY + 54) == -16776961 || get(intPlayerX - 8, intPlayerY + 54) == -16776961) {
 
-          intPlayerY = 664;
+          intPlayerY = 603;
           intLevel += 1;
 
         }
@@ -1388,6 +1396,19 @@ public class escape_room extends PApplet {
     
     } else if (intLevel == 3) {
 
+      // draws the keycad over the players head once they have solved the level
+      if (blnNextLevel[1] == true && intKeyCardTimer[0] <= 100 && blnLeftLevel[0] == false) {
+
+        image(imgKeyCard[0],intPlayerX,intPlayerY - 30);
+        intKeyCardTimer[0] ++;
+
+      // if the player leaves the level, the keycard will be placed on a table for future reference
+      } else if (blnNextLevel[1] == true && blnLeftLevel[0] == true) {
+
+        image(imgKeyCard[0],435,200);
+
+      }
+
       // sees if the player is interacting with the paper on the desk 
       if (blnPage == true) {
 
@@ -1466,19 +1487,6 @@ public class escape_room extends PApplet {
           // allows the player to sill use the safe even if they have unlocked it 
           } else if (strCode.equals("OPEN "));
         }
-      }
-
-      // draws the keycad over the players head once they have solved the level
-      if (blnNextLevel[1] == true && intKeyCardTimer[0] <= 100 && blnLeftLevel[0] == false) {
-
-        image(imgKeyCard[0],intPlayerX,intPlayerY - 30);
-        intKeyCardTimer[0] ++;
-
-      // if the player leaves the level, the keycard will be placed on a table for future reference
-      } else if (blnNextLevel[1] == true && blnLeftLevel[0] == true) {
-
-        image(imgKeyCard[0],435,200);
-
       }
 
     } else if (intLevel == 5) {
@@ -1625,6 +1633,7 @@ public class escape_room extends PApplet {
         image(imgEasterEgg[0],65,height / 2);
         image(imgEasterEgg[1],275,height / 2);
         image(imgEasterEgg[2],465,height / 2);
+        blnEasterEggFound = true;
         intEasterEggDelay ++;
 
       }
@@ -2034,9 +2043,9 @@ public class escape_room extends PApplet {
     // allows players to go to the next level once they have completed it
     if ((intLevel == 0 | intLevel == 1) && intPlayerX < 16) {
 
-      intLevel += 1;
-      intPlayerX = 664;
+      intPlayerX = 657;
       intPlayerY = (height / 2);
+      intLevel += 1;
 
     // checks to see if the player is proceeding to the next level and if they are able to, if they are it will change the map and change their location as well
     } else if (intLevel == 2 && intPlayerX < 600) {
@@ -2046,55 +2055,55 @@ public class escape_room extends PApplet {
     // detects if the player is trying to move onto the next level, and if the player has met all the requirements to do so, it increases the level by 1 
     } else if (intPlayerX <= 16 && intLevel == 3 && blnNextLevel[1] == true) {
 
-      intLevel += 1;
       blnLeftLevel[0] = true;
-      intPlayerX = 664;
+      intPlayerX = 657;
       intPlayerY = (height / 2);
+      intLevel += 1;
       
     } else if (intLevel == 4 && intPlayerX < 16) {
 
-      intLevel += 1;
-      intPlayerX = 664;
+      intPlayerX = 657;
       intPlayerY = (height / 2);
+      intLevel += 1;
 
     } else if (intLevel == 5 && intPlayerY <= 16 && blnNextLevel[2] == true) {
 
-      intLevel += 1;
-      intPlayerY = 664;
+      intPlayerY = 603;
       intPlayerX = (width / 2);
       blnLeftLevel[1] = true;
-
-    } else if (intLevel == 6 && intPlayerY < 16) {
-
       intLevel += 1;
+
+    } else if (intLevel == 6 && intPlayerY  < 70) {
+
       intPlayerX = (width / 2);
-      intPlayerY = 664;
+      intPlayerY = 603;
+      intLevel += 1;
 
     } else if (intLevel == 7 && intPlayerX < 16 && blnNextLevel[3] == true) {
 
-      intLevel += 2;
-      intPlayerX = 664;
+      intPlayerX = 657;
       intPlayerY = (height / 2);
       blnLeftLevel[2] = true;
+      intLevel += 2;
 
     } else if (intLevel == 9 && intPlayerX < 16) {
 
-      intLevel += 1;
-      intPlayerX = 664;
+      intPlayerX = 657;
       intPlayerY = (height / 2);
-
-    } else if (intLevel == 10 && intPlayerY > 664 && blnNextLevel[4] == true) {
-
       intLevel += 1;
-      intPlayerY = 16;
+
+    } else if (intLevel == 10 && intPlayerY > 603 && blnNextLevel[4] == true) {
+
+      intPlayerY = 70;
       intPlayerX = (width / 2);
       blnLeftLevel[3] = true;
-
-    } else if (intLevel == 11 && intPlayerY > 664) {
-
       intLevel += 1;
+
+    } else if (intLevel == 11 && intPlayerY > 603) {
+
       intPlayerX = (width / 2);
-      intPlayerY = 16;
+      intPlayerY = 70;
+      intLevel += 1;
 
     } else if (intLevel == 12 && blnNextLevel[5] == true) {
 
@@ -2112,78 +2121,78 @@ public class escape_room extends PApplet {
     }
 
     // detects if players are trying to leave that level, and it will move them down a level if they want to 
-     if ((intLevel == 2 || intLevel == 1 || intLevel == 0) && intPlayerX > 664) {
+     if ((intLevel == 2 || intLevel == 1 || intLevel == 0) && intPlayerX > 657) {
 
-      intLevel -= 1;
       intPlayerY = (height / 2);
       intPlayerX = 16;
+      intLevel -= 1;
 
-    } else if (intLevel == 4 && intPlayerX > 664) {
+    } else if (intLevel == 4 && intPlayerX > 657) {
       
-      intLevel -= 1;
       intPlayerY = (height / 2);
       intPlayerX = 16;
-
-    } else if (intLevel == 5 && intPlayerX > 664) {
-
       intLevel -= 1;
+
+    } else if (intLevel == 5 && intPlayerX > 657) {
+
       intPlayerY = (height / 2);
       intPlayerX = 16;
-
-    } else if (intLevel == 6 && intPlayerY > 664) {
-
       intLevel -= 1;
+
+    } else if (intLevel == 6 && intPlayerY > 603) {
+
       intPlayerX = (width / 2);
-      intPlayerY = 16;
+      intPlayerY = 70;
+      intLevel -= 1;
 
-    } else if (intLevel == 7 && intPlayerY > 664) {
+    } else if (intLevel == 7 && intPlayerY > 603) {
 
+      intPlayerX = (width / 2);
+      intPlayerY = 70;
       intLevel -=1;
-      intPlayerX = (width / 2);
-      intPlayerY = 16;
 
-    } else if (intLevel == 9 && intPlayerX > 664) {
+    } else if (intLevel == 9 && intPlayerX > 657) {
 
+      intPlayerY = (height / 2);
+      intPlayerX = 16;
       // goes down by 2 so that the player ends up on the top floor and not the botto floor
       intLevel -= 2;
+
+    } else if (intLevel == 10 && intPlayerX > 657) {
+
       intPlayerY = (height / 2);
       intPlayerX = 16;
-
-    } else if (intLevel == 10 && intPlayerX > 664) {
-
       intLevel -=1;
-      intPlayerY = (height / 2);
-      intPlayerX = 16;
 
-    } else if (intLevel == 11 && intPlayerY < 16) {
+    } else if (intLevel == 11 && intPlayerY < 70) {
 
+      intPlayerX = (width / 2);
+      intPlayerY = 603;
       intLevel -=1;
+
+    } else if (intLevel == 12 && intPlayerY  < 70) {
+
       intPlayerX = (width / 2);
-      intPlayerY = 664;
-
-    } else if (intLevel == 12 && intPlayerY < 16) {
-
+      intPlayerY = 603;
       intLevel = 11;
+
+    } else if (intLevel == 13 && intPlayerY  < 70) {
+
       intPlayerX = (width / 2);
-      intPlayerY = 664;
-
-    } else if (intLevel == 13 && intPlayerY < 16) {
-
+      intPlayerY = 603;
       intLevel = 11;
+
+    } else if (intLevel == 14 && intPlayerY  < 70) {
+
       intPlayerX = (width / 2);
-      intPlayerY = 664;
-
-    } else if (intLevel == 14 && intPlayerY < 16) {
-
+      intPlayerY = 603;
       intLevel = 11;
-      intPlayerX = (width / 2);
-      intPlayerY = 664;
 
-    } else if (intLevel == 15 && intPlayerY > 664) {
+    } else if (intLevel == 15 && intPlayerY > 603) {
 
-      intLevel -= 1;
       intPlayerX = (width / 2);
       intPlayerY = 500;
+      intLevel -= 1;
 
     }
   }
@@ -2291,7 +2300,7 @@ public class escape_room extends PApplet {
    */
   public void mousePressed() {
 
-    if (blnGameStarting == false) {
+    if (blnGameStarting == false && blnScoreScreen == false) {
 
       // detects if the player wants to leave the game
       if ((mouseX > 20 && mouseX < 75) && (mouseY > 10 && mouseY < 35)) {
