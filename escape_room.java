@@ -91,7 +91,7 @@ public class escape_room extends PApplet {
   boolean[] blnNextLevel = new boolean[8];
   boolean[] blnLeftLevel = new boolean[4];
   int intNumLevels = 16;
-  int intLevel = 0;
+  int intLevel = 15;
   
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -399,7 +399,7 @@ public class escape_room extends PApplet {
         text("Easter Eggs: " + intEasterEggsFound * 50, 150, 300);
         text("Oxygen Left: " + intOxygenMeter * 2,150,350);
 
-        intTotalScore = (int) ((intEasterEggsFound * 25) + (intOxygenMeter * 1.5) + 2000);
+        intTotalScore = (int) ((intEasterEggsFound * 50) + (intOxygenMeter * 2) + 2000);
 
         text("Total: " + intTotalScore, 150, 400);
 
@@ -416,7 +416,7 @@ public class escape_room extends PApplet {
         text("Easter Eggs: " + intEasterEggsFound * 100, 150, 300);
         text("Oxygen Left: " + intOxygenMeter * 4,150,350);
         
-        intTotalScore = (int) (intEasterEggsFound * 100) + (intOxygenMeter * 3) + (3000);
+        intTotalScore = (int) ((intEasterEggsFound * 100) + (intOxygenMeter * 4) + 3000);
 
         text("Total: " + intTotalScore, 150, 400);
 
