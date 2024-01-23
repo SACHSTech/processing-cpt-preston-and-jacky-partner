@@ -85,13 +85,14 @@ public class escape_room extends PApplet {
   // game oxygen meter variables
   boolean blnOxygenMeter = false;
   int intOxygenMeter = 1;
+  int intCurrentOxygen = 0;
   int intTotalOxygen = 1;
 
   // level variables 
   boolean[] blnNextLevel = new boolean[8];
   boolean[] blnLeftLevel = new boolean[4];
   int intNumLevels = 16;
-  int intLevel = 14;
+  int intLevel = 0;
   
   // number of frames for each player animation 
   int intNumFrames = 4;
@@ -122,7 +123,7 @@ public class escape_room extends PApplet {
     Arrays.fill(intKeyCardTimer,0);
     Arrays.fill(intCardStatus,0);
     Arrays.fill(blnFound,false);
-    Arrays.fill (blnSteppedOn, false);
+    Arrays.fill(blnSteppedOn, false);
     Arrays.fill(blnLeftLevel,false);
     Arrays.fill(intColourSelection,0);
     Arrays.fill(intLetterIndex,0);
@@ -340,6 +341,8 @@ public class escape_room extends PApplet {
       DrawPopUps();
       NextLevel();
 
+      System.out.println(intCurrentOxygen);
+
     // draws a screen if the player has completed the game without running out of oxygen 
     } else if (blnGameEnding == true) {
 
@@ -394,9 +397,9 @@ public class escape_room extends PApplet {
         text("Scoring", 250, 150);
         text("Base Points: 2000", 150, 250);
         text("Easter Eggs: " + intEasterEggsFound * 50, 150, 300);
-        text("Oxygen Left: " + intOxygenMeter * 2,150,350);
+        text("Oxygen Left: " + intCurrentOxygen * 2,150,350);
 
-        intTotalScore = (int) ((intEasterEggsFound * 50) + (intOxygenMeter * 2) + 2000);
+        intTotalScore = (int) ((intEasterEggsFound * 50) + (intCurrentOxygen * 2) + 2000);
 
         text("Total: " + intTotalScore, 150, 400);
 
@@ -411,9 +414,9 @@ public class escape_room extends PApplet {
         text("Scoring", 250, 150);
         text("Base Points: 3000", 150, 250);
         text("Easter Eggs: " + intEasterEggsFound * 100, 150, 300);
-        text("Oxygen Left: " + intOxygenMeter * 4,150,350);
+        text("Oxygen Left: " + intCurrentOxygen * 4,150,350);
         
-        intTotalScore = (int) ((intEasterEggsFound * 100) + (intOxygenMeter * 4) + 3000);
+        intTotalScore = (int) ((intEasterEggsFound * 100) + (intCurrentOxygen * 4) + 3000);
 
         text("Total: " + intTotalScore, 150, 400);
 
@@ -657,6 +660,13 @@ public class escape_room extends PApplet {
    */
   public void OxygenMeter() {
 
+    // sets a variable to what the left over oxygen meter was to calculate the final score at the end 
+    if (blnNextLevel[7] == true) {
+
+      intCurrentOxygen = intOxygenMeter;
+
+    }
+
     // sets the amount of oxygen higher if the player has selected the medium difficulty and lower if they selected the hard difficulty 
     if (blnMedium == true) {
 
@@ -686,7 +696,7 @@ public class escape_room extends PApplet {
       rect(640,640,20, -intTotalOxygen);
     
       // slowly ticks away at the oxygen meter 
-      if (frameCount % 240 == 0) {
+      if (frameCount % 180 == 0) {
 
         intOxygenMeter -= 1;
 
@@ -1009,6 +1019,7 @@ public class escape_room extends PApplet {
           blnCrowBar = true;
 
         } 
+
       } else if (intLevel == 10) {
 
         // detection for the reset key
@@ -1070,7 +1081,9 @@ public class escape_room extends PApplet {
 
         blnLockedTrapDoor = false;
 
-      } // detection for the posters
+      } 
+
+      // detection for the posters
       if ((get(intPlayerX, intPlayerY - 8) != -16776961)) {
 
         blnRickPoster = false;
