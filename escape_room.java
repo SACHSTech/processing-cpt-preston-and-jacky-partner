@@ -329,25 +329,25 @@ public class escape_room extends PApplet {
     // detects if the game has started 
     if (blnGameStarting == false && blnGameEnding == false && blnScoreScreen == false) {
 
-      startingScreen();
+      StartingScreen();
 
     // detects if the game has started and if the user still has oxygen left 
     } else if (blnGameStarting == true && intOxygenMeter > 0 && blnGameEnding == false) {
      
-      drawCollisionMaps();
-      playerMovementAndCollisions();
-      playerInteractions();
-      drawMaps();
-      oxygenMeter();
-      playerUpdate();
-      drawPopUps();
-      nextLevel();
+      DrawCollisionMaps();
+      PlayerMovementAndCollisions();
+      PlayerInteractions();
+      DrawMaps();
+      OxygenMeter();
+      PlayerUpdate();
+      DrawPopUps();
+      NextLevel();
 
     // draws a screen if the player has completed the game without running out of oxygen 
     } else if (blnGameEnding == true) {
 
       EndingScreen();
-      playerUpdate();
+      PlayerUpdate();
 
     // to draw the end screen once the player has died 
     } else if (blnGameEnding == false && blnScoreScreen == true){
@@ -433,7 +433,7 @@ public class escape_room extends PApplet {
   /**
    * draws a starting screen for the game and will allow the player to decide difficulty before starting 
    */
-  public void startingScreen() {
+  public void StartingScreen() {
 
     // detects if the game has started
     if (blnGameStarting == false) {
@@ -604,7 +604,7 @@ public class escape_room extends PApplet {
   /**
    * draws the needed collision map to match with the player map
    */
-  public void drawCollisionMaps() {
+  public void DrawCollisionMaps() {
 
     // draws the collision maps 
     image(imgLevelCollision[intLevel],0,0);
@@ -658,7 +658,7 @@ public class escape_room extends PApplet {
   /**
    * draws the oxygen meter and keeps track if the player has oxygen left for the rest of the game
    */
-  public void oxygenMeter() {
+  public void OxygenMeter() {
 
     // sets the amount of oxygen higher if the player has selected the medium difficulty and lower if they selected the hard difficulty 
     if (blnMedium == true) {
@@ -707,7 +707,7 @@ public class escape_room extends PApplet {
   /**
    * movement for the player and checks for collisions
    */
-  public void playerMovementAndCollisions() {
+  public void PlayerMovementAndCollisions() {
 
     // prevents players from moving if they are interacting with an object
     if (blnPage == false && blnSafe == false && blnTable == false)  {
@@ -745,7 +745,7 @@ public class escape_room extends PApplet {
   /**
    * player interactions with objects 
    */
-  public void playerInteractions() {
+  public void PlayerInteractions() {
 
     // detects if the player is trying to interact with an object, everything inside this if statement runs when that key is pressed
     if (blnInteract == true) {
@@ -1253,7 +1253,7 @@ public class escape_room extends PApplet {
   /**
    * draws the nescessary maps for the level that the player is on 
    */
-  public void drawMaps() {
+  public void DrawMaps() {
 
     // draws out the correct room depending on the level the player is on 
     image(imgLevel[intLevel],0,0);
@@ -1292,7 +1292,7 @@ public class escape_room extends PApplet {
   /**
    * updates the player model depending on the direction that the player is moving 
    */
-  public void playerUpdate() {
+  public void PlayerUpdate() {
     
     // checks if the game has ended or not 
     if (blnGameEnding == false) {
@@ -1386,7 +1386,7 @@ public class escape_room extends PApplet {
   /**
    * draws the needed pop ups for the map 
    */
-  public void drawPopUps() {
+  public void DrawPopUps() {
 
     // checks to see if the level has been completed or not 
     if (intLevel == 1 || intLevel == 0) {
@@ -2040,7 +2040,7 @@ public class escape_room extends PApplet {
   /**
    * detects if the player has completed a level and changes the level map accordingly 
    */
-  public void nextLevel() {
+  public void NextLevel() {
     // allows players to go to the next level once they have completed it
     if ((intLevel == 0 | intLevel == 1) && intPlayerX < 16) {
 
