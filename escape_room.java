@@ -91,7 +91,7 @@ public class escape_room extends PApplet {
   boolean[] blnNextLevel = new boolean[8];
   boolean[] blnLeftLevel = new boolean[4];
   int intNumLevels = 16;
-  int intLevel = 14;
+  int intLevel = 0;
   
   // number of frames for each player animation 
   int intNumFrames = 4;
