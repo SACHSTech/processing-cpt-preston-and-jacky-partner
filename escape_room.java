@@ -379,11 +379,8 @@ public class escape_room extends PApplet {
         text("Scoring", 250, 150);
         text("Base Points: 1000", 150, 250);
         text("Easter Eggs: " + intEasterEggsFound * 25, 150, 300);
-
         intTotalScore = (intEasterEggsFound * 25) + 1000;
-
         text("Total: " + intTotalScore, 150, 350);
-
 
       } 
       
@@ -396,11 +393,8 @@ public class escape_room extends PApplet {
         text("Base Points: 2000", 150, 250);
         text("Easter Eggs: " + intEasterEggsFound * 50, 150, 300);
         text("Oxygen Left: " + intCurrentOxygen * 2,150,350);
-
         intTotalScore = (int) ((intEasterEggsFound * 50) + (intCurrentOxygen * 2) + 2000);
-
         text("Total: " + intTotalScore, 150, 400);
-
 
       } 
       
@@ -413,9 +407,7 @@ public class escape_room extends PApplet {
         text("Base Points: 3000", 150, 250);
         text("Easter Eggs: " + intEasterEggsFound * 100, 150, 300);
         text("Oxygen Left: " + intCurrentOxygen * 4,150,350);
-        
         intTotalScore = (int) ((intEasterEggsFound * 100) + (intCurrentOxygen * 4) + 3000);
-
         text("Total: " + intTotalScore, 150, 400);
 
       }
@@ -571,6 +563,7 @@ public class escape_room extends PApplet {
 
     image(imgEndingScreen,CENTER,CENTER);
 
+    // draws the patrick easter egg 
     if (blnPatrickEasterEgg == true && blnScoreScreen == false && intPatrickEasterEggTimer < 60) {
 
       intPatrickEasterEggTimer ++;
@@ -578,6 +571,7 @@ public class escape_room extends PApplet {
 
     }
 
+    // sets the players x and y to values so that he pops out of the man hole in the ground 
     if (blnEndingAnimation == false) {
 
       intPlayerX = 290;
@@ -586,6 +580,7 @@ public class escape_room extends PApplet {
 
     }
 
+    // sets the animation to only run right 
     blnRight = true;
     strDirection = "Right";
     intPlayerX += 1;
@@ -906,7 +901,7 @@ public class escape_room extends PApplet {
             // coordinates for the letter O
             } else if (intPlayerX > 237 && intPlayerX < 350 && (get(intPlayerX, intPlayerY + 56) == -3584 || get(intPlayerX + 30, intPlayerY + 56) == -3584)) { 
             
-              strPassword += "o";
+              strPassword += 'o';
               delay(300);
 
               
@@ -1401,7 +1396,6 @@ public class escape_room extends PApplet {
 
       // during the tutorial level, the player will always be able to go through the doors, however, once they enter the first room, they are no longer allowed to go back 
       blnNextLevel[0] = true;
-
     
     } else if (intLevel == 3) {
 
@@ -2164,6 +2158,7 @@ public class escape_room extends PApplet {
 
       intPlayerY = (height / 2);
       intPlayerX = 16;
+
       // goes down by 2 so that the player ends up on the top floor and not the bottom floor
       intLevel -= 2;
 

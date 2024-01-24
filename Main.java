@@ -12,9 +12,7 @@ class Main {
   public static void main(String[] args) {
 
     String[] processingArgs = {"MySketch"};
-	
 	escape_room mySketch = new escape_room();  
-
 	PApplet.runSketch(processingArgs, mySketch);
 
  }
